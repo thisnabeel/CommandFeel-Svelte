@@ -1,30 +1,23 @@
 <script>
-	import Counter from '$lib/Counter.svelte';
+	import {selectedSkill} from "$lib/stores/main.js";
+	import Skill from "$lib/pages/Skill/Skill.svelte"
+
+	let skill;
+	selectedSkill.subscribe(value => {
+		console.log(value)
+		skill = value;
+	})
+
 </script>
 
 <svelte:head>
 	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<meta name="description" content="Yasbahoon" />
 </svelte:head>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset="svelte-welcome.webp" type="image/webp" />
-				<img src="svelte-welcome.png" alt="Welcome" />
-			</picture>
-		</span>
-
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-</section>
+{#if skill !== null }
+	<Skill skill={skill}></Skill>
+{/if}
 
 <style>
 	section {
@@ -48,9 +41,9 @@
 	}
 
 	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
+		/* position: absolute; */
+		margin: 0 auto;
+		max-width: 350px;
 		top: 0;
 		display: block;
 	}
