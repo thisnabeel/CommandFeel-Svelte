@@ -1,19 +1,23 @@
 <script>
     import {onMount} from "svelte";
 
-    
-    export let skill;
+
+    $: console.log(wonder);
+    export let wonder;
+
+    // https://yasbahoon.com/wonder_items/60.json
+
+    let skills;
+
         
 </script>
 
 <section class="wrapper">
-    <h1 class="title">{skill.title}</h1>
+    <h1 class="title">{wonder.title}</h1>
 
-    <ul class="abstractions">
-        {#each skill.abstractions as abstraction}
-            <li>
-                {abstraction.body}
-            </li>
+    <ul class="skills">
+        {#each wonder.wonder_items.filter((item) => item.wonderable_type === "Skill") as skill}
+            <!-- {skill.id} -->
         {/each}
     </ul>
 </section>

@@ -12,7 +12,7 @@
 
 <style>
 	.logo {
-		max-width: 320px;
+		max-width: 450px;
 		margin: 0 auto;
 		display: block;
 		padding: 4em;

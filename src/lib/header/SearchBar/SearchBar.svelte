@@ -5,11 +5,16 @@
   import { onMount } from "svelte";
   import axios from "axios";
 
+  import "./hover.module.css";
+
   import Map from "./Map/Map.svelte";
   
-  import {skills, skillsMap, mapShown} from "$lib/stores/main"
+  import {skills, skillsMap, wonders, wondersMap, mapShown} from "$lib/stores/main";
+
+  import { Col, Container, Row, Styles } from 'sveltestrap';
+  import Input from './Input/Input.svelte';
+  import { subscribe } from 'svelte/internal';
   
-  const endpoint = "https://www.yasbahoon.com/cached_skills";
   
   let mapToggle;
   mapShown.subscribe(value => {
@@ -22,21 +27,22 @@
   }
 
   onMount(async function () {
+    getSkills()
+    getWonders()
+  });
+
+  const getSkills = async () => {
+    const endpoint = "https://www.yasbahoon.com/cached_skills.json";
     const response = await axios.get(endpoint);
-
     let json = response.data;
-
     skills.set(json);
-
     let parents = json.filter((obj) => {
         return obj.skill_id === null;
     });
-
     parents.map((skill, index) => {
         // Connect each Child to Parent
         connectChildToParent(skill);
     });
-
     function connectChildToParent(skill) {
         let children = json.filter((obj) => {
         return obj.skill_id === skill.id;
@@ -44,76 +50,77 @@
         skill["skills"] = children;
         skill["skills"].map((skill, index) => {
         // Connect each Child to Parent
-        console.log(skill.title);
-        });
-
-        skill["skills"].map((skill, index) => {
-        // Connect each Child to Parent
         connectChildToParent(skill);
         });
     }
-    
+    console.log("skills", parents)
     skillsMap.set(parents);
-  });
+  }
+
+  const getWonders = async () => {
+    const endpoint = "https://www.yasbahoon.com/cached_wonders.json";
+    const response = await axios.get(endpoint);
+    let json = response.data;
+    wonders.set(json);
+    let parents = json.filter((obj) => {
+        return obj.wonder_id === null;
+    });
+    console.log("wokring", 3)
+    parents.map((wonder, index) => {
+        // Connect each Child to Parent
+        connectChildToParent(wonder);
+    });
+    function connectChildToParent(wonder) {
+        let children = json.filter((obj) => {
+          return obj.wonder_id === wonder.id;
+        });
+        wonder["wonders"] = children;
+        wonder["wonders"].map((wonder, index) => {
+        // Connect each Child to Parent
+        connectChildToParent(wonder);
+        });
+    }
+
+    // console.log("wonders", parents.filter(wonder => wonder.wonders.length !== 0))
+    // parents.filter(wonder => wonder.wonders.length !== 0)
+    wondersMap.set(parents);
+  }
 
 </script>
+<Styles />
 
-    <div class="row">
-      <div class="searcher">
-        <div class="cta-search">
-          <u>Applied</u> phenomenons
-        </div>
-        <input type="text" placeholder="Search Wonders..." />
+<Container>
+  <Row>
+    
+    <Col lg="5">
+      <div class="cta-search">
+        <u>Applied</u> phenomenons
       </div>
-        <div
-          class="show-whole-map maps-btn hvr-bob-anyways"
-           on:click={toggleMap}
-        >
-          <Fa icon={faMap} />
-        </div>
-
-      <div class="searcher">
-        <div class="cta-search">
-          <u>Raw</u> phenomenons
-        </div>
-        <input type="text" placeholder="Search Skills..." />
+      <Input type="Wonders"/>
+    </Col>
+    <Col lg="2">
+      <div
+        class="show-whole-map maps-btn hvr-bob-anyways"
+          on:click={toggleMap}
+      >
+        <Fa icon={faMap} />
       </div>
-
-    </div>
+    </Col>
+    <Col lg="5">
+      <div class="cta-search">
+        <u>Raw</u> phenomenons
+      </div>
+      <Input type="Skills"/>
+    </Col>
+    
+  </Row>
+</Container>
 
     {#if mapToggle}
       <Map></Map>
     {/if}
 
 <style>
-input {
-  padding: 20px;
-  font-size: 24px;
-  border: 1px solid #e9e1e2;
-  margin-bottom: 10px;
-  background: #efefef;
-  width: 100%;
-  font-family: "GreycliffCF-Bold";
-}
-
-.row {
-  display: flex;
-}
-.row .searcher {
-  flex: 1 1 35%;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-.row .show-whole-map {
-    flex: 0 0 16.6666666667%;
-  max-width: 16.6666666667%;
-}
-
-input:hover {
-  background: #eaf7ff;
-}
-
 .cta-search {
   position: absolute;
   top: -21px;
@@ -138,7 +145,7 @@ input:hover {
 .show-whole-map {
   zoom: 1;
   padding: 2px 0px;
-  height: 49px;
+  height: 72%;
   margin: 0;
   cursor: pointer;
   border: 1px solid #bbb;

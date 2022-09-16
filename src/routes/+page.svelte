@@ -1,11 +1,18 @@
 <script>
-	import {selectedSkill} from "$lib/stores/main.js";
+	import {selectedSkill, selectedWonder} from "$lib/stores/main.js";
 	import Skill from "$lib/pages/Skill/Skill.svelte"
+	import Wonder from "$lib/pages/Wonder/Wonder.svelte"
 
 	let skill;
 	selectedSkill.subscribe(value => {
 		console.log(value)
 		skill = value;
+	})
+
+	let wonder;
+	selectedWonder.subscribe(value => {
+		console.log(value)
+		wonder = value;
 	})
 
 </script>
@@ -17,6 +24,10 @@
 
 {#if skill !== null }
 	<Skill skill={skill}></Skill>
+{/if}
+
+{#if wonder !== null }
+	<Wonder wonder={wonder}></Wonder>
 {/if}
 
 <style>
