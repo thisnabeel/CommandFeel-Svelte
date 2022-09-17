@@ -75,7 +75,7 @@
     bind:value={query}
     on:blur={() => setTimeout(function(){ 
             showResults = false
-        }, 10)
+        }, 500)
     }
     placeholder="Search {type}..." />
     {#if results && showResults}

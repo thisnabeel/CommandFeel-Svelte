@@ -16,6 +16,11 @@
 	--column-margin-top: 4rem;
 }
 
+@font-face {
+	font-family: 'GreycliffCF-Bold';
+	src: url('fonts/GreycliffCF-Bold.woff2') format('woff2');
+}
+
 body {
 	min-height: 100vh;
 	margin: 0;
