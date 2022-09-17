@@ -2,26 +2,88 @@
 <script>
     import {onMount} from "svelte";
     import axios from "axios";
-    import { mapShown, selectedSkill } from "$lib/stores/main";
+    import {curry} from "ramda";
+    import { mapShown, selectSkill, selectWonder, api, selectedSkill } from "$lib/stores/main";
+    
+    import Fa from 'svelte-fa';
+    import { faCaretSquareRight } from '@fortawesome/free-solid-svg-icons';
 
-    export let skill;
 
+    let select;
+    let gold = null;
+
+    export let item;
+    export let type;
+
+
+    if (type === "skill") select = selectSkill;
+    if (type === "wonder") select = selectWonder;
+
+    let prefix;
+    api.subscribe((value) => prefix = value)
+
+    $: {
+        if (type === "wonder") checkGold(item);
+    }
 
     const handleSkillClick = async (id) => {
-        const response = await axios.get("https://www.yasbahoon.com/skills/"+id+".json");
-        selectedSkill.set(response.data);
+        const response = await axios.get(prefix+"/"+type+"s/"+id+".json");
+        select(response.data);
         mapShown.set(false);
     }
+
+    function hasChildren(item) {
+        return (item.wonders.length > 0);
+    }
+
+    const Tree = {
+        reduce: curry(function reduce(reducerFn, init, node) {
+            const acc = reducerFn(init, node);
+            if (acc > 0) {
+                return acc;
+            }
+            if (!hasChildren(node)) {
+                return acc;
+            }
+            return node.wonders.reduce(Tree.reduce(reducerFn), acc);
+        }),
+    }
+
+    function sumGold(total, item) {
+        return total + (item.wonder_items.length);
+    }
+
+    const checkGold = (item) => {
+        gold = Boolean(Tree.reduce(sumGold, 0, item));
+    }
+
 </script>
 
-<li abstra-count={skill.abstractions.length}>
-    {#if skill.skill_id != null}
-        <span on:click|once={handleSkillClick(skill.id)}>{skill.title}</span>
-    {/if}
-    {#each skill.skills as skill }
-        <svelte:self skill={skill}/>
-    {/each}
-</li>
+{#if type === "skill"}
+    <li class="skill" abstra-count={item.abstractions.length}>
+        {#if item.skill_id != null}
+            <span on:click|once={handleSkillClick(item.id)}>{item.title}</span>
+        {/if}
+        {#each item.skills as skill }
+            <svelte:self item={skill} type="skill"/>
+        {/each}
+    </li>
+{/if}
+
+{#if type === "wonder"}
+    <li class="wonder" abstra-count={item.wonder_items.length} worthy={(gold)}>
+    <span on:click|once={handleSkillClick(item.id)}>
+        {item.title}
+        
+        {#if gold && (item.wonders.length > 0)}
+            <Fa icon={faCaretSquareRight} />
+        {/if}
+    </span>
+        {#each item.wonders as wonder }
+            <svelte:self item={wonder} type="wonder"/>
+        {/each}
+    </li>
+{/if}
 
 <style>
     li {
@@ -38,7 +100,11 @@
         border-left: 6px #416FFF solid;
     }
 
-    [abstra-count="0"] {
+    .skill[abstra-count="0"] {
         color: #ccc;
+    }
+
+    .wonder[worthy="false"] > span {
+        display: none;
     }
 </style>

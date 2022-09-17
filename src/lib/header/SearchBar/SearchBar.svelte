@@ -9,7 +9,7 @@
 
   import Map from "./Map/Map.svelte";
   
-  import {skills, skillsMap, wonders, wondersMap, mapShown} from "$lib/stores/main";
+  import {skills, skillsMap, wonders, wondersMap, mapShown, api} from "$lib/stores/main";
 
   import { Col, Container, Row, Styles } from 'sveltestrap';
   import Input from './Input/Input.svelte';
@@ -31,8 +31,11 @@
     getWonders()
   });
 
+  let prefix;
+  api.subscribe((value) => prefix = value)
+
   const getSkills = async () => {
-    const endpoint = "https://www.yasbahoon.com/cached_skills.json";
+    const endpoint = prefix+"/cached_skills.json";
     const response = await axios.get(endpoint);
     let json = response.data;
     skills.set(json);
@@ -58,7 +61,7 @@
   }
 
   const getWonders = async () => {
-    const endpoint = "https://www.yasbahoon.com/cached_wonders.json";
+    const endpoint = prefix+"/cached_wonders.json";
     const response = await axios.get(endpoint);
     let json = response.data;
     wonders.set(json);
