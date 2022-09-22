@@ -18,7 +18,7 @@
 
 @font-face {
 	font-family: 'GreycliffCF-Bold';
-	src: url('fonts/GreycliffCF-Bold.woff2') format('woff2');
+	src: url('/fonts/GreycliffCF-Bold.woff2') format('woff2-variations');
 }
 
 body {
