@@ -2,6 +2,7 @@
 	import {selectedSkill, selectedWonder} from "$lib/stores/main.js";
 	import Skill from "$lib/pages/Skill/Skill.svelte"
 	import Wonder from "$lib/pages/Wonder/Wonder.svelte"
+	import Home from "$lib/pages/Home/Home.svelte"
 
 	let skill;
 	selectedSkill.subscribe(value => {
@@ -24,10 +25,10 @@
 
 {#if skill !== null }
 	<Skill skill={skill}></Skill>
-{/if}
-
-{#if wonder !== null }
+{:else if wonder !== null }
 	<Wonder wonder={wonder}></Wonder>
+{:else}
+	<Home></Home>
 {/if}
 
 <style>

@@ -23,3 +23,8 @@ export const selectWonder = (item) => {
 	selectedWonder.set(item);
 	selectedSkill.set(null);
 };
+
+export const goHome = () => {
+	selectedWonder.set(null);
+	selectedSkill.set(null);
+};

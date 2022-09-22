@@ -1,9 +1,11 @@
 <script>
 	import SearchBar from './SearchBar/SearchBar.svelte';
+	import {goHome} from "$lib/stores/main.js";
+
 </script>
 
 <header>
-	<picture class="logo">
+	<picture class="logo" on:click={goHome}>
 		<img src="logo-light.png" alt="Yasbahoon Logo" />
 	</picture>
 
