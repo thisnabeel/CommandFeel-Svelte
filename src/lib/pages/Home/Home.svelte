@@ -1,27 +1,31 @@
 <script>
     import {onMount} from "svelte";
     import {skills, selectSkill} from "$lib/stores/main.js";
+    import { openModal } from 'svelte-modals';
+    import SkillModal from "$lib/modals/videos/skill.svelte";
 
     let abstractions;
     onMount(async function(){
         skills.subscribe(value => {
             abstractions = value.filter((skill) => skill.abstractions && skill.abstractions.filter((a) => a.preview && a.preview.length > 1).length);
-            const count = 5;
+            const count = 6;
             abstractions  = abstractions.sort(() => .5 - Math.random()).slice(0, count)
             console.log(abstractions)
         })
     })
 
-</script>
+    function openSkillVideo(skill, abstraction){
+        openModal(SkillModal, { skill: skill, abstraction: abstraction});
+    }
 
-<h1>Home</h1>
+</script>
 
 <section class="masonry-container">
 {#if abstractions}
     {#each abstractions as item}
         <div class="masonry-item">
 			<article class="skill">
-                <img class="preview" src="{item.abstractions[0].preview}" alt="">
+                <img class="preview" on:click={openSkillVideo(item, item.abstractions[0])} src="{item.abstractions[0].preview}" alt="">
                 <div class="title" on:click={selectSkill(item)}>
 					{item.title}
 				</div>		

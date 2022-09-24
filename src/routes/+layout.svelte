@@ -1,14 +1,27 @@
 <script>
 	import Header from '$lib/header/Header.svelte';
 	import '../app.css';
+	import { Modals, closeModal } from 'svelte-modals';
+	import { fade } from 'svelte/transition'
 </script>
+
+
+
 
 
 <main>
 	<Header />
-
 	<slot />
 </main>
+
+<Modals>
+  <div
+    slot="backdrop"
+	class="backdrop"
+	transition:fade
+    on:click={closeModal}
+  />
+</Modals>
 
 <!-- <footer>
 	<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>

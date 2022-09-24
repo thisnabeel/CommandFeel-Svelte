@@ -21,6 +21,16 @@
 	src: url('/fonts/GreycliffCF-Bold.woff2') format('woff2-variations');
 }
 
+@font-face {
+	font-family: 'GreycliffCF-Medium';
+	src: url('/fonts/GreycliffCF-Medium.woff2') format('woff2-variations');
+}
+
+@font-face {
+	font-family: 'sf';
+	src: url('/fonts/made_sunflower-webfont.woff2') format('woff2-variations');
+}
+
 body {
 	min-height: 100vh;
 	margin: 0;

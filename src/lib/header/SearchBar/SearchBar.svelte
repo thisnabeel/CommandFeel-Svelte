@@ -95,7 +95,7 @@
 <Container>
   <Row>
     
-    <Col lg="5">
+    <Col lg="5" style="position: relative;">
       <div class="cta-search">
         <u>Applied</u> phenomenons
       </div>
@@ -109,7 +109,7 @@
         <Fa icon={faMap} />
       </div>
     </Col>
-    <Col lg="5">
+    <Col lg="5" style="position: relative;">
       <div class="cta-search">
         <u>Raw</u> phenomenons
       </div>
