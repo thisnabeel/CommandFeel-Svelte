@@ -36,6 +36,7 @@
                 autoplay
                 oncontextmenu="return false;" 
                 controlsList="nodownload" 
+                playsinline
             >
                 <track kind="captions">
             </video>
