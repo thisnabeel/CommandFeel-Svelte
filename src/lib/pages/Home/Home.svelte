@@ -3,6 +3,7 @@
     import {skills, selectSkill} from "$lib/stores/main.js";
     import { openModal } from 'svelte-modals';
     import SkillModal from "$lib/modals/videos/skill.svelte";
+    import PopularWonders from "./PopularWonders/PopularWonders.svelte";
 
     let abstractions;
     onMount(async function(){
@@ -21,19 +22,21 @@
 </script>
 
 <section class="masonry-container">
-{#if abstractions}
-    {#each abstractions as item}
-        <div class="masonry-item">
-			<article class="skill">
-                <img class="preview" on:click={openSkillVideo(item, item.abstractions[0])} src="{item.abstractions[0].preview}" alt="">
-                <div class="title" on:click={selectSkill(item)}>
-					{item.title}
-				</div>		
-			</article>
-		</div>
-    {/each}
-{/if }
+    {#if abstractions}
+        {#each abstractions as item}
+            <div class="masonry-item">
+                <article class="skill">
+                    <img class="preview" on:click={openSkillVideo(item, item.abstractions[0])} src="{item.abstractions[0].preview}" alt="">
+                    <div class="title" on:click={selectSkill(item)}>
+                        {item.title}
+                    </div>		
+                </article>
+            </div>
+        {/each}
+    {/if }
 </section>
+
+<PopularWonders></PopularWonders>
 
 <style>
 .masonry-container {

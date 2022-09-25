@@ -16,6 +16,19 @@
 		wonder = value;
 	})
 
+	import Api from "$lib/api/api.js";
+    import {popularWonders} from "$lib/stores/main.js";
+    import {onMount} from "svelte";
+
+    const fetchPopularWonders = async () => {
+        const response = await Api.get("/museum.json");
+        let json = response;
+		popularWonders.set(json);
+    };
+
+    onMount(async function(){
+		fetchPopularWonders();
+    })
 </script>
 
 <svelte:head>

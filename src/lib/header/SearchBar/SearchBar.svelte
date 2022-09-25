@@ -3,13 +3,13 @@
   import { faMap } from '@fortawesome/free-solid-svg-icons'
 
   import { onMount } from "svelte";
-  import axios from "axios";
+  import Api from "$lib/api/api.js";
 
   import "./hover.module.css";
 
   import Map from "./Map/Map.svelte";
   
-  import {skills, skillsMap, wonders, wondersMap, mapShown, api} from "$lib/stores/main";
+  import {skills, skillsMap, wonders, wondersMap, mapShown} from "$lib/stores/main";
 
   import { Col, Container, Row, Styles } from 'sveltestrap';
   import Input from './Input/Input.svelte';
@@ -31,14 +31,12 @@
     getWonders()
   });
 
-  let prefix;
-  api.subscribe((value) => prefix = value)
-
   const getSkills = async () => {
-    const endpoint = prefix+"/cached_skills.json";
-    const response = await axios.get(endpoint);
-    let json = response.data;
+    const response = await Api.get("/cached_skills.json");
+    console.log("response", response)
+    let json = response;
     skills.set(json);
+    console.log("skills set", skills);
     let parents = json.filter((obj) => {
         return obj.skill_id === null;
     });
@@ -61,9 +59,9 @@
   }
 
   const getWonders = async () => {
-    const endpoint = prefix+"/cached_wonders.json";
-    const response = await axios.get(endpoint);
-    let json = response.data;
+    const response = await Api.get("/cached_wonders.json");
+    console.log("response", response);
+    let json = response;
     wonders.set(json);
     let parents = json.filter((obj) => {
         return obj.wonder_id === null;
@@ -95,21 +93,22 @@
 <Container>
   <Row>
     
-    <Col lg="5" style="position: relative;">
+    <Col lg="5" md="5" sm="5" xs="5" style="position: relative;">
       <div class="cta-search">
         <u>Applied</u> phenomenons
       </div>
       <Input type="Wonders"/>
     </Col>
-    <Col lg="2">
+    <Col lg="2" md="2" sm="2" xs="2">
       <div
+        class:btn-open="{mapToggle}"
         class="show-whole-map maps-btn hvr-bob-anyways"
           on:click={toggleMap}
       >
         <Fa icon={faMap} />
       </div>
     </Col>
-    <Col lg="5" style="position: relative;">
+    <Col lg="5" md="5" sm="5" xs="5" style="position: relative;">
       <div class="cta-search">
         <u>Raw</u> phenomenons
       </div>
@@ -175,5 +174,17 @@
   background-clip: padding-box;
   
 }
+.show-whole-map:hover {
+    background: #fff;
+}
 
+.btn-open {
+  background: #416FFF;
+    color: #fff;
+    border-radius: 6px;
+}
+
+.btn-open:hover {
+  background: #4b6ad0;
+}
 </style>

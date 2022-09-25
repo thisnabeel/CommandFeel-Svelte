@@ -1,9 +1,9 @@
 
 <script>
     import {onMount} from "svelte";
-    import axios from "axios";
+    import Api from "$lib/api/api.js";
     import {curry} from "ramda";
-    import { mapShown, selectSkill, selectWonder, api, selectedSkill } from "$lib/stores/main";
+    import { mapShown, selectSkill, selectWonder, selectedSkill } from "$lib/stores/main";
     
     import Fa from 'svelte-fa';
     import { faCaretSquareRight } from '@fortawesome/free-solid-svg-icons';
@@ -19,16 +19,14 @@
     if (type === "skill") select = selectSkill;
     if (type === "wonder") select = selectWonder;
 
-    let prefix;
-    api.subscribe((value) => prefix = value)
 
     $: {
         if (type === "wonder") checkGold(item);
     }
 
     const handleSkillClick = async (id) => {
-        const response = await axios.get(prefix+"/"+type+"s/"+id+".json");
-        select(response.data);
+        const response = await Api.get("/"+type+"s/"+id+".json");
+        select(response);
         mapShown.set(false);
     }
 

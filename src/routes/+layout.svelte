@@ -2,14 +2,29 @@
 	import Header from '$lib/header/Header.svelte';
 	import '../app.css';
 	import { Modals, closeModal } from 'svelte-modals';
-	import { fade } from 'svelte/transition'
+	import { fade } from 'svelte/transition';
+	import NavButtons from '$lib/nav-buttons/NavButtons.svelte';
+	import {onMount} from "svelte";
+	import Api from "$lib/api/api.js";
+	import { csrf_token } from '$lib/stores/api.js';
+
+
+	let csrf;
+	onMount(async function () {
+		// const csrfToken = document.querySelector('meta[name=csrf-token]').content;
+		// console.log(csrfToken)
+		csrf = await Api.get("/generate_csrf")
+		csrf_token.set(csrf)
+		console.log(csrf_token)
+	})
 </script>
 
-
-
-
+<svelte:head>
+	<meta name="csrf-token" content="{csrf}" />
+</svelte:head>
 
 <main>
+	<NavButtons></NavButtons>
 	<Header />
 	<slot />
 </main>

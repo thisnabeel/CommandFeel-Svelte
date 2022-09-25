@@ -1,21 +1,22 @@
 <script>
     import {onMount} from "svelte";
-    import {api} from "$lib/stores/main.js";
-    import axios from "axios";
+    import Api from "$lib/api/api.js";
+    import { each } from "svelte/internal";
     
     export let wonder;
     
-    let prefix;
-    api.subscribe(value => prefix = value);
     let skills = [];
     let wonders;
+    let examples;
 
 
     const fetchWonder = async (wonder) => {
 
         skills = [];
-        const response = await axios.get(prefix+"/wonders/"+wonder.id+".json");
-        let data = response.data;
+        const response = await Api.get("/wonders/"+wonder.id+".json");
+        let data = response;
+
+        examples = data.examples;
 
 
         skills = data.wonder_items.filter(item => item.wonderable_type == "Skill");
@@ -44,6 +45,14 @@
 
 <section class="wrapper">
     <h1 class="title">{wonder.title}</h1>
+
+    {#if examples}
+        <ul class="examples">
+            {#each examples as example}
+                <li><img src="{example.source}" alt="" /></li>
+            {/each}
+        </ul>
+    {/if}
 
     <section class="nested">
         <ul class="skills">
@@ -114,6 +123,24 @@
     }
     .abstractions > li {
         padding: 30px;
+    }
+
+    .examples {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: max-content;
+        margin: 0 auto;
+    }
+
+    .examples > li {
+        list-style: none;
+        display: inline;
+        margin-right: 10px;
+    }
+
+    .examples img {
+        width: auto;
+        height: 200px;
     }
 
 </style>

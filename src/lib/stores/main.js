@@ -1,13 +1,14 @@
 import { readable, writable } from 'svelte/store';
 
 // export const api = readable('http://localhost:3000');
-export const api = readable('https://www.yasbahoon.com');
+// export const api = readable('https://www.yasbahoon.com');
 
 export const skills = writable([]);
 export const skillsMap = writable([]);
 
 export const wonders = writable([]);
 export const wondersMap = writable([]);
+export const popularWonders = writable([]);
 
 export const mapShown = writable(false);
 
@@ -25,6 +26,11 @@ export const selectWonder = (item) => {
 };
 
 export const goHome = () => {
+	selectedWonder.set(null);
+	selectedSkill.set(null);
+};
+
+export const signIn = () => {
 	selectedWonder.set(null);
 	selectedSkill.set(null);
 };
