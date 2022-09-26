@@ -8,6 +8,7 @@
 	import Api from "$lib/api/api.js";
 	import { csrf_token } from '$lib/stores/api.js';
 
+	import GaragePopUp from '$lib/pop-ups/Garage.svelte';
 
 	let csrf;
 	onMount(async function () {
@@ -17,6 +18,9 @@
 		csrf_token.set(csrf)
 		console.log(csrf_token)
 	})
+
+	
+
 </script>
 
 <svelte:head>
@@ -37,6 +41,9 @@
     on:click={closeModal}
   />
 </Modals>
+
+<GaragePopUp></GaragePopUp>
+
 
 <!-- <footer>
 	<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>

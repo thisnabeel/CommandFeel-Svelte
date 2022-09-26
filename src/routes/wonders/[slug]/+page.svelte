@@ -2,18 +2,27 @@
     import {onMount} from "svelte";
     import Api from "$lib/api/api.js";
     import { each } from "svelte/internal";
-    
-    export let wonder;
+    import { wonders } from "$lib/stores/main";
+
+    import { page } from '$app/stores';
+
+    let wonder;
     
     let skills = [];
-    let wonders;
     let examples;
 
+    $: slug = $page.params.slug;
+    $: {
+        wonder = $wonders.filter(item => item.slug === slug)[0];
+        if (wonder) {
+            fetchWonder();
+        }
+    }
 
-    const fetchWonder = async (wonder) => {
 
+    const fetchWonder = async () => {
         skills = [];
-        const response = await Api.get("/wonders/"+wonder.id+".json");
+        const response = await Api.get("/wonders/"+wonder.slug+".json");
         let data = response;
 
         examples = data.examples;
@@ -24,15 +33,6 @@
         // wonders = data.wonder_items.filter(item => item.wonderable_type == "Wonder");
 
 
-    }
-    onMount(async function(){
-        fetchWonder(wonder);
-    })
-    
-
-
-    $: {
-        fetchWonder(wonder);
     }
 
     const ext = (filename) => {
@@ -47,6 +47,7 @@
 </script>
 
 <section class="wrapper">
+    {#if wonder}
     <h1 class="wonder-title">{wonder.title}</h1>
 
     {#if examples}
@@ -77,6 +78,7 @@
             {/each}
         </ul>
     </section>
+    {/if}
 </section>
 
 <style>

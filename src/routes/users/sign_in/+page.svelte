@@ -1,6 +1,7 @@
 <script>
     import Api from "$lib/api/api";
     import { goto } from '$app/navigation';
+    import { user } from "$lib/stores/user"
 
     let username;
     let password;
@@ -14,7 +15,8 @@
         });
         console.log(response)
         if (response["id"]) {
-            goto(`/`) 
+            user.set(response);
+            goto(`/`);
         }
     }
     

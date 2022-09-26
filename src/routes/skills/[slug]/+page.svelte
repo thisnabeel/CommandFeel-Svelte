@@ -1,27 +1,51 @@
 <script>
     import {onMount} from "svelte";    
-    export let skill;
+    
     import { openModal } from 'svelte-modals';
     import SkillModal from "$lib/modals/videos/skill.svelte";
+    import {skills} from "$lib/stores/main";
+
+    import { page } from '$app/stores';
+    import { navigating, updated } from '$app/stores';
+
+    import {user} from "$lib/stores/user";
+
+    let skill;
+    let slug;
+
+    $: slug = $page.params.slug;
+    $: skill = $skills.filter(item => item.slug === slug)[0];
+
 
     function openSkillVideo(skill, abstraction){
         openModal(SkillModal, { skill: skill, abstraction: abstraction});
     }
+
+    let html;
+    $: console.log(html);
+
+    $: console.log($user);
 </script>
 
 <section class="wrapper">
-    <h1 class="title">{skill.title}</h1>
+    {#if skill}
+        <h1 class="title">{skill.title}</h1>
 
-    <ul class="abstractions">
-        {#each skill.abstractions as abstraction}
-            <li>
-                <span>{abstraction.body}</span>
-                <div class="abstra-play" on:click={openSkillVideo(skill, abstraction)} >
-                    <img class="abstra-preview" src="{abstraction.preview}" />
-                </div>
-            </li>
-        {/each}
-    </ul>
+        <ul class="abstractions">
+            {#each skill.abstractions as abstraction}
+                <li>
+                    {#if $user.admin === true}
+                        <span contenteditable bind:innerHTML={html}>{abstraction.body}</span>
+                    {:else}
+                        <span>{abstraction.body}</span>
+                    {/if}
+                    <div class="abstra-play" on:click={openSkillVideo(skill, abstraction)} >
+                        <img class="abstra-preview" src="{abstraction.preview}" />
+                    </div>
+                </li>
+            {/each}
+        </ul>
+    {/if}
 </section>
 
 <style>

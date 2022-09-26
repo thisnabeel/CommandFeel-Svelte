@@ -1,15 +1,18 @@
 <script>
-    import Button from "./Button.svelte"
-    import MediaQuery from "$lib/MediaQuery/MediaQuery.svelte"
+    import Button from "./Button.svelte";
+    import MediaQuery from "$lib/MediaQuery/MediaQuery.svelte";
+    import {garage} from "$lib/stores/pop-ups";
+    import User from "./User.svelte";
+
+    const openGaragePopUp = () => {
+        garage.set(true)
+    }
 </script>
 
 <MediaQuery query="(min-width: 400px)" let:matches>
     {#if matches}
-    <aside class="user">
-        <Button icon="fa-user" href="/sign_in">
-            
-        </Button>
-    </aside>
+
+    <User></User>
 
     <aside class="book">
         <Button icon="fa-book"></Button>
@@ -19,8 +22,8 @@
         <Button icon="fa-newspaper"></Button>
     </aside>
 
-    <aside class="garage">
-        <Button img="icons/garage.png" bg="#e53935"></Button>
+    <aside class="garage" on:click={openGaragePopUp}>
+        <Button img="icons/garage.png" href={null} bg="#e53935"></Button>
     </aside>
     {/if}
 </MediaQuery>

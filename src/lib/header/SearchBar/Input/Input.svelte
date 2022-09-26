@@ -82,10 +82,7 @@
         <!-- <h1>PRESENT!</h1> -->
         <ul>
             {#each results as item}
-                <li id={item.id} on:click={() => {
-                    handleSelect(item);
-                    showResults = false;
-                }}>{item.title}</li>
+        <li id={item.id}><a href="/{type.toLowerCase()}/{item.slug}">{item.title}</a></li>
             {/each}
         </ul>
     {/if}

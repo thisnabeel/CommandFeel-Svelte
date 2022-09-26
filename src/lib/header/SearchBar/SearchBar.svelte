@@ -5,8 +5,6 @@
   import { onMount } from "svelte";
   import Api from "$lib/api/api.js";
 
-  import "./hover.module.css";
-
   import Map from "./Map/Map.svelte";
   
   import {skills, skillsMap, wonders, wondersMap, mapShown} from "$lib/stores/main";
@@ -91,15 +89,16 @@
 <Styles />
 
 <Container>
-  <Row>
+  <div class="row">
     
-    <Col lg="5" md="5" sm="5" xs="5" style="position: relative;">
+    <div class="big-col">
       <div class="cta-search">
         <u>Applied</u> phenomenons
       </div>
       <Input type="Wonders"/>
-    </Col>
-    <Col lg="2" md="2" sm="2" xs="2">
+    </div>
+    
+    <div class="mid-col">
       <div
         class:btn-open="{mapToggle}"
         class="show-whole-map maps-btn hvr-bob-anyways"
@@ -107,15 +106,15 @@
       >
         <Fa icon={faMap} />
       </div>
-    </Col>
-    <Col lg="5" md="5" sm="5" xs="5" style="position: relative;">
+    </div>
+    <div class="big-col">
       <div class="cta-search">
         <u>Raw</u> phenomenons
       </div>
       <Input type="Skills"/>
-    </Col>
+    </div>
     
-  </Row>
+  </div>
 </Container>
 
     {#if mapToggle}
@@ -136,8 +135,19 @@
 .row {
   display: flex;
   flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
+}
+
+.row > div {
+  position: relative;
+}
+
+.row .big-col {
+  flex: 0 0 auto;
+  width: 41.66666667%;
+}
+.row .mid-col {
+  flex: 0 0 auto;
+  width: 16.66666667%;
 }
 
 .searcher {
@@ -186,5 +196,79 @@
 
 .btn-open:hover {
   background: #4b6ad0;
+}
+
+/*  */
+.hvr-bob, .hvr-bob-anyways {
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+}
+
+.hvr-bob:hover, .hvr-bob:focus, .hvr-bob:active, .hvr-bob-anyways {
+  -webkit-animation-name: hvr-bob-float, hvr-bob;
+  animation-name: hvr-bob-float, hvr-bob;
+  -webkit-animation-duration: .5s, 3.5s;
+  animation-duration: .5s, 3.5s;
+  -webkit-animation-delay: 0s, .5s;
+  animation-delay: 0s, .5s;
+  -webkit-animation-timing-function: ease-out, ease-in-out;
+  animation-timing-function: ease-out, ease-in-out;
+  -webkit-animation-iteration-count: 1, infinite;
+  animation-iteration-count: 1, infinite;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-direction: normal, alternate;
+  animation-direction: normal, alternate;
+}
+
+  @media (max-width: 480px) {
+    .row .mid-col {
+      margin: 0;
+      padding: 0;
+    }
+  } 
+
+/* Bob */
+@-webkit-keyframes hvr-bob {
+  0% {
+    -webkit-transform: translateY(-8px);
+    transform: translateY(-8px);
+  }
+  50% {
+    -webkit-transform: translateY(-4px);
+    transform: translateY(-4px);
+  }
+  100% {
+    -webkit-transform: translateY(-8px);
+    transform: translateY(-8px);
+  }
+}
+@keyframes hvr-bob {
+  0% {
+    -webkit-transform: translateY(-8px);
+    transform: translateY(-8px);
+  }
+  50% {
+    -webkit-transform: translateY(-4px);
+    transform: translateY(-4px);
+  }
+  100% {
+    -webkit-transform: translateY(-8px);
+    transform: translateY(-8px);
+  }
+}
+@-webkit-keyframes hvr-bob-float {
+  100% {
+    -webkit-transform: translateY(-8px);
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes hvr-bob-float {
+  100% {
+    -webkit-transform: translateY(-8px);
+    transform: translateY(-8px);
+  }
 }
 </style>

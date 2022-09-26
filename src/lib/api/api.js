@@ -4,8 +4,8 @@ import { csrf_token } from '$lib/stores/api.js';
 
 // Create a instance of axios to use the same base url.
 const axiosAPI = axios.create({
-	baseURL: 'https://www.yasbahoon.com' // it's not recommended to have this info here.
-	// baseURL: 'http://localhost:3000/'
+	// baseURL: 'https://www.yasbahoon.com' // it's not recommended to have this info here.
+	baseURL: 'http://localhost:3000/'
 });
 
 // let csrfToken;

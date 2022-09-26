@@ -7,7 +7,7 @@
 <header>
 	<a href="/">
 	<picture class="logo" on:click={goHome}>
-		<img src="logo-light.png" alt="Yasbahoon Logo" />
+		<img src="/logo-light.png" alt="Yasbahoon Logo" />
 	</picture>
 	</a>
 
