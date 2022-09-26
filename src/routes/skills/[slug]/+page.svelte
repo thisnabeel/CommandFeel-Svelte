@@ -34,7 +34,7 @@
         <ul class="abstractions">
             {#each skill.abstractions as abstraction}
                 <li>
-                    {#if $user.admin === true}
+                    {#if $user && $user.admin === true}
                         <span contenteditable bind:innerHTML={html}>{abstraction.body}</span>
                     {:else}
                         <span>{abstraction.body}</span>
