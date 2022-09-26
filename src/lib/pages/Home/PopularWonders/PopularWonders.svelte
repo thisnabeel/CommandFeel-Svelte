@@ -1,6 +1,6 @@
 
 <script>
-    import {popularWonders, selectWonder, selectSkill} from "$lib/stores/main.js";
+    import {popularWonders} from "$lib/stores/main.js";
 
     let wonders;
     popularWonders.subscribe(value => {
@@ -14,6 +14,10 @@
         return arr.sort(() => .5 - Math.random()).slice(0, 1);
     }
 
+    function visitWonder(item){
+        window.location = "/wonders/"+item.slug;
+    }
+
 </script>
 
 <h1 class="sas"><i>(Some)</i> <span>Applied Skills</span> in Wonders:</h1>
@@ -22,7 +26,7 @@
     {#each wonders as wonder}
         <div class="masonry-item">
         <img src="{wonder.example.source}" alt="">
-        <span class="wonder-title" on:click={selectWonder(wonder.home)}>{wonder.home.title}</span>
+        <span class="wonder-title" on:click={visitWonder(wonder.home)}>{wonder.home.title}</span>
             <span><img src="/uploads/feels/TraceFeel.svg" alt="" class="feels-logo">Value</span>
             <article class="body">{wonder.body}</article>
             <!-- <div class="example-challenge" slug-alert="challenges">Create a drawing in Bryan Konietzko's style.</div> -->

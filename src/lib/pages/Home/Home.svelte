@@ -1,6 +1,6 @@
 <script>
     import {onMount} from "svelte";
-    import {skills, selectSkill} from "$lib/stores/main.js";
+    import {skills} from "$lib/stores/main.js";
     import { openModal } from 'svelte-modals';
     import SkillModal from "$lib/modals/videos/skill.svelte";
     import PopularWonders from "./PopularWonders/PopularWonders.svelte";
@@ -19,6 +19,10 @@
         openModal(SkillModal, { skill: skill, abstraction: abstraction});
     }
 
+    function visitSkill(item) {
+        window.location = "/skills/" + item.slug;
+    }
+
 </script>
 
 <section class="masonry-container">
@@ -27,7 +31,7 @@
             <div class="masonry-item">
                 <article class="skill">
                     <img class="preview" on:click={openSkillVideo(item, item.abstractions[0])} src="{item.abstractions[0].preview}" alt="">
-                    <div class="title" on:click={selectSkill(item)}>
+                    <div class="title" on:click={visitSkill(item)}>
                         {item.title}
                     </div>		
                 </article>

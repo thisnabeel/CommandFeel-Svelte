@@ -7,22 +7,41 @@
 
     import { page } from '$app/stores';
     import { navigating, updated } from '$app/stores';
+    import Api from "$lib/api/api.js";
 
     import {user} from "$lib/stores/user";
 
+    import Abstraction from "$lib/components/Abstraction/Abstraction.svelte";
+
     let skill;
+    let data;
     let slug;
 
     $: slug = $page.params.slug;
-    $: skill = $skills.filter(item => item.slug === slug)[0];
+    $: {
+        data = $skills.filter(item => item.slug === slug)[0];
+        if (data) {
+            fetchSkill();
+        }
+    }
 
+
+    const fetchSkill = async () => {
+        skill = await Api.get("/skills/"+data.slug+".json");
+    }
 
     function openSkillVideo(skill, abstraction){
         openModal(SkillModal, { skill: skill, abstraction: abstraction});
     }
 
-    let html;
-    $: console.log(html);
+    const addAbstraction = async () => {
+        const response = await Api.post("/abstractions.json", {
+            skill_id: skill.id
+        })
+        console.log(response);
+        fetchSkill();
+    }
+
 
     $: console.log($user);
 </script>
@@ -31,17 +50,15 @@
     {#if skill}
         <h1 class="title">{skill.title}</h1>
 
+        
+
         <ul class="abstractions">
+            {#if $user && $user.admin}
+                <div class="add-abstraction" on:click={addAbstraction}>+</div>
+            {/if}
             {#each skill.abstractions as abstraction}
                 <li>
-                    {#if $user && $user.admin === true}
-                        <span contenteditable bind:innerHTML={html}>{abstraction.body}</span>
-                    {:else}
-                        <span>{abstraction.body}</span>
-                    {/if}
-                    <div class="abstra-play" on:click={openSkillVideo(skill, abstraction)} >
-                        <img class="abstra-preview" src="{abstraction.preview}" />
-                    </div>
+                    <Abstraction skill={skill} user={$user} refresh={() => fetchSkill()} abstraction={abstraction}></Abstraction>
                 </li>
             {/each}
         </ul>
@@ -49,6 +66,17 @@
 </section>
 
 <style>
+
+    .add-abstraction {
+        font-size: 72px;
+        position: absolute;
+        right: 50%;
+        display: inline;
+        height: 0px;
+        color: #ffd67f;
+        width: 0px;
+        bottom: 22%;
+    }
 
     .title {
         padding: 40px 0px;
@@ -61,7 +89,6 @@
     }
 
     .abstractions {
-        background-color: #ffd67f;
         font-size: 24px;
         color: #000;
         position: relative;
@@ -74,39 +101,10 @@
     }
 
     .abstractions > li {
-        padding: 30px;
+        margin-bottom: 10px;
+        background: #ffd67f;
     }
-
-    .abstra-play {
-        position: absolute;
-        right: -82px;
-        top: 25%;
-        cursor: pointer;
-        width: 130px;
-    }   
-
-    .abstra-play img {
-        max-width: 100%;
-    }
-
-    .abstra-preview {
-        position: absolute;
-        top: 17%;
-        max-width: 200px;
-        z-index: 100;
-    }
-
     @media (max-width: 480px) {
-		.abstra-play {
-            position: absolute;
-            right: 0;
-            left: 0;
-            margin: 0 auto;
-            top: -5%;
-            cursor: pointer;
-            width: 130px;
-        }
-
         .abstractions {
             width: 100%;
         }

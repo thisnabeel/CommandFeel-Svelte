@@ -1,0 +1,107 @@
+<script>
+    
+    import Api from "$lib/api/api";
+    import {openModal} from "svelte-modals";
+    import SkillModal from "$lib/modals/videos/skill.svelte";
+    
+    export let user;
+    export let abstraction;
+    export let refresh = () => {};
+    export let skill;
+
+    const destroy = async () => {
+        const response = await Api.delete("/abstractions/"+abstraction.id+".json");
+        refresh();
+    };
+    
+    let input;
+    let html;
+    let timer;
+    
+    function openSkillVideo(skill, abstraction){
+        openModal(SkillModal, { skill: skill, abstraction: abstraction});
+    }
+    
+
+	const debounce = v => {
+        clearTimeout(timer);
+		timer = setTimeout(async () => {
+            const response = await Api.put("/abstractions/"+abstraction.id+".json", 
+                {   
+                    body: v, 
+                    method: "_post"
+                }
+            );
+            // let response = await Api.get("/abstractions/"+abstraction.id+".json")
+            console.log("response", response)
+		}, 1000);
+	}
+    
+</script>
+
+<li>
+    {#if user && user.admin === true}
+        <span contenteditable on:keyup={(e) => debounce(event.target.innerHTML)}>{abstraction.body}</span>
+        <span class="fa fa-trash" on:click={destroy}></span>
+    {:else}
+        <span>{abstraction.body}</span>
+    {/if}
+    <div class="abstra-play" on:click={openSkillVideo(skill, abstraction)} >
+        <img class="abstra-preview" src="{abstraction.preview}" />
+    </div>
+</li>
+
+<style>
+
+    li {
+        padding: 30px;
+        position: relative;
+    }
+
+    .fa-trash {
+        position: absolute;
+        left: -7%;
+        top: 39%;
+    }
+
+    .abstra-play {
+        position: absolute;
+        right: -82px;
+        top: 25%;
+        cursor: pointer;
+        width: 130px;
+    }   
+
+    .abstra-play img {
+        max-width: 100%;
+    }
+
+    .abstra-preview {
+        position: absolute;
+        top: 17%;
+        max-width: 200px;
+        z-index: 100;
+    }
+
+
+    @media (max-width: 480px) {
+		.abstra-play {
+            position: absolute;
+            right: 0;
+            left: 0;
+            margin: 0 auto;
+            top: -5%;
+            cursor: pointer;
+            width: 130px;
+        }
+
+        .abstractions {
+            width: 100%;
+        }
+
+        .abstractions > li { 
+            padding-top: 55px;
+        }
+	}
+
+</style>

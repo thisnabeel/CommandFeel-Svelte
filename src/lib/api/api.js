@@ -1,6 +1,7 @@
 // Api.js
 import axios from 'axios';
 import { csrf_token } from '$lib/stores/api.js';
+import storage from '$lib/stores/storage';
 
 // Create a instance of axios to use the same base url.
 const axiosAPI = axios.create({
@@ -15,10 +16,20 @@ const axiosAPI = axios.create({
 // });
 
 // implement a method to execute all the request from here.
-const apiRequest = (method, url, request) => {
-	const headers = {
-		'Content-Type': 'application/json'
-	};
+const apiRequest = (method, url, request, headers = {}) => {
+	let user;
+	storage('user').subscribe((value) => (user = value));
+
+	if (user) {
+		headers = {
+			// 'Content-Type': 'application/json',
+			// 'Access-Control-Allow-Origin': '*'
+			'X-User-Email': user.email,
+			'X-User-Token': user.authentication_token
+		};
+	}
+
+	console.log('headers', headers);
 
 	// request['authenticity_token'] = 'hohuhnj';
 
