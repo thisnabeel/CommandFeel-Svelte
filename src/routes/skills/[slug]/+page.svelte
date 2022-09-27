@@ -16,17 +16,19 @@
     let skill;
     let data;
     let slug;
+    let changedSlug;
     
-
-    // $: slug = $page.params.slug;
-    $: {
+    onMount(async () => {
         slug = $page.params.slug;
         fetchSkill(slug);
-    }
+    })
 
+    $: changedSlug = $page.params.slug;
+    $: fetchSkill(changedSlug);
 
     const fetchSkill = async (slug) => {
         skill = await Api.get("/skills/"+slug+".json");
+        console.log('gotten', skill)
     }
 
     function openSkillVideo(skill, abstraction){
@@ -38,7 +40,8 @@
             skill_id: skill.id
         })
         console.log(response);
-        fetchSkill();
+        console.log("fetch skill", skill);
+        fetchSkill(skill.id);
     }
 
 
@@ -57,7 +60,7 @@
             {/if}
             {#each skill.abstractions as abstraction}
                 <li>
-                    <Abstraction skill={skill} user={$user} refresh={() => fetchSkill()} abstraction={abstraction}></Abstraction>
+                    <Abstraction skill={skill} user={$user} refresh={() => fetchSkill(skill.id)} abstraction={abstraction}></Abstraction>
                 </li>
             {/each}
         </ul>
