@@ -27,9 +27,8 @@ const apiRequest = (method, url, request, headers = {}) => {
 			'X-User-Email': user.email,
 			'X-User-Token': user.authentication_token
 		};
+		console.log('headers', headers);
 	}
-
-	console.log('headers', headers);
 
 	// request['authenticity_token'] = 'hohuhnj';
 

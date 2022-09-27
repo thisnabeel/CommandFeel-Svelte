@@ -15,16 +15,17 @@
 
     let skill;
     let data;
-    let slug;
+    let slug = $page.params.slug;
     let changedSlug;
     
     onMount(async () => {
-        slug = $page.params.slug;
+        // console.log(slug);
+        // slug = $page.params.slug;
         fetchSkill(slug);
     })
 
-    $: changedSlug = $page.params.slug;
-    $: fetchSkill(changedSlug);
+    $: slug = $page.params.slug;
+    $: fetchSkill(slug);
 
     const fetchSkill = async (slug) => {
         skill = await Api.get("/skills/"+slug+".json");
@@ -77,7 +78,7 @@
         height: 0px;
         color: #ffd67f;
         width: 0px;
-        bottom: 22%;
+        bottom: 60px;
     }
 
     .title {
