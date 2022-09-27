@@ -16,13 +16,10 @@
     let skill;
     let data;
     let slug;
+    
 
     // $: slug = $page.params.slug;
     $: {
-        // data = $skills.filter(item => item.slug === slug)[0];
-        // if (data) {
-        //     fetchSkill();
-        // }
         slug = $page.params.slug;
         fetchSkill(slug);
     }
@@ -45,7 +42,7 @@
     }
 
 
-    $: console.log($user);
+    // $: console.log($user);
 </script>
 
 <section class="wrapper">

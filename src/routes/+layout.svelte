@@ -7,8 +7,12 @@
 	import {onMount} from "svelte";
 	import Api from "$lib/api/api.js";
 	import { csrf_token } from '$lib/stores/api.js';
+    import {user} from "$lib/stores/user";
 
 	import GaragePopUp from '$lib/pop-ups/Garage.svelte';
+	
+	let user_signed_in;
+    
 
 	let csrf;
 	onMount(async function () {
@@ -16,7 +20,8 @@
 		// console.log(csrfToken)
 		csrf = await Api.get("/generate_csrf")
 		csrf_token.set(csrf)
-		console.log(csrf_token)
+		user.subscribe(value => user_signed_in = value)
+		// console.log(csrf_token)
 	})
 
 	
