@@ -31,8 +31,10 @@
             <div class="masonry-item">
                 <article class="skill">
                     <img class="preview" on:click={openSkillVideo(item, item.abstractions[0])} src="{item.abstractions[0].preview}" alt="">
-                    <div class="title" on:click={visitSkill(item)}>
-                        {item.title}
+                    <div class="title">
+                        <a href="/skills/{item.slug}" class="clean-a">
+                            {item.title}
+                        </a>
                     </div>		
                 </article>
             </div>

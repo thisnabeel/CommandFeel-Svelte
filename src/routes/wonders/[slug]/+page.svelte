@@ -139,12 +139,18 @@
 
     .examples {
         overflow-y: hidden;
-        width: 100%;
+        width: max-content;
         margin: 0 auto;
         padding: 0;
         display: block;
         white-space: nowrap;
         margin-bottom: 20px;
+    }
+
+    @media (max-width: 480px) {
+        .examples {
+            width: 100%;
+        }
     }
 
     .examples > li {

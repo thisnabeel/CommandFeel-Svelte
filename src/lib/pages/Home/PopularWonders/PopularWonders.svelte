@@ -14,9 +14,9 @@
         return arr.sort(() => .5 - Math.random()).slice(0, 1);
     }
 
-    function visitWonder(item){
-        window.location = "/wonders/"+item.slug;
-    }
+    // function visitWonder(item){
+    //     window.location = "/wonders/"+item.slug;
+    // }
 
 </script>
 
@@ -26,7 +26,7 @@
     {#each wonders as wonder}
         <div class="masonry-item">
         <img src="{wonder.example.source}" alt="">
-        <span class="wonder-title" on:click={visitWonder(wonder.home)}>{wonder.home.title}</span>
+        <a class="wonder-title" href="/wonders/{wonder.home.slug}">{wonder.home.title}</a>
             <span><img src="/uploads/feels/TraceFeel.svg" alt="" class="feels-logo">Value</span>
             <article class="body">{wonder.body}</article>
             <!-- <div class="example-challenge" slug-alert="challenges">Create a drawing in Bryan Konietzko's style.</div> -->

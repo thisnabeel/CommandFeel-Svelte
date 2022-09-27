@@ -19,15 +19,16 @@
 
     $: slug = $page.params.slug;
     $: {
-        data = $skills.filter(item => item.slug === slug)[0];
-        if (data) {
-            fetchSkill();
-        }
+        // data = $skills.filter(item => item.slug === slug)[0];
+        // if (data) {
+        //     fetchSkill();
+        // }
+        fetchSkill(slug);
     }
 
 
-    const fetchSkill = async () => {
-        skill = await Api.get("/skills/"+data.slug+".json");
+    const fetchSkill = async (slug) => {
+        skill = await Api.get("/skills/"+slug+".json");
     }
 
     function openSkillVideo(skill, abstraction){

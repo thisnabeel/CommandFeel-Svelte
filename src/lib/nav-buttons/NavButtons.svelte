@@ -23,7 +23,7 @@
     </aside>
 
     <aside class="garage" on:click={openGaragePopUp}>
-        <Button img="icons/garage.png" href={null} bg="#e53935"></Button>
+        <Button img="/icons/garage.png" href={null} bg="#e53935"></Button>
     </aside>
     {/if}
 </MediaQuery>
