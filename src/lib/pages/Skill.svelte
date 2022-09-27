@@ -41,12 +41,12 @@
     
 
     <ul class="abstractions">
-        <!-- {#if $user && $user.admin}
+        {#if $user && $user.admin}
             <div class="add-abstraction" on:click={addAbstraction}>+</div>
-        {/if} -->
+        {/if}
         {#each skill.abstractions as abstraction}
             <li>
-                <Abstraction skill={skill} user={null} refresh={() => fetchSkill(skill.id)} abstraction={abstraction}></Abstraction>
+                <Abstraction skill={skill} user={$user} refresh={() => fetchSkill(skill.id)} abstraction={abstraction}></Abstraction>
             </li>
         {/each}
     </ul>
