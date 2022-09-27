@@ -1,13 +1,16 @@
 <script>
     import {user} from "$lib/stores/user";
     import Button from "./Button.svelte";
+    import Api from "$lib/api/api";
 
     let btn;
 
     let user_signed_in;
     user.subscribe(value => user_signed_in = value)
 
-    const sign_out = () => {
+    const sign_out = async () => {
+        const response = await Api.get("/users/sign_out.json");
+        console.log("sign out", response);
         user.set(null);
     }
 
