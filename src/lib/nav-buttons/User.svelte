@@ -2,6 +2,7 @@
     import {user} from "$lib/stores/user";
     import Button from "./Button.svelte";
     import Api from "$lib/api/api";
+    import CredsPopUp from "./creds/Creds.svelte"
 
     let btn;
 
@@ -15,7 +16,7 @@
     }
 
     let showSettings = false;
-    
+    let showLogIn = false;
 </script>
 
 <aside class="user">
@@ -34,11 +35,27 @@
             </span>
         {/if}
     {:else}
-        <Button icon="fa-user" href="/users/sign_in"></Button>
+        <span on:click={() => showLogIn = !showLogIn}>
+            <Button icon="fa-user"></Button>
+        </span>
+        {#if showLogIn}
+            <div class="creds-pop">
+                <CredsPopUp hidePopUp={() => showLogIn = !showLogIn}></CredsPopUp>
+            </div>
+        {/if}
     {/if}
 </aside>
 
 <style>
+
+    .creds-pop {
+        position: absolute;
+        width: 240px;
+        z-index: 9999;
+        cursor: auto;
+        right: -120px;
+        top: 30px;
+    }
     aside {
         cursor: pointer;
         position: absolute;
