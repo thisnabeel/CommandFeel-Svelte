@@ -69,7 +69,7 @@
     
 </script>
 
-<div class="wrapper">
+<div class="wrapper {type}">
 
     <input type="text" on:click={() => handleInputClick()} 
     bind:value={query}
@@ -104,6 +104,22 @@
         border: 2px solid #5f4a4a;
         z-index: 999;
         list-style: none;
+    }
+
+    @media (max-width: 480px) {
+        ul {
+            width: 95vw;
+        }
+
+        .Wonders ul {
+            position: absolute;
+            left: -12px;
+        }
+
+        .Skills ul {
+            position: absolute;
+            right: -12px;
+        }
     }
 
     ul li {

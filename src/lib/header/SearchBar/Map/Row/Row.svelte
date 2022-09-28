@@ -3,11 +3,11 @@
     import {onMount} from "svelte";
     import Api from "$lib/api/api.js";
     import {curry} from "ramda";
-    import { mapShown, selectSkill, selectWonder, selectedSkill } from "$lib/stores/main";
+    import { mapShown, selectSkill, selectWonder, selectedSkill, selectedFeel } from "$lib/stores/main";
     
     import Fa from 'svelte-fa';
     import { faCaretSquareRight } from '@fortawesome/free-solid-svg-icons';
-
+    import {goto} from "$app/navigation"
 
     let select;
     let gold = null;
@@ -25,9 +25,9 @@
     }
 
     const handleSkillClick = async (id) => {
-        const response = await Api.get("/"+type+"s/"+id+".json");
-        select(response);
-        mapShown.set(false);
+        const endpoint = "/"+type+"s/"+item.slug;
+        const response = await Api.get(endpoint+".json");
+        goto(endpoint);
     }
 
     function hasChildren(item) {
@@ -55,12 +55,16 @@
         gold = Boolean(Tree.reduce(sumGold, 0, item));
     }
 
+    // $: console.log("origFeel", item.feel )
+    // $: console.log("skillFeel", $selectedFeel )
+    $: console.log($selectedFeel +":"+item.feel,item.feel === $selectedFeel)
+
 </script>
 
 {#if type === "skill"}
     <li class="skill" abstra-count={item.abstractions.length}>
         {#if item.skill_id != null}
-            <span on:click|once={handleSkillClick(item.id)}>{item.title}</span>
+            <span class:hidden="{item.feel !== $selectedFeel}"  on:click|once={handleSkillClick(item.id)}>{item.title}</span>
         {/if}
         {#each item.skills as skill }
             <svelte:self item={skill} type="skill"/>

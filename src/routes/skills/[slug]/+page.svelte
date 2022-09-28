@@ -6,6 +6,7 @@
     import Api from "$lib/api/api.js";
 
     import Skill from "$lib/pages/Skill.svelte";
+    import { mapShown, selectSkill, selectWonder, selectedSkill } from "$lib/stores/main";
     // import { navigating } from '$app/stores';
 
     let skill;
@@ -21,6 +22,8 @@
 
     const fetchSkill = async (slug) => {
         skill = await Api.get("/skills/"+slug+".json");
+        mapShown.set(false);
+        selectSkill(skill);
         console.log('gotten', skill)
     }
 </script>

@@ -15,8 +15,11 @@ export const mapShown = writable(false);
 export const selectedSkill = writable(null);
 export const selectedWonder = writable(null);
 
+export const selectedFeel = writable(null);
+
 export const selectSkill = (item) => {
 	selectedSkill.set(item);
+	selectedFeel.set(item.feel);
 	selectedWonder.set(null);
 };
 
