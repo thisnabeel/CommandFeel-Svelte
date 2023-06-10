@@ -1,6 +1,7 @@
 <script>
 
     import {skills, selectSkill, wonders, selectWonder} from "$lib/stores/main";
+    import {goto} from "$app/navigation"
 
     
     let input;
@@ -58,7 +59,7 @@
     }
 
     const handleSelect = (item) => {
-        select(item);
+        goto(`/${type}/${item.slug}.json`);
     }
 
 

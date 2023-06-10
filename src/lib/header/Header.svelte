@@ -1,29 +1,27 @@
 <script>
 	import SearchBar from './SearchBar/SearchBar.svelte';
-
 </script>
 
 <header>
 	<a href="/">
-	<picture class="logo">
-		<img src="/logo-light.png" alt="Yasbahoon Logo" />
-	</picture>
+		<picture class="logo">
+			<img src="/logo-light.png" alt="commandfeel Logo" />
+		</picture>
 	</a>
 
-	<SearchBar></SearchBar>
+	<SearchBar />
 </header>
 
 <style>
 	.logo {
-		max-width: 450px;
+		max-width: 200px;
 		margin: 0 auto;
 		display: block;
-		padding: 4em;
+		padding: 2em;
 	}
 
 	.logo img {
 		width: 100%;
 		margin-top: 10px;
 	}
-
 </style>

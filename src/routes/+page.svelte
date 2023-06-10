@@ -1,29 +1,38 @@
 <script>
+	import Home from '$lib/pages/Home/Home.svelte';
 
-	import Home from "$lib/pages/Home/Home.svelte"
+	import Api from '$lib/api/api.js';
+	import { popularWonders } from '$lib/stores/main.js';
+	import { onMount } from 'svelte';
 
-	import Api from "$lib/api/api.js";
-    import {popularWonders} from "$lib/stores/main.js";
-    import {onMount} from "svelte";
+	import Quiz from '$lib/components/Skills/Tabs/Quiz/Quiz.svelte';
 
-    const fetchPopularWonders = async () => {
-        const response = await Api.get("/museum.json");
-        let json = response;
+	const fetchPopularWonders = async () => {
+		const response = await Api.get('/museum.json');
+		let json = response;
 		popularWonders.set(json);
-    };
+	};
 
-    onMount(async function(){
-		fetchPopularWonders();
-    })
+	let quizzes = [];
+	const fetchQuestions = async () => {
+		quizzes = await Api.get('/quizzes.json');
+	};
+
+	onMount(async function () {
+		fetchQuestions();
+	});
 </script>
 
 <svelte:head>
 	<title>Home</title>
-	<meta name="description" content="Yasbahoon" />
+	<meta name="description" content="commandfeel" />
 </svelte:head>
 
-<Home></Home>
+{#each quizzes as quiz}
+	<Quiz {quiz} editable={false} />
+{/each}
 
+<!-- <Home /> -->
 <style>
 	section {
 		display: flex;
