@@ -9,7 +9,7 @@
 	export let skill;
 	export let quiz;
 	export let destroy;
-	export let editable = false;
+	export let editable = true;
 	export let linkable = false;
 
 	let input;
@@ -37,7 +37,7 @@
 			>{@html quiz.question}</span
 		>
 
-		{#if !editable}
+		{#if editable}
 			<span class="fa fa-trash" on:click={() => destroy(quiz.id)} />
 		{/if}
 	{:else}
