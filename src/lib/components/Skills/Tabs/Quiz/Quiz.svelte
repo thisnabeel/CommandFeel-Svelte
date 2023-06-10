@@ -2,6 +2,7 @@
 	import Api from '$lib/api/api';
 	import { openModal } from 'svelte-modals';
 	import SkillModal from '$lib/modals/videos/skill.svelte';
+	import { goto } from '$app/navigation';
 
 	export let user;
 	export let refresh = () => {};
@@ -9,6 +10,7 @@
 	export let quiz;
 	export let destroy;
 	export let editable = false;
+	export let linkable = false;
 
 	let input;
 	let html;
@@ -41,9 +43,17 @@
 	{:else}
 		<span>{@html quiz.question}</span>
 	{/if}
+	{#if linkable}
+		<span class="fa fa-link link" on:click={() => goto('/skills/' + quiz.quizable_id)} />
+	{/if}
 </li>
 
 <style>
+	.link {
+		position: absolute;
+		left: -40px;
+		top: 20px;
+	}
 	.hidden {
 		display: none;
 	}

@@ -28,12 +28,25 @@
 	<meta name="description" content="commandfeel" />
 </svelte:head>
 
-{#each quizzes as quiz}
-	<Quiz {quiz} editable={false} />
-{/each}
+<div class="quizzes">
+	{#each quizzes as quiz}
+		<Quiz {quiz} editable={false} linkable={true} />
+	{/each}
+</div>
 
 <!-- <Home /> -->
 <style>
+	.quizzes {
+		font-size: 24px;
+		color: #000;
+		position: relative;
+		margin: 10px;
+		text-align: left;
+		list-style: none;
+		width: 70%;
+		margin: 0 auto;
+		padding: 20px 0;
+	}
 	section {
 		display: flex;
 		flex-direction: column;

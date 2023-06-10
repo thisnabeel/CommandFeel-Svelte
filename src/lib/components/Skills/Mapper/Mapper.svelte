@@ -4,6 +4,7 @@
 	import { selectSkill, skillsMap, wondersMap } from '$lib/stores/main';
 	import Row from './Row.svelte';
 	import { selectedSkill } from '$lib/stores/skills/mapper';
+	import { listen } from 'svelte/internal';
 
 	let skills;
 	let newSkillTitle = '';
@@ -40,7 +41,9 @@
 		if (!root) {
 			return null;
 		}
-
+		if (!target) {
+			return null;
+		}
 		if (root.id === target.skill_id) {
 			return root;
 		}
@@ -125,6 +128,8 @@
 		let newIndex = null;
 		let element = null;
 
+		let changed = [];
+
 		switch (event.key) {
 			case 'w':
 				console.log('up');
@@ -138,9 +143,11 @@
 
 					element = parentNode.skills.splice(index, 1)[0];
 					parentNode.skills.splice(newIndex, 0, element);
+					changed = [...changed, parentNode];
 				} else {
 					element = clone.splice(index, 1)[0];
 					clone.splice(newIndex, 0, element);
+					changed = [...changed, null];
 				}
 				break;
 			case 's':
@@ -155,9 +162,11 @@
 					// console.log(index, parentNode.skills[index]);
 					element = parentNode.skills.splice(index, 1)[0];
 					parentNode.skills.splice(newIndex, 0, element);
+					changed = [...changed, parentNode];
 				} else {
 					element = clone.splice(index, 1)[0];
 					clone.splice(newIndex, 0, element);
+					changed = [...changed, null];
 				}
 				break;
 			case 'a':
@@ -170,19 +179,47 @@
 				if (grandparentNode) {
 					element.skill_id = grandparentNode.id;
 					grandparentNode.skills = [...grandparentNode.skills, element];
+					changed = [...changed, grandparentNode];
 				} else {
 					element.skill_id = null;
 					clone = [...clone, element];
+					changed = [...changed, null];
 				}
 
-				skills = clone;
+				// skills = clone;
+
+				break;
+			case 'd':
+				// if (clone[index - 1]) {
+				// 	return;
+				// }
+				if (!parentNode) {
+					// console.log(index);
+					element = clone.splice(index, 1)[0];
+					if (!clone[index - 1]) {
+						return;
+					}
+					element.skill_id = clone[index - 1].id;
+					clone[index - 1].skills = [...clone[index - 1].skills, element];
+					changed = [...changed, null, clone[index - 1]];
+					console.log('movedRight', 'First Nest');
+				} else {
+					element = parentNode.skills.splice(index, 1)[0];
+					if (!parentNode.skills[index - 1]) {
+						return;
+					}
+					element.skill_id = parentNode.skills[index - 1].id;
+					parentNode.skills[index - 1].skills = [...parentNode.skills[index - 1].skills, element];
+					changed = [...changed, null, parentNode, parentNode.skills[index - 1]];
+					console.log('movedRight', 'Go Deeper In');
+				}
 
 				break;
 			default:
 				return;
 		}
 
-		order(clone, parentNode);
+		order(clone, changed);
 	}
 
 	async function remove(skill) {
@@ -214,33 +251,41 @@
 
 		if (parentNode) {
 			parentNode.skills.splice(index, 1)[0];
+			order(clone, [parentNode]);
 		} else {
 			clone.splice(index, 1)[0];
+			order(clone, null);
 		}
-
-		order(clone, parentNode);
 	}
 
-	async function order(clone, parentNode = null) {
-		if (parentNode) {
-			let i = 0;
-			for (let el of parentNode.skills) {
-				el.position = i + 1;
-				Api.put(`/skills/${el.id}.json`, {
-					position: el.position
-				});
-				i++;
+	async function order(clone, changed) {
+		for (let node of changed) {
+			console.log('node', node);
+			if (node === null) {
+				let i = 0;
+				for (let el of clone) {
+					el.position = i + 1;
+					Api.put(`/skills/${el.id}.json`, {
+						position: el.position,
+						skill_id: el.skill_id
+					});
+					i++;
+				}
 			}
-		} else {
 			let i = 0;
-			for (let el of clone) {
-				el.position = i + 1;
-				Api.put(`/skills/${el.id}.json`, {
-					position: el.position
-				});
-				i++;
+			if (!node) {
+			} else {
+				for (let el of node.skills) {
+					el.position = i + 1;
+					Api.put(`/skills/${el.id}.json`, {
+						position: el.position,
+						skill_id: el.skill_id
+					});
+					i++;
+				}
 			}
 		}
+
 		skills = clone;
 	}
 </script>
