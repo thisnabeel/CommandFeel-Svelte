@@ -32,7 +32,7 @@
 </script>
 
 <li class:has_video={quiz && quiz.preview}>
-	{#if !user}
+	{#if user && user.admin === true}
 		<span contenteditable on:keyup={(e) => debounce(event.target.innerHTML)}
 			>{@html quiz.question}</span
 		>
