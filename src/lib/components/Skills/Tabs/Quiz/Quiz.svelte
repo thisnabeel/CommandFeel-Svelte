@@ -63,8 +63,13 @@
 		padding: 30px;
 		position: relative;
 
+		/* margin-bottom: 10px; */
+		/* background: #e6d2ff; */
+
 		margin-bottom: 10px;
-		background: #e6d2ff;
+		background: #ffffff;
+		border-radius: 8px;
+		box-shadow: 1px 1px 5px 3px #ccc;
 	}
 
 	.fa-trash {
