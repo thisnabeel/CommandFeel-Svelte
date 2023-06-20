@@ -27,6 +27,11 @@
 }
 
 @font-face {
+	font-family: 'GreycliffCF-Light';
+	src: url('/fonts/GreycliffCF-Light.woff2') format('woff2-variations');
+}
+
+@font-face {
 	font-family: 'GreycliffCF-Regular';
 	src: url('/fonts/GreycliffCF-Regular.woff2') format('woff2-variations');
 }

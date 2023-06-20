@@ -30,7 +30,7 @@
 
 <div class="quizzes">
 	{#each quizzes as quiz}
-		<Quiz {quiz} editable={false} linkable={true} />
+		<Quiz {quiz} skill={quiz.skill} editable={false} linkable={true} />
 	{/each}
 </div>
 

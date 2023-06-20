@@ -3,6 +3,7 @@
 	import { openModal } from 'svelte-modals';
 	import SkillModal from '$lib/modals/videos/skill.svelte';
 	import { goto } from '$app/navigation';
+	import EditAnswer from './EditAnswers/EditAnswer.svelte';
 
 	export let user;
 	export let refresh = () => {};
@@ -28,6 +29,8 @@
 		}, 1000);
 	};
 
+	let showChoices = false;
+
 	//
 </script>
 
@@ -40,8 +43,27 @@
 		{#if editable}
 			<span class="fa fa-trash" on:click={() => destroy(quiz.id)} />
 		{/if}
+
+		{#if editable}
+			<hr />
+			<EditAnswer {quiz} />
+		{/if}
 	{:else}
-		<span>{@html quiz.question}</span>
+		<div>
+			<div on:click={() => (showChoices = !showChoices)}>{@html quiz.question}</div>
+
+			{#if showChoices}
+				{#if quiz.choices.length === 0}
+					<hr />
+					<span class="choice">{quiz.skill.title}</span>
+				{/if}
+
+				{#if quiz.choices.length === 1}
+					<hr />
+					<span class="choice">{@html quiz.choices[0].body}</span>
+				{/if}
+			{/if}
+		</div>
 	{/if}
 	{#if linkable}
 		<span class="fa fa-link link" on:click={() => goto('/skills/' + quiz.quizable_id)} />
@@ -49,6 +71,12 @@
 </li>
 
 <style>
+	.choice {
+		margin: 20px;
+		display: block;
+		font-size: 20px;
+		font-family: 'GreyCliffCF-Light';
+	}
 	.link {
 		position: absolute;
 		left: -40px;
