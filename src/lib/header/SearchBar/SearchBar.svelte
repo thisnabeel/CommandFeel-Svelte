@@ -91,7 +91,7 @@
 	<div class="row">
 		<div class="big-col">
 			<div class="cta-search">
-				<u>Applied</u> phenomenons
+				<u>Applied</u> Skills
 			</div>
 			<Input type="Wonders" />
 		</div>
@@ -107,7 +107,7 @@
 		</div>
 		<div class="big-col">
 			<div class="cta-search">
-				<u>Raw</u> phenomenons
+				<u>Raw</u> Skills
 			</div>
 			<Input type="Skills" />
 		</div>
