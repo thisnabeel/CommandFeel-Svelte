@@ -11,19 +11,16 @@
 </script>
 
 <section>
-	<div class="input-group mb-3">
-		<input
-			type="text"
-			class="form-control"
-			placeholder="Add Skill"
-			aria-label="Add Skill"
-			aria-describedby="basic-addon2"
-			bind:value={newSkillTitle}
-		/>
-		<div class="input-group-append" on:click={addSkill}>
-			<div class="btn btn-info">Add</div>
-		</div>
-	</div>
+	<h2
+		class="sticky"
+		class:isStuck
+		data-position={stickToTop ? 'top' : 'bottom'}
+		use:sticky={{ stickToTop }}
+		on:stuck={handleStuck}
+	>
+		I use position: sticky! (currently
+		{isStuck ? 'sticking' : 'not sticking'})
+	</h2>
 
 	{#if stickToTop}
 		<slot />

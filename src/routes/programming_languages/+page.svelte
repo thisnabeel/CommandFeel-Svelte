@@ -3,6 +3,7 @@
 
 	import Api from '$lib/api/api';
 	import { onMount } from 'svelte';
+	import SortableList from 'svelte-sortable-list';
 
 	let title = '';
 	let editor_slug = '';
@@ -31,6 +32,21 @@
 		const response = await Api.get('/programming_languages.json');
 		algos = response;
 	}
+
+	const sortList = (ev) => {
+		algos = ev.detail.map((a, i) => {
+			a.position = i + 1;
+			return a;
+		});
+		saveOrder(algos);
+	};
+
+	async function saveOrder(list) {
+		const response = await Api.post('/programming_languages/order.json', {
+			list: algos
+		});
+		console.log(response);
+	}
 </script>
 
 <h1>Programming Languages</h1>
@@ -41,6 +57,9 @@
 
 <hr />
 
-{#each algos as algo}
-	<li on:click={() => goto('/programming_languages/' + algo.id)}>{algo.title}</li>
-{/each}
+<SortableList list={algos} key="id" on:sort={sortList} let:item={algo}>
+	<li class="algo">
+		<span on:click={() => goto('/programming_languages/' + algo.id)}>{algo.title}</span>
+	</li>
+</SortableList>
+<br />

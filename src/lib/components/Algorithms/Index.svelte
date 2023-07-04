@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 
 	import Algorithm from './Algorithm/Item.svelte';
+	import SortableList from 'svelte-sortable-list';
 
 	import Api from '$lib/api/api';
 	import { onMount } from 'svelte';
@@ -35,6 +36,21 @@
 	function handleMove(algo, move) {
 		console.log(move);
 	}
+
+	const sortList = (ev) => {
+		algos = ev.detail.map((a, i) => {
+			a.position = i + 1;
+			return a;
+		});
+		saveOrder(algos);
+	};
+
+	async function saveOrder(list) {
+		const response = await Api.post('/algorithms/order.json', {
+			list: algos
+		});
+		console.log(response);
+	}
 </script>
 
 <h1>Algorithms</h1>
@@ -46,12 +62,12 @@
 {/if}
 
 {#if $user && $user.admin}
-	{#each algos as algo}
-		<Algorithm algorithm={algo} move={handleMove} />
-	{/each}
+	<SortableList list={algos} key="id" on:sort={sortList} let:item={algo}>
+		<Algorithm algorithm={algo} />
+	</SortableList>
 {:else}
 	{#each algos.filter((algo) => algo.expected_with_type !== null) as algo}
-		<Algorithm algorithm={algo} move={handleMove} />
+		<Algorithm algorithm={algo} />
 	{/each}
 {/if}
 

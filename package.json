@@ -53,6 +53,7 @@
     "svelte-outclick": "^3.1.0",
     "svelte-outside-click": "^1.1.1",
     "svelte-preprocess-react": "^0.15.0",
+    "svelte-sortable-list": "^1.1.0",
     "sveltestrap": "^5.9.0",
     "sweetalert2": "^11.7.12"
   }

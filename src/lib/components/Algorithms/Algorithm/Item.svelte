@@ -7,12 +7,6 @@
 </script>
 
 <li class="algo">
-	{#if $user && $user.admin}
-		<span class="controls">
-			<i class="fa fa-arrow-up" on:click={() => move(algorithm, 'up')} />
-			<i class="fa fa-arrow-down" on:click={() => move(algorithm, 'down')} />
-		</span>
-	{/if}
 	<span on:click={() => goto('/algorithms/' + algorithm.id)}>
 		<span class="difficulty difficulty-1">Easy</span>
 		<span class="title">{algorithm.title}</span>
