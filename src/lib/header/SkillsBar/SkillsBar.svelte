@@ -24,8 +24,9 @@
 	};
 
 	onMount(async function () {
+		return;
 		getSkills();
-		getWonders();
+		// getWonders();
 	});
 
 	const getSkills = async () => {

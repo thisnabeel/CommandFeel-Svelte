@@ -5,6 +5,7 @@
 	export let language;
 	import CodeBox from '$lib/components/CodeCompiler/Box.svelte';
 
+	export let algorithm;
 	let open = false;
 
 	let showHelper = false;
@@ -30,6 +31,12 @@
 
 <li class="language" class:open>
 	<span class="head" on:click={() => (open = !open)}>{language.title}</span>
+	{#if open}
+		<div class="challenge">
+			<span class="challenge-pre"><i class="fa fa-flask" /></span>
+			{algorithm.title}
+		</div>
+	{/if}
 	<span class="help" on:click={toggleHelper}><i class="fa fa-question" /></span>
 
 	{#if showHelper}
@@ -54,7 +61,7 @@
 						>
 							{obj.trait.title}
 						</div>
-						{#if selectedHelperTrait}
+						{#if selectedHelperTrait && selectedHelperTrait.id === obj.id}
 							<CodeBox fetched_trait={selectedHelperTrait} {language} />
 						{/if}
 					</li>
@@ -64,11 +71,20 @@
 	{/if}
 
 	{#if open}
-		<Editor {language} runnable={true} />
+		<CodeBox {language} runnable={true} {algorithm} />
 	{/if}
 </li>
 
 <style>
+	.challenge {
+		padding: 20px;
+		color: #faffb1;
+		background: #5d0c5d;
+	}
+
+	.challenge-pre {
+		/* font-size: 24px; */
+	}
 	.helper .header {
 		text-align: left;
 		padding: 12px;

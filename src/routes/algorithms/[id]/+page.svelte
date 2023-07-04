@@ -4,6 +4,8 @@
 	import Api from '$lib/api/api';
 	import { onMount } from 'svelte';
 	import Languages from '$lib/components/Algorithms/Languages/Index.svelte';
+	import update from '$lib/functions/debounce';
+	import { user } from '$lib/stores/user';
 
 	let algo = null;
 	onMount(() => {
@@ -21,7 +23,36 @@
 		<h1>{algo.title}</h1>
 	</div>
 
-	<Languages />
+	{#if $user && $user.admin}
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Expected..."
+			bind:value={algo.title}
+			on:change={async () => {
+				console.log('Updating');
+				algo = await update('/algorithms/' + algo.id + '.json', {
+					title: algo.title
+				});
+				console.log('gotten:', algo);
+			}}
+		/>
+		<input
+			type="text"
+			class="form-control"
+			placeholder="Expected..."
+			bind:value={algo.expected}
+			on:change={async () => {
+				console.log('Updating');
+				algo = await update('/algorithms/' + algo.id + '.json', {
+					expected: algo.expected
+				});
+				console.log('gotten:', algo);
+			}}
+		/>
+	{/if}
+
+	<Languages algorithm={algo} />
 {/if}
 
 <style>

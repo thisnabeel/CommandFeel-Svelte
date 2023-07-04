@@ -3,6 +3,7 @@
 
 	import Api from '$lib/api/api';
 	import { onMount } from 'svelte';
+	import { user } from '$lib/stores/user';
 
 	let title = '';
 
@@ -32,10 +33,12 @@
 
 <h1>Traits</h1>
 <hr />
-<input type="text" class="form-control" placeholder="Title" bind:value={title} />
-<div class="btn btn-info" on:click={addTrait}>Add</div>
 
-<hr />
+{#if $user && $user.admin}
+	<input type="text" class="form-control" placeholder="Title" bind:value={title} />
+	<div class="btn btn-info" on:click={addTrait}>Add</div>
+	<hr />
+{/if}
 
 {#each traits as trait}
 	<li on:click={() => goto('/traits/' + trait.id)}>{trait.title}</li>

@@ -2,16 +2,21 @@
 	import Editor from '@monaco-editor/react';
 	import { onMount } from 'svelte';
 	import Api from '$lib/api/api';
+	import Swal from 'sweetalert2';
 
 	export let language;
 	export let updateCode;
 	export let trait;
 	export let runnable = false;
 
+	export let algorithm;
+
 	let fetched = false;
 	export let fetched_trait = null;
 	let result = null;
 	let code = '';
+
+	let error = null;
 
 	$: body = fetched_trait ? fetched_trait.body : null;
 
@@ -22,6 +27,17 @@
 		});
 		console.log(response);
 		result = response;
+
+		error = null;
+
+		let output = response.output.replace(/[\r\n]+/g, '');
+		if (output === algorithm.expected_with_type) {
+			setTimeout(function () {
+				Swal.fire('Perfect!', 'You Passed This Challenge in ' + language.title, 'success');
+			}, 750);
+		} else {
+			error = response.output;
+		}
 	}
 
 	onMount(async () => {
@@ -68,7 +84,7 @@
 {#if fetched && trait}
 	<div class="holder">
 		<react:Editor
-			height={lineCount * 18 + 'px'}
+			height={lineCount * 18 + 18 + 'px'}
 			defaultLanguage={language.editor_slug}
 			onChange={handleEditorChange}
 			defaultValue={body}
@@ -80,7 +96,7 @@
 {:else}
 	<div class="holder">
 		<react:Editor
-			height={lineCount * 18 + 'px'}
+			height={lineCount * 18 + 18 + 'px'}
 			defaultLanguage={language.editor_slug}
 			defaultValue={body}
 			onChange={handleEditorChange}
@@ -99,6 +115,12 @@
 			{@html result.output}
 		</div>
 	{/if}
+
+	{#if error}
+		<div class="error">
+			Expecting: {algorithm.expected_with_type}
+		</div>
+	{/if}
 {/if}
 
 <style>
@@ -110,6 +132,13 @@
 		padding: 10px;
 		font-size: 24px;
 		background: purple;
+		color: #fff;
+	}
+
+	.error {
+		padding: 10px;
+		font-size: 24px;
+		background: rgb(190, 5, 5);
 		color: #fff;
 	}
 

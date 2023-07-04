@@ -1,18 +1,32 @@
 <script>
-	import SearchBar from './SearchBar/SearchBar.svelte';
+	import Bar from './Bar.svelte';
 </script>
 
 <header>
-	<a href="/">
+	<a href="/" class="logo-holder">
 		<picture class="logo">
 			<img src="/logo-light.png" alt="commandfeel Logo" />
 		</picture>
 	</a>
 
-	<SearchBar />
+	<Bar />
 </header>
 
 <style>
+	.bar {
+		position: relative;
+	}
+	.switcher {
+		position: absolute;
+		right: 40px;
+		top: -30px;
+	}
+	.logo-holder {
+		display: block;
+		width: max-content;
+		margin: 0 auto;
+		position: relative;
+	}
 	.logo {
 		max-width: 200px;
 		margin: 0 auto;
