@@ -45,8 +45,14 @@
 	<hr />
 {/if}
 
-{#each algos as algo}
-	<Algorithm algorithm={algo} move={handleMove} />
-{/each}
+{#if $user && $user.admin}
+	{#each algos as algo}
+		<Algorithm algorithm={algo} move={handleMove} />
+	{/each}
+{:else}
+	{#each algos.filter((algo) => algo.expected_with_type !== null) as algo}
+		<Algorithm algorithm={algo} move={handleMove} />
+	{/each}
+{/if}
 
 <br />
