@@ -5,6 +5,14 @@
 	import Row from './Row.svelte';
 	import { selectedSkill } from '$lib/stores/skills/mapper';
 	import { listen } from 'svelte/internal';
+	import sticky from '$lib/functions/sticky.js';
+
+	let isStuck = false;
+	let writing = false;
+
+	function handleStuck(e) {
+		isStuck = e.detail.isStuck;
+	}
 
 	let skills;
 	let newSkillTitle = '';
@@ -95,6 +103,10 @@
 
 	async function move(event) {
 		if (!$selectedSkill) {
+			return;
+		}
+
+		if ($selectedSkill && writing) {
 			return;
 		}
 		let clone = [...skills];
@@ -290,25 +302,52 @@
 	}
 </script>
 
-<div class="input-group mb-3">
-	<input
-		type="text"
-		class="form-control"
-		placeholder="Add Skill"
-		aria-label="Add Skill"
-		aria-describedby="basic-addon2"
-		bind:value={newSkillTitle}
-	/>
-	<div class="input-group-append" on:click={addSkill}>
-		<div class="btn btn-info">Add</div>
+<section>
+	<div
+		class="sticky"
+		class:isStuck
+		use:sticky={{ stickToTop: true }}
+		on:stuck={handleStuck}
+		data-position="top"
+	>
+		<div class="input-group mb-3">
+			<input
+				type="text"
+				class="form-control"
+				placeholder="Add Skill"
+				aria-label="Add Skill"
+				aria-describedby="basic-addon2"
+				bind:value={newSkillTitle}
+				on:focus={() => (writing = true)}
+				on:blur={() => (writing = false)}
+			/>
+			<div class="input-group-append" on:click={addSkill}>
+				{#if $selectedSkill}
+					<div class="btn btn-warning">Nest</div>
+				{:else}
+					<div class="btn btn-info">Add</div>
+				{/if}
+			</div>
+		</div>
 	</div>
-</div>
 
-{#each skills || [] as skill}
-	<ul class="clean-list">
-		<Row item={skill} {remove} type="skill" {move} />
-	</ul>
-{/each}
+	{#each skills || [] as skill}
+		<ul class="clean-list">
+			<Row item={skill} {remove} type="skill" {move} />
+		</ul>
+	{/each}
+</section>
 
 <style>
+	.sticky {
+		position: sticky;
+		padding: 1rem;
+		background: #fff;
+		transition: all 0.3s;
+		z-index: 9999;
+	}
+
+	.sticky[data-position='top'] {
+		top: 1rem;
+	}
 </style>
