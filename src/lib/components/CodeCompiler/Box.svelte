@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import Api from '$lib/api/api';
 	import Swal from 'sweetalert2';
+	import { user } from '$lib/stores/user';
 
 	export let language;
 	export let updateCode;
@@ -23,8 +24,11 @@
 	async function test() {
 		const response = await Api.post(`/execute_code`, {
 			code: code,
-			language: language.editor_slug
+			algorithm_id: algorithm.id,
+			programming_language_id: language.id,
+			user_id: $user ? $user.id : null
 		});
+
 		console.log(response);
 		result = response;
 
