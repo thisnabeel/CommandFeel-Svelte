@@ -4,6 +4,7 @@
 	import Api from '$lib/api/api';
 	import { onMount } from 'svelte';
 	import { user } from '$lib/stores/user';
+	import SortableList from 'svelte-sortable-list';
 
 	let title = '';
 
@@ -29,6 +30,21 @@
 		const response = await Api.get('/traits.json');
 		traits = response;
 	}
+
+	const sortList = (ev) => {
+		traits = ev.detail.map((a, i) => {
+			a.position = i + 1;
+			return a;
+		});
+		saveOrder(traits);
+	};
+
+	async function saveOrder(list) {
+		const response = await Api.post('/traits/order.json', {
+			list: traits
+		});
+		console.log(response);
+	}
 </script>
 
 <h1>Traits</h1>
@@ -40,6 +56,20 @@
 	<hr />
 {/if}
 
-{#each traits as trait}
-	<li on:click={() => goto('/traits/' + trait.id)}>{trait.title}</li>
-{/each}
+{#if $user && $user.admin}
+	<SortableList list={traits} key="id" on:sort={sortList} let:item={trait}>
+		<li>
+			<span on:click={() => goto('/traits/' + trait.id)}>
+				{trait.title}
+			</span>
+		</li>
+	</SortableList>
+{:else}
+	{#each traits as trait}
+		<li>
+			<span on:click={() => goto('/traits/' + trait.id)}>
+				{trait.title}
+			</span>
+		</li>
+	{/each}
+{/if}

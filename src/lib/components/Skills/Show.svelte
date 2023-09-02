@@ -9,7 +9,7 @@
 
 	import { user } from '$lib/stores/user';
 
-	import Abstraction from '$lib/components/Abstraction/Abstraction.svelte';
+	import Abstractions from './Tabs/Abstractions/Abstractions.svelte';
 	import Challenges from './Tabs/Challenges/Challenges.svelte';
 	import Quizzes from './Tabs/Quiz/Quizzes.svelte';
 
@@ -23,16 +23,6 @@
 	function openSkillVideo(skill, abstraction) {
 		openModal(SkillModal, { skill: skill, abstraction: abstraction });
 	}
-
-	const addAbstraction = async () => {
-		const response = await Api.post('/abstractions.json', {
-			abstractable_id: skill.id,
-			abstractable_type: 'Skill'
-		});
-		console.log(response);
-		console.log('fetch skill', skill);
-		fetchSkill(skill.id);
-	};
 
 	// $: console.log($user);
 
@@ -52,15 +42,7 @@
 	</div>
 
 	{#if activeTab === 'Abstractions'}
-		<ul class="abstractions">
-			<div class="add-abstraction" on:click={addAbstraction}>+</div>
-
-			{#each skill.abstractions as abstraction}
-				<li>
-					<Abstraction {skill} user={$user} refresh={() => fetchSkill(skill.id)} {abstraction} />
-				</li>
-			{/each}
-		</ul>
+		<Abstractions {skill} user={$user} />
 	{/if}
 
 	{#if activeTab === 'Challenges'}
@@ -88,16 +70,6 @@
 		flex: 1 1 33%;
 		text-align: center;
 	}
-	.add-abstraction {
-		font-size: 72px;
-		position: absolute;
-		right: 50%;
-		display: inline;
-		height: 0px;
-		color: #ffd67f;
-		width: 0px;
-		bottom: 60px;
-	}
 
 	.title {
 		padding: 40px 0px;
@@ -121,10 +93,6 @@
 		padding: 20px 0;
 	}
 
-	.abstractions > li {
-		margin-bottom: 10px;
-		background: #ffd67f;
-	}
 	@media (max-width: 480px) {
 		.abstractions {
 			width: 100%;

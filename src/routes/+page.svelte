@@ -5,6 +5,7 @@
 	import { popularWonders } from '$lib/stores/main.js';
 	import { onMount } from 'svelte';
 
+	import Tester from '$lib/components/Tester/Tester.svelte';
 	import Quiz from '$lib/components/Skills/Tabs/Quiz/Quiz.svelte';
 
 	const fetchPopularWonders = async () => {
@@ -27,15 +28,43 @@
 	<title>Home</title>
 	<meta name="description" content="commandfeel" />
 </svelte:head>
-
+<!-- 
 <div class="quizzes">
 	{#each quizzes as quiz}
 		<Quiz {quiz} skill={quiz.skill} editable={false} linkable={true} />
 	{/each}
+</div> -->
+<!-- 
+<div class="intro">
+	<div class="box">
+		<div class="content">I am NOT comfortable with the idea of programming</div>
+	</div>
+	<div class="box">
+		<div class="content">I am comfortable with the idea of programming</div>
+	</div>
 </div>
+<br /> -->
+<Tester />
 
 <!-- <Home /> -->
 <style>
+	.intro {
+		display: flex;
+	}
+
+	.intro > .box {
+		flex: 1;
+	}
+	.intro .content {
+		background: purple;
+		margin: 10px;
+		height: 100%;
+		padding: 100px;
+		color: #fff;
+		border-radius: 10px;
+		font-weight: bold;
+		font-size: 24px;
+	}
 	.quizzes {
 		font-size: 24px;
 		color: #000;

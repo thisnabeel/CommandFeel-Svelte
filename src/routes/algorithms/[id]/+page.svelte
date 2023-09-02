@@ -10,11 +10,21 @@
 	let algo = null;
 	onMount(() => {
 		getAlgo();
+		getProgress();
 	});
 
 	async function getAlgo() {
 		const response = await Api.get('/algorithms/' + $page.params.id + '.json');
 		algo = response;
+	}
+
+	let progress = [];
+	async function getProgress() {
+		if (!$user) return;
+		progress = await Api.get(
+			'/users/' + $user.id + '/algorithms/' + $page.params.id + '/attempts.json'
+		);
+		console.log(progress);
 	}
 </script>
 
@@ -52,7 +62,7 @@
 		/>
 	{/if}
 
-	<Languages algorithm={algo} />
+	<Languages algorithm={algo} {progress} />
 {/if}
 
 <style>

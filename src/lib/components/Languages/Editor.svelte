@@ -31,7 +31,7 @@
 	/>
 </div>
 
-<div class="btn btn-info btn-block btn-lg" style="display:block;" on:click={test}>Test</div>
+<div class="btn btn-info btn-block btn-lg" style="display:block;" on:click={test}>Run</div>
 
 {#if result}
 	<div class="result">

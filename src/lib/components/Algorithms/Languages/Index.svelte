@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 
 	export let algorithm;
+	export let progress;
 	let languages = [];
 	onMount(async () => {
 		languages = await Api.get('/programming_languages.json');
@@ -13,7 +14,7 @@
 {#if languages}
 	<ul class="clean-list languages">
 		{#each languages as language}
-			<Language {language} {algorithm} />
+			<Language {language} {algorithm} {progress} />
 		{/each}
 	</ul>
 {/if}

@@ -18,10 +18,23 @@
 		const response = await Api.delete('/quizzes/' + id + '.json');
 		skill.quizzes = skill.quizzes.filter((q) => q.id !== id);
 	};
+
+	const generateQuiz = async () => {
+		const response = await Api.post('/skills/generate_quiz.json', {
+			id: skill.id
+		});
+
+		skill.quizzes = [...skill.quizzes, response];
+	};
 </script>
 
 <div class="quizzes">
-	<div class="add-quiz" on:click={addQuiz}>+</div>
+	<div class="adder">
+		<div class="add-quiz" on:click={addQuiz}>+</div>
+		<div class="btn btn-warning generate-quiz" on:click={generateQuiz}>
+			<i class="fa fa-bolt" />
+		</div>
+	</div>
 
 	{#each skill.quizzes || [] as quiz}
 		<Quiz {quiz} {user} {skill} {destroy} />
@@ -29,15 +42,16 @@
 </div>
 
 <style>
-	.add-quiz {
+	.adder {
 		font-size: 72px;
 		position: absolute;
-		right: 50%;
-		display: inline;
+		left: 35%;
+		/* display: inline; */
 		height: 0px;
 		color: #ffd67f;
 		width: 0px;
 		bottom: 60px;
+		display: -webkit-inline-box;
 	}
 
 	.quizzes {

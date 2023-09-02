@@ -12,6 +12,8 @@
 
 	export let algorithm;
 
+	export let pass;
+
 	let fetched = false;
 	export let fetched_trait = null;
 	let result = null;
@@ -34,14 +36,23 @@
 
 		error = null;
 
-		let output = response.output.replace(/[\r\n]+/g, '');
-		if (output === algorithm.expected_with_type) {
+		if (response.passing) {
+			pass(response.passing);
 			setTimeout(function () {
 				Swal.fire('Perfect!', 'You Passed This Challenge in ' + language.title, 'success');
 			}, 750);
 		} else {
 			error = response.output;
 		}
+
+		// let output = response.output.replace(/[\r\n]+/g, '');
+		// if (output === algorithm.expected_with_type) {
+		// 	setTimeout(function () {
+		// 		Swal.fire('Perfect!', 'You Passed This Challenge in ' + language.title, 'success');
+		// 	}, 750);
+		// } else {
+		// 	error = response.output;
+		// }
 	}
 
 	onMount(async () => {
@@ -65,7 +76,7 @@
 		lineCount = editorRef.getModel().getLineCount();
 		editorRef.updateOptions({ scrollBeyondLastLine: false });
 
-		if (fetched_trait) {
+		if (!$user) {
 			editorRef.updateOptions({ readOnly: true });
 		}
 	}
@@ -107,12 +118,17 @@
 			onMount={handleEditorDidMount}
 			wordWrap={'on'}
 			scrollBeyondLastLine={false}
+			options={{
+				lineNumbers: 5
+				// lineNumbersMinChars: 6
+				// glyphMargin: false
+			}}
 		/>
 	</div>
 {/if}
 
 {#if runnable}
-	<div class="btn btn-info btn-block btn-lg" style="display:block;" on:click={test}>Test</div>
+	<div class="btn btn-info btn-block btn-lg" style="display:block;" on:click={test}>Run</div>
 
 	{#if result}
 		<div class="result">

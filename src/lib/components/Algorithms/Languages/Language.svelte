@@ -5,6 +5,8 @@
 	export let language;
 	import CodeBox from '$lib/components/CodeCompiler/Box.svelte';
 
+	import saver from '$lib/functions/debounce';
+	export let progress;
 	export let algorithm;
 	let open = false;
 
@@ -26,10 +28,36 @@
 		console.log(traits);
 	}
 
+	async function removeTrait(obj) {
+		await Api.delete('/programming_language_traits/' + obj.id + '.json');
+		traits = traits.filter((o) => o.id != obj.id);
+	}
+
 	let selectedHelperTrait = null;
+	// console.log('passing', progress);
+	$: passing = progress.filter((p) => p.programming_language_id === language.id).length > 0;
+	function handlePassed(payload) {
+		progress = [...progress, payload];
+	}
+
+	async function handleTraitUpdate(val, lang, trait) {
+		const response = saver(
+			'/programming_language_traits.json',
+			{
+				programming_language_id: lang.id,
+				trait_id: trait.id,
+				body: val
+			},
+			'post'
+		);
+	}
 </script>
 
 <li class="language" class:open>
+	{#if passing}
+		<i class="fa fa-star passed" />
+	{/if}
+
 	<span class="head" on:click={() => (open = !open)}>{language.title}</span>
 	{#if open}
 		<div class="challenge">
@@ -37,7 +65,7 @@
 			{algorithm.title}
 		</div>
 	{/if}
-	<span class="help" on:click={toggleHelper}><i class="fa fa-question" /></span>
+	<span class="help" on:click={toggleHelper}><i class="fa fa-book" /> Docs</span>
 
 	{#if showHelper}
 		<div class="helper">
@@ -46,6 +74,9 @@
 					<div>
 						<h1>Traits:</h1>
 					</div>
+
+					<span class="closeDocs fa fa-times" on:click={() => (showHelper = !showHelper)} />
+
 					<div>
 						<input type="text" class="form-control" placeholder="Search..." />
 					</div>
@@ -53,7 +84,7 @@
 			</div>
 			<ul>
 				{#each traits as obj}
-					<li>
+					<li class="trait">
 						<div
 							class="trait-head"
 							on:click={() =>
@@ -61,8 +92,13 @@
 						>
 							{obj.trait.title}
 						</div>
+						<i class="fa fa-times remove-trait" on:click={() => removeTrait(obj)} />
 						{#if selectedHelperTrait && selectedHelperTrait.id === obj.id}
-							<CodeBox fetched_trait={selectedHelperTrait} {language} />
+							<CodeBox
+								fetched_trait={selectedHelperTrait}
+								{language}
+								updateCode={(val, lang) => handleTraitUpdate(val, lang, obj.trait)}
+							/>
 						{/if}
 					</li>
 				{/each}
@@ -71,11 +107,38 @@
 	{/if}
 
 	{#if open}
-		<CodeBox {language} runnable={true} {algorithm} />
+		<CodeBox {language} runnable={true} {algorithm} pass={handlePassed} />
 	{/if}
 </li>
 
 <style>
+	.passed {
+		position: absolute;
+		top: 6px;
+		left: 3px;
+		color: gold;
+		-webkit-text-stroke: #000;
+		-webkit-text-stroke-width: 2px;
+	}
+	.trait {
+		position: relative;
+	}
+	.remove-trait {
+		position: absolute;
+		left: -25px;
+		top: 7px;
+		color: #ccc;
+		font-size: 12px;
+	}
+
+	.remove-trait:hover {
+		color: #000;
+	}
+	.closeDocs {
+		position: absolute;
+		right: 10px;
+		top: 10px;
+	}
 	.challenge {
 		padding: 20px;
 		color: #faffb1;
@@ -112,18 +175,16 @@
 		position: relative;
 	}
 	.help {
-		height: 40px;
-		width: 40px;
-		padding: 3px;
+		height: auto;
+		width: max-content;
+		padding: 7px;
 		background: #e1e1ff;
-		color: #9d9dd8;
+		color: #65659d;
 		text-align: center;
-		border-radius: 100%;
-		right: -49px;
+		border-radius: 10%;
+		right: 10px;
 		top: 27px;
-		font-size: 22px;
 		position: absolute;
-		opacity: 25%;
 	}
 
 	.helper {

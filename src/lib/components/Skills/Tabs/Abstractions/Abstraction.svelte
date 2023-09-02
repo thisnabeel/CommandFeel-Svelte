@@ -4,82 +4,68 @@
 	import SkillModal from '$lib/modals/videos/skill.svelte';
 
 	export let user;
-	export let refresh = () => {};
+	export let abstraction;
+	export let removeAbstraction = () => {};
 	export let skill;
-	export let challenge;
-	export let destroy;
-	export let editable = false;
+
+	const destroy = async (item) => {
+		removeAbstraction(item);
+	};
 
 	let input;
 	let html;
 	let timer;
-	let expand;
+
+	function openSkillVideo(skill, abstraction) {
+		openModal(SkillModal, { skill: skill, abstraction: abstraction });
+	}
 
 	const debounce = (v) => {
 		clearTimeout(timer);
 		timer = setTimeout(async () => {
-			const response = await Api.put('/challenges/' + challenge.id + '.json', {
-				title: v,
+			const response = await Api.put('/abstractions/' + abstraction.id + '.json', {
+				body: v,
 				method: '_post'
 			});
-			// let response = await Api.get("/challenges/"+challenge.id+".json")
+			// let response = await Api.get("/abstractions/"+abstraction.id+".json")
 			console.log('response', response);
 		}, 1000);
 	};
-
-	//
 </script>
 
-<li class:has_video={challenge && challenge.preview}>
+<li class="abstraction" class:has_video={abstraction && abstraction.preview}>
 	{#if user && user.admin === true}
-		<span contenteditable on:keyup={(e) => debounce(event.target.innerHTML)}>{challenge.title}</span
+		<span contenteditable on:keyup={(e) => debounce(event.target.innerHTML)}
+			>{abstraction.body}</span
 		>
-		{#if !editable}
-			<span class="fa fa-trash" on:click={() => destroy(challenge.id)} />
-		{/if}
+		<span class="fa fa-trash" on:click={() => destroy(abstraction)} />
 	{:else}
-		<span>{challenge.title}</span>
+		<span>{abstraction.body}</span>
 	{/if}
-	<span class="fa fa-expand" on:click={() => (expand = !expand)} />
-	{#if expand}
-		<div>
-			<hr />
-			<div class="body">
-				{challenge.body}
-			</div>
-		</div>
-	{/if}
-	<div class:hidden={!challenge.preview} class="abstra-play">
-		<img class="abstra-preview" src={challenge.preview} />
+	<div
+		class:hidden={!abstraction.preview}
+		class="abstra-play"
+		on:click={openSkillVideo(skill, abstraction)}
+	>
+		<img class="abstra-preview" src={abstraction.preview} />
 	</div>
 </li>
 
 <style>
-	.body {
-		font-family: GreyCliffCF-Light;
-	}
 	.hidden {
 		display: none;
 	}
 
-	li {
-		list-style: none;
+	.abstraction {
 		padding: 30px;
 		position: relative;
-
 		margin-bottom: 10px;
-		background: #7ff7ff;
+		background: #ffd67f;
 	}
 
 	.fa-trash {
 		position: absolute;
 		left: -7%;
-		top: 39%;
-	}
-
-	.fa-expand {
-		position: absolute;
-		right: -7%;
 		top: 39%;
 	}
 
@@ -128,11 +114,11 @@
 			max-width: 170px;
 		}
 
-		.challenges {
+		.abstractions {
 			width: 100%;
 		}
 
-		.challenges .has_video {
+		.abstractions .has_video {
 			padding-top: 55px;
 		}
 	}
