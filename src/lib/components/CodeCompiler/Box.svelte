@@ -146,7 +146,7 @@
 	}
 
 	async function saveBlocks() {
-		if (video_url.length < 1) video_url = null;
+		if (video_url && video_url.length < 1) video_url = null;
 		const response = await API.post('/language_algorithm_starters.json', {
 			programming_language_id: language.id,
 			algorithm_id: algorithm.id,
