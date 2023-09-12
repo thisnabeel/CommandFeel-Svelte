@@ -64,7 +64,7 @@
 
 <li class="language" class:open>
 	{#if langStarter && !open}
-		{#if langStarter[0].video_url && langStarter[0].video_url.length > 0}
+		{#if langStarter[0] && langStarter[0].video_url && langStarter[0].video_url.length > 0}
 			<i class="fa fa-video video-cta" />
 		{/if}
 	{/if}
