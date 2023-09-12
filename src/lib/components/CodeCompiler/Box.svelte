@@ -6,6 +6,7 @@
 	import { user } from '$lib/stores/user';
 	import Block from './Block.svelte';
 	import API from '$lib/api/api';
+	import { loomifiedView } from '$lib/stores/view';
 
 	export let language;
 	export let updateCode;
@@ -26,6 +27,14 @@
 	$: body = fetched_trait ? fetched_trait.body : null;
 
 	async function test() {
+		if (!$user) {
+			Swal.fire(
+				'Unauthorized',
+				'Please Sign Up or Sign In at the top right corner to Run Code',
+				'error'
+			);
+			return;
+		}
 		const response = await Api.post(`/execute_code`, {
 			code: fullCode,
 			algorithm_id: algorithm.id,
@@ -57,6 +66,8 @@
 		// }
 	}
 
+	let video_url = null;
+
 	onMount(async () => {
 		if (algorithm) {
 			const starter = await Api.get(
@@ -64,6 +75,7 @@
 			);
 			if (starter) {
 				blocks = starter.code_lines;
+				video_url = starter.video_url;
 			}
 		} else {
 			if (!trait) return;
@@ -134,13 +146,17 @@
 	}
 
 	async function saveBlocks() {
+		if (video_url.length < 1) video_url = null;
 		const response = await API.post('/language_algorithm_starters.json', {
 			programming_language_id: language.id,
 			algorithm_id: algorithm.id,
-			code_lines: blocks
+			code_lines: blocks,
+			video_url: video_url
 		});
 		console.log({ response });
 	}
+
+	let showVideo = false;
 </script>
 
 {#if (!algorithm && trait) || (!algorithm && fetched_trait)}
@@ -176,7 +192,27 @@
 		</div>
 	{/if}
 {:else if algorithm}
+	{#if showVideo && video_url}
+		<div class="loom-holder">
+			<i class="fa fa-times loom-close" on:click={() => (showVideo = false)} />
+			<iframe
+				src={video_url.replaceAll('share', 'embed')}
+				frameborder="0"
+				webkitallowfullscreen
+				mozallowfullscreen
+				allowfullscreen
+				style="position: absolute; top: 0; left: 0; width: 100%; height: 300px;"
+			/>
+		</div>
+	{/if}
+
 	<div class="holder">
+		{#if !showVideo && video_url}
+			<div class="loom-open btn btn-outline-warning" on:click={() => (showVideo = true)}>
+				<i class="fa fa-video" />
+			</div>
+		{/if}
+
 		{#each blocks as block}
 			<Block
 				editable={1}
@@ -201,14 +237,20 @@
 		{/each}
 	</div>
 
-	{#if $user && $user.admin}
+	{#if $user && $user.admin && !$loomifiedView}
 		<div class="btn btn-primary" on:click={addBlock}><i class="fa fa-plus" /></div>
 		<div class="btn btn-outline-warning" on:click={saveBlocks}><i class="fa fa-save" /></div>
+		<input type="text" placeholder="Video Url..." class="form-control" bind:value={video_url} />
 	{/if}
 {/if}
 
 {#if runnable}
-	<div class="btn btn-info btn-block btn-lg" style="display:block;" on:click={test}>Run</div>
+	<div class="btn btn-info btn-block btn-lg" style="display:block;" on:click={test}>
+		{#if !$user}
+			<i class="fa fa-lock" /> Sign In To
+		{/if}
+		Run
+	</div>
 
 	{#if result}
 		<div class="result">
@@ -227,6 +269,7 @@
 	.holder {
 		padding: 12px;
 		background: #fff;
+		position: relative;
 	}
 	.result {
 		padding: 10px;
@@ -247,5 +290,30 @@
 		font-size: 24px;
 		background: purple;
 		color: #fff;
+	}
+
+	.loom-holder {
+		height: auto;
+		width: auto;
+		display: block;
+		padding-bottom: 303px;
+		position: relative;
+		top: 0px;
+		z-index: 999999;
+		background: #000;
+	}
+
+	.loom-open {
+		position: absolute;
+		top: -57px;
+		left: -70px;
+		font-size: 24px;
+	}
+
+	.loom-close {
+		position: absolute;
+		top: 10px;
+		left: -40px;
+		font-size: 34px;
 	}
 </style>

@@ -6,8 +6,12 @@
 	import CodeBox from '$lib/components/CodeCompiler/Box.svelte';
 	import { user } from '$lib/stores/user';
 	import saver from '$lib/functions/debounce';
+	import { loomifiedView } from '$lib/stores/view';
 	export let progress;
 	export let algorithm;
+	export let loomify;
+	export let loomified;
+
 	let open = false;
 
 	let showHelper = false;
@@ -54,7 +58,7 @@
 </script>
 
 <li class="language" class:open>
-	{#if passing}
+	{#if passing && !loomifiedView}
 		<i class="fa fa-star passed" />
 	{/if}
 
@@ -66,6 +70,16 @@
 		</div>
 	{/if}
 	<span class="help" on:click={toggleHelper}><i class="fa fa-book" /> Docs</span>
+
+	{#if $user && $user.admin}
+		{#if !open}
+			<div
+				class="i fa fa-toggle-off loomify"
+				class:fa-toggle-on={loomified === language.id}
+				on:click={() => loomify(language.id)}
+			/>
+		{/if}
+	{/if}
 
 	{#if showHelper}
 		<div class="helper">
@@ -117,6 +131,11 @@
 </li>
 
 <style>
+	.loomify {
+		position: absolute;
+		left: -30px;
+		top: 1px;
+	}
 	.passed {
 		position: absolute;
 		top: 6px;

@@ -6,6 +6,7 @@
 
 	export let block;
 	import { user } from '$lib/stores/user';
+	import { loomifiedView } from '$lib/stores/view';
 
 	let editorRef = null;
 
@@ -164,9 +165,12 @@
 		onChange={handleEditorChange}
 		defaultValue={block.code}
 		lineNumbers={'off'}
+		options={{
+			minimap: { enabled: false }
+		}}
 	/>
 
-	{#if $user && $user.admin}
+	{#if $user && $user.admin && !$loomifiedView}
 		<div class="btn btn-primary locker" on:click={blockCode}><i class="fa fa-lock" /></div>
 		<div class="btn btn-danger remove" on:click={() => removeCode(block)}>
 			<i class="fa fa-times" />

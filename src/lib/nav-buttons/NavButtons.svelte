@@ -3,6 +3,7 @@
 	import MediaQuery from '$lib/MediaQuery/MediaQuery.svelte';
 	import { garage } from '$lib/stores/pop-ups';
 	import User from './User.svelte';
+	import { loomifiedView } from '$lib/stores/view';
 
 	const openGaragePopUp = () => {
 		garage.set(true);
@@ -11,7 +12,9 @@
 
 <MediaQuery query="(min-width: 400px)" let:matches>
 	{#if matches}
-		<User />
+		{#if !$loomifiedView}
+			<User />
+		{/if}
 
 		<!-- <aside class="book">
 			<Button icon="fa-book" />
