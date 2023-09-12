@@ -7,6 +7,9 @@
 
 	import Tester from '$lib/components/Tester/Tester.svelte';
 	import Quiz from '$lib/components/Skills/Tabs/Quiz/Quiz.svelte';
+	import { globalViewCategory } from '$lib/stores/view';
+
+	import AlgorithmsHome from '$lib/components/Algorithms/Landing/Index.svelte';
 
 	const fetchPopularWonders = async () => {
 		const response = await Api.get('/museum.json');
@@ -44,7 +47,13 @@
 	</div>
 </div>
 <br /> -->
-<Tester />
+{#if $globalViewCategory === 'Skills'}
+	<Tester />
+{/if}
+
+{#if $globalViewCategory === 'Languages'}
+	<AlgorithmsHome />
+{/if}
 
 <!-- <Home /> -->
 <style>

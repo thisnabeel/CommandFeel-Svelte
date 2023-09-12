@@ -3,6 +3,7 @@
 	import Language from '$lib/components/Languages/Language.svelte';
 	import { onMount } from 'svelte';
 	import CodeCompiler from '$lib/components/CodeCompiler/Box.svelte';
+	import debounce from '$lib/functions/debounce';
 	export let trait;
 
 	let languages = [];
@@ -12,11 +13,15 @@
 
 	async function updateCode(value, language) {
 		console.log(value);
-		const response = await Api.post('/programming_language_traits.json', {
-			programming_language_id: language.id,
-			trait_id: trait.id,
-			body: value
-		});
+		const response = await debounce(
+			'/programming_language_traits.json',
+			{
+				programming_language_id: language.id,
+				trait_id: trait.id,
+				body: value
+			},
+			'post'
+		);
 		console.log(response);
 	}
 </script>

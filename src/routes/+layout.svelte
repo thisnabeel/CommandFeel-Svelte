@@ -4,56 +4,45 @@
 	import { Modals, closeModal } from 'svelte-modals';
 	import { fade } from 'svelte/transition';
 	import NavButtons from '$lib/nav-buttons/NavButtons.svelte';
-	import {onMount} from "svelte";
-	import Api from "$lib/api/api.js";
+	import { onMount } from 'svelte';
+	import Api from '$lib/api/api.js';
 	import { csrf_token } from '$lib/stores/api.js';
-    import {user} from "$lib/stores/user";
+	import { user } from '$lib/stores/user';
 
 	import GaragePopUp from '$lib/pop-ups/Garage.svelte';
-	
+
 	let user_signed_in;
-    
 
 	let csrf;
 	onMount(async function () {
 		// const csrfToken = document.querySelector('meta[name=csrf-token]').content;
 		// console.log(csrfToken)
-		csrf = await Api.get("/generate_csrf")
-		csrf_token.set(csrf)
-		user.subscribe(value => user_signed_in = value)
+		csrf = await Api.get('/generate_csrf');
+		csrf_token.set(csrf);
+		user.subscribe((value) => (user_signed_in = value));
 		// console.log(csrf_token)
-	})
-
-	
-
+	});
 </script>
 
 <svelte:head>
-	<meta name="csrf-token" content="{csrf}" />
+	<meta name="csrf-token" content={csrf} />
 </svelte:head>
 
 <main>
-	<NavButtons></NavButtons>
+	<NavButtons />
 	<Header />
 	<slot />
 </main>
 
 <Modals>
-  <div
-    slot="backdrop"
-	class="backdrop"
-	transition:fade
-    on:click={closeModal}
-  />
+	<div slot="backdrop" class="backdrop" transition:fade on:click={closeModal} />
 </Modals>
 
-<GaragePopUp></GaragePopUp>
-
+<!-- <GaragePopUp></GaragePopUp> -->
 
 <!-- <footer>
 	<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
 </footer> -->
-
 <style>
 	main {
 		flex: 1;

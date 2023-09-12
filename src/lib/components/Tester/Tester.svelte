@@ -5,9 +5,13 @@
 	import { skills } from '$lib/stores/main';
 	let topic = '';
 	let allSkills = null;
+	let topics = [];
 	skills.subscribe((value) => {
 		console.log('skillsMap', value);
 		allSkills = value;
+
+		topics = allSkills.filter((s) => s.title === 'AWS' || s.title === 'Ruby on Rails');
+		test();
 	});
 
 	let results = [];
@@ -23,7 +27,6 @@
 		showResults = true;
 	}
 
-	let topics = [];
 	function addToTest(result) {
 		if (topics.filter((o) => o.id === result.id).length > 0) {
 			showResults = false;

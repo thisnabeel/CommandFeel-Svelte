@@ -4,6 +4,8 @@
 	import Api from '$lib/api/api';
 	import Swal from 'sweetalert2';
 	import { user } from '$lib/stores/user';
+	import Block from './Block.svelte';
+	import API from '$lib/api/api';
 
 	export let language;
 	export let updateCode;
@@ -25,7 +27,7 @@
 
 	async function test() {
 		const response = await Api.post(`/execute_code`, {
-			code: code,
+			code: fullCode,
 			algorithm_id: algorithm.id,
 			programming_language_id: language.id,
 			user_id: $user ? $user.id : null
@@ -36,7 +38,7 @@
 
 		error = null;
 
-		if (response.passing) {
+		if (response.passing.passing) {
 			pass(response.passing);
 			setTimeout(function () {
 				Swal.fire('Perfect!', 'You Passed This Challenge in ' + language.title, 'success');
@@ -56,14 +58,23 @@
 	}
 
 	onMount(async () => {
-		if (!trait) return;
-		if (fetched_trait) return;
-		console.log('Happen');
-		fetched_trait = await Api.get(
-			'/programming_languages/' + language.id + '/traits/' + trait.id + '.json'
-		);
-		console.log(fetched_trait);
-		fetched = true;
+		if (algorithm) {
+			const starter = await Api.get(
+				`/language_algorithm_starters/finder/${language.id}/${algorithm.id}.json`
+			);
+			if (starter) {
+				blocks = starter.code_lines;
+			}
+		} else {
+			if (!trait) return;
+			if (fetched_trait) return;
+			console.log('Happen');
+			fetched_trait = await Api.get(
+				'/programming_languages/' + language.id + '/traits/' + trait.id + '.json'
+			);
+			console.log(fetched_trait);
+			fetched = true;
+		}
 	});
 
 	let editorRef = null;
@@ -94,37 +105,106 @@
 	function updateHeight() {
 		console.log('hiii');
 	}
+
+	let blocks = [];
+	// console.log({ blocks });
+	$: fullCode = blocks.map((b) => b.code).join('\n');
+	$: console.log({ fullCode });
+
+	function uuid() {
+		const min = 100; // Minimum 3-digit number
+		const max = 999; // Maximum 3-digit number
+
+		let randomCode = Math.floor(Math.random() * (max - min + 1)) + min;
+		while (blocks.map((b) => b.id).includes(randomCode)) {
+			randomCode = Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+		return randomCode;
+	}
+
+	function addBlock() {
+		blocks = [
+			...blocks,
+			{
+				code: '',
+				id: uuid(),
+				disabled: false
+			}
+		];
+	}
+
+	async function saveBlocks() {
+		const response = await API.post('/language_algorithm_starters.json', {
+			programming_language_id: language.id,
+			algorithm_id: algorithm.id,
+			code_lines: blocks
+		});
+		console.log({ response });
+	}
 </script>
 
-{#if fetched && trait}
+{#if (!algorithm && trait) || (!algorithm && fetched_trait)}
+	{#if fetched_trait}
+		<div class="holder">
+			<react:Editor
+				height={lineCount * 18 + 18 + 'px'}
+				defaultLanguage={language.editor_slug}
+				onChange={handleEditorChange}
+				defaultValue={fetched_trait.body}
+				onMount={handleEditorDidMount}
+				wordWrap={'on'}
+				scrollBeyondLastLine={false}
+				options={{
+					minimap: { enabled: false }
+				}}
+			/>
+		</div>
+	{:else}
+		<div class="holder">
+			<react:Editor
+				height={lineCount * 18 + 18 + 'px'}
+				defaultLanguage={language.editor_slug}
+				onChange={handleEditorChange}
+				defaultValue={''}
+				onMount={handleEditorDidMount}
+				wordWrap={'on'}
+				scrollBeyondLastLine={false}
+				options={{
+					minimap: { enabled: false }
+				}}
+			/>
+		</div>
+	{/if}
+{:else if algorithm}
 	<div class="holder">
-		<react:Editor
-			height={lineCount * 18 + 18 + 'px'}
-			defaultLanguage={language.editor_slug}
-			onChange={handleEditorChange}
-			defaultValue={body}
-			onMount={handleEditorDidMount}
-			wordWrap={'on'}
-			scrollBeyondLastLine={false}
-		/>
+		{#each blocks as block}
+			<Block
+				editable={1}
+				{language}
+				{block}
+				update={(payload) => {
+					// code = payload;
+					console.log({ payload });
+					console.log({ blocks });
+					blocks = blocks.map((b, idx) => {
+						if (b.id === block.id) {
+							b.code = payload.code;
+							b.disabled = payload.disabled;
+						}
+						return b;
+					});
+				}}
+				removeCode={(payload) => {
+					blocks = blocks.filter((b) => b.id !== payload.id);
+				}}
+			/>
+		{/each}
 	</div>
-{:else}
-	<div class="holder">
-		<react:Editor
-			height={lineCount * 18 + 18 + 'px'}
-			defaultLanguage={language.editor_slug}
-			defaultValue={body}
-			onChange={handleEditorChange}
-			onMount={handleEditorDidMount}
-			wordWrap={'on'}
-			scrollBeyondLastLine={false}
-			options={{
-				lineNumbers: 5
-				// lineNumbersMinChars: 6
-				// glyphMargin: false
-			}}
-		/>
-	</div>
+
+	{#if $user && $user.admin}
+		<div class="btn btn-primary" on:click={addBlock}><i class="fa fa-plus" /></div>
+		<div class="btn btn-outline-warning" on:click={saveBlocks}><i class="fa fa-save" /></div>
+	{/if}
 {/if}
 
 {#if runnable}

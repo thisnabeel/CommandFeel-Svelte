@@ -4,7 +4,7 @@
 	import { selectSkill } from '$lib/stores/main';
 	export let language;
 	import CodeBox from '$lib/components/CodeCompiler/Box.svelte';
-
+	import { user } from '$lib/stores/user';
 	import saver from '$lib/functions/debounce';
 	export let progress;
 	export let algorithm;
@@ -87,12 +87,17 @@
 					<li class="trait">
 						<div
 							class="trait-head"
-							on:click={() =>
-								selectedHelperTrait ? (selectedHelperTrait = null) : (selectedHelperTrait = obj)}
+							on:click={() => {
+								selectedHelperTrait ? (selectedHelperTrait = null) : (selectedHelperTrait = obj);
+								console.log(selectedHelperTrait);
+							}}
 						>
 							{obj.trait.title}
 						</div>
-						<i class="fa fa-times remove-trait" on:click={() => removeTrait(obj)} />
+
+						{#if $user && $user.admin}
+							<i class="fa fa-times remove-trait" on:click={() => removeTrait(obj)} />
+						{/if}
 						{#if selectedHelperTrait && selectedHelperTrait.id === obj.id}
 							<CodeBox
 								fetched_trait={selectedHelperTrait}

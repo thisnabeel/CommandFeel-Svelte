@@ -68,6 +68,7 @@
 <style>
 	.jumbotron {
 		padding: 24px;
-		background-color: rgb(235, 235, 235);
+		/* background-color: rgb(235, 235, 235); */
+		background-color: rgb(255 255 255);
 	}
 </style>
