@@ -17,6 +17,7 @@
 	async function getAlgo() {
 		const response = await Api.get('/algorithms/' + $page.params.id + '.json');
 		algo = response;
+		console.log(algo.language_algorithm_starters);
 	}
 
 	afterNavigate(async function () {

@@ -67,6 +67,7 @@
 	}
 
 	let video_url = null;
+	let mainStarter = null;
 
 	onMount(async () => {
 		if (algorithm) {
@@ -74,6 +75,7 @@
 				`/language_algorithm_starters/finder/${language.id}/${algorithm.id}.json`
 			);
 			if (starter) {
+				mainStarter = starter;
 				blocks = starter.code_lines;
 				video_url = starter.video_url;
 			}
@@ -370,5 +372,19 @@
 		top: 10px;
 		left: -40px;
 		font-size: 34px;
+	}
+
+	@media (max-width: 480px) {
+		.loom-open {
+			right: 2px;
+			left: auto;
+		}
+
+		.loom-close {
+			right: 10px;
+			left: auto;
+			top: -48px;
+			color: #fff;
+		}
 	}
 </style>

@@ -55,14 +55,26 @@
 			'post'
 		);
 	}
+
+	$: langStarter =
+		algorithm.language_algorithm_starters.filter(
+			(s) => s.programming_language_id === language.id
+		) || null;
 </script>
 
 <li class="language" class:open>
-	{#if passing && !loomifiedView}
-		<i class="fa fa-star passed" />
+	{#if langStarter && !open}
+		{#if langStarter[0].video_url && langStarter[0].video_url.length > 0}
+			<i class="fa fa-video video-cta" />
+		{/if}
 	{/if}
 
-	<span class="head" on:click={() => (open = !open)}>{language.title}</span>
+	<span class="head" on:click={() => (open = !open)}
+		>{language.title}
+		<!-- {#if passing && !loomifiedView} -->
+		<i class="fa fa-star passed" />
+		<!-- {/if} --></span
+	>
 	{#if open}
 		<div class="challenge">
 			<span class="challenge-pre"><i class="fa fa-flask" /></span>
@@ -131,15 +143,23 @@
 </li>
 
 <style>
+	.video-cta {
+		position: absolute;
+		top: 2px;
+		left: 2px;
+	}
 	.loomify {
 		position: absolute;
 		left: -30px;
 		top: 1px;
 	}
 	.passed {
-		position: absolute;
-		top: 6px;
-		left: 3px;
+		/* position: absolute;
+		top: 36px;
+		left: 3px; */
+		position: relative;
+		top: -2px;
+		font-size: 18px;
 		color: gold;
 		-webkit-text-stroke: #000;
 		-webkit-text-stroke-width: 2px;
