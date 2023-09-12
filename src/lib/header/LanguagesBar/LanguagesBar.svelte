@@ -8,6 +8,9 @@
 
 	import Map from './Map/Map.svelte';
 
+	import { algorithmStore } from '$lib/stores/algorithms';
+	import { traitStore } from '$lib/stores/traits';
+
 	import { skills, skillsMap, wonders, wondersMap, mapShown } from '$lib/stores/main';
 
 	import { Col, Container, Row, Styles } from 'sveltestrap';
@@ -24,66 +27,27 @@
 		mapShown.set(!mapToggle);
 	};
 
-	onMount(async function () {
-		getSkills();
-		// getWonders();
+	let algos = [];
+	let traits = [];
+	onMount(async () => {
+		if (!$algorithmStore || $algorithmStore.length < 1) {
+			const response = await Api.get('/algorithms.json');
+			algos = response;
+			algorithmStore.set(algos);
+		} else {
+			algos = $algorithmStore;
+		}
 	});
 
-	const getSkills = async () => {
-		const response = await Api.get('/skills.json');
-		console.log('response', response);
-		let json = response;
-		skills.set(json);
-		console.log('skills set', skills);
-		let parents = json.filter((obj) => {
-			return obj.skill_id === null;
-		});
-		parents.map((skill, index) => {
-			// Connect each Child to Parent
-			connectChildToParent(skill);
-		});
-		function connectChildToParent(skill) {
-			let children = json.filter((obj) => {
-				return obj.skill_id === skill.id;
-			});
-			skill['skills'] = children;
-			skill['skills'].map((skill, index) => {
-				// Connect each Child to Parent
-				connectChildToParent(skill);
-			});
+	onMount(async () => {
+		if (!$traitStore || $traitStore.length < 1) {
+			const response = await Api.get('/traits.json');
+			algos = response;
+			traitStore.set(algos);
+		} else {
+			algos = $traitStore;
 		}
-		console.log('skills', parents);
-		skillsMap.set(parents);
-	};
-
-	const getWonders = async () => {
-		const response = await Api.get('/cached_wonders.json');
-		console.log('response', response);
-		let json = response;
-		wonders.set(json);
-		let parents = json.filter((obj) => {
-			return obj.wonder_id === null;
-		});
-		console.log('wokring', 3);
-		parents.map((wonder, index) => {
-			// Connect each Child to Parent
-			connectChildToParent(wonder);
-		});
-		function connectChildToParent(wonder) {
-			let children = json.filter((obj) => {
-				return obj.wonder_id === wonder.id;
-			});
-			wonder['wonders'] = children;
-			wonder['wonders'].map((wonder, index) => {
-				// Connect each Child to Parent
-				connectChildToParent(wonder);
-			});
-		}
-
-		// console.log("wonders", parents.filter(wonder => wonder.wonders.length !== 0))
-		// parents.filter(wonder => wonder.wonders.length !== 0)
-		wondersMap.set(parents);
-	};
+	});
 </script>
 
 <Styles />

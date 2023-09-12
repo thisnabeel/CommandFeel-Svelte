@@ -21,15 +21,16 @@
 	export let type;
 
 	if (type === 'skill') select = selectSkill;
-	if (type === 'wonder') select = selectWonder;
-
-	$: {
-		if (type === 'wonder') checkGold(item);
-	}
+	if (type === 'trait') select = selectWonder;
 
 	const handleSkillClick = async (id) => {
 		const endpoint = '/' + type + 's/' + item.slug;
 		const response = await Api.get(endpoint + '.json');
+		goto(endpoint);
+	};
+
+	const handleTraitClick = (id) => {
+		const endpoint = '/' + type + 's/' + item.id;
 		goto(endpoint);
 	};
 
@@ -70,6 +71,12 @@
 		{#each item.skills as skill}
 			<svelte:self item={skill} type="skill" />
 		{/each}
+	</li>
+{/if}
+
+{#if type === 'trait'}
+	<li class="trait" on:click={() => handleTraitClick(item.id)}>
+		<span>{item.title}</span>
 	</li>
 {/if}
 

@@ -4,6 +4,8 @@
 	import Algorithm from './Algorithm/Item.svelte';
 	import SortableList from 'svelte-sortable-list';
 
+	import { algorithmStore } from '$lib/stores/algorithms';
+
 	import Api from '$lib/api/api';
 	import { onMount } from 'svelte';
 
@@ -31,6 +33,7 @@
 	async function getAlgos() {
 		const response = await Api.get('/algorithms.json');
 		algos = response;
+		algorithmStore.set(algos);
 	}
 
 	function handleMove(algo, move) {

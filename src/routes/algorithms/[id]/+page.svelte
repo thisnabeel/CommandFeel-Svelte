@@ -6,6 +6,7 @@
 	import Languages from '$lib/components/Algorithms/Languages/Index.svelte';
 	import update from '$lib/functions/debounce';
 	import { user } from '$lib/stores/user';
+	import { afterNavigate } from '$app/navigation';
 
 	let algo = null;
 	onMount(() => {
@@ -17,6 +18,17 @@
 		const response = await Api.get('/algorithms/' + $page.params.id + '.json');
 		algo = response;
 	}
+
+	afterNavigate(async function () {
+		getAlgo();
+	});
+
+	// const fetchSkill = async (slug) => {
+	// 	skill = await Api.get('/skills/' + slug + '.json');
+	// 	mapShown.set(false);
+	// 	selectSkill(skill);
+	// 	console.log('gotten', skill);
+	// };
 
 	let progress = [];
 	async function getProgress() {

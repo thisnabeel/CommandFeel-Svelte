@@ -24,7 +24,7 @@
 	};
 
 	onMount(async function () {
-		return;
+		// return;
 		getSkills();
 		// getWonders();
 	});

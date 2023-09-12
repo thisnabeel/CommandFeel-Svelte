@@ -1,6 +1,8 @@
 <script>
 	import { skills, selectSkill, wonders, selectWonder } from '$lib/stores/main';
 	import { goto } from '$app/navigation';
+	import { algorithmStore } from '$lib/stores/algorithms';
+	import { traitStore } from '$lib/stores/traits';
 
 	let input;
 
@@ -23,22 +25,39 @@
 			items = value.filter((item) => item.wonder_items != 0 && item.wonder_id != null);
 		});
 		select = selectWonder;
+	} else if (type === 'Algorithms') {
+		algorithmStore.subscribe((value) => {
+			items = value.filter((a) => a.expected_with_type !== null);
+		});
+	} else if (type === 'Traits') {
+		traitStore.subscribe((value) => {
+			items = value;
+		});
 	}
 
 	const handleInputClick = () => {
 		if (query.length > 0) return;
 
+		// console.log({ items });
+		if (!items || items.length < 1) return;
+		const min = Math.min(items.length + 1, 6);
+		// console.log(min);
+		// return;
 		let randomItems = [];
-		while (randomItems.length < 6) {
-			const randomElement = items[Math.floor(Math.random() * items.length)];
-			if (randomItems.indexOf(randomElement) > -1) {
-				continue;
+		const uniqueItems = new Set();
+
+		while (randomItems.length < min && uniqueItems.size < items.length) {
+			const randomIndex = Math.floor(Math.random() * items.length);
+			const randomElement = items[randomIndex];
+
+			if (!uniqueItems.has(randomElement)) {
+				randomItems.push(randomElement);
+				uniqueItems.add(randomElement);
 			}
-			randomItems.push(randomElement);
 		}
 
 		showResults = true;
-		results = randomItems;
+		results = Array.from(uniqueItems);
 	};
 
 	const search = (query) => {
@@ -75,7 +94,9 @@
 		<!-- <h1>PRESENT!</h1> -->
 		<ul>
 			{#each results as item}
-				<li id={item.id}><a href="/{type.toLowerCase()}/{item.slug}">{item.title}</a></li>
+				<li id={item.id}>
+					<a href="/{type.toLowerCase()}/{item.slug || item.id}">{item.title}</a>
+				</li>
 			{/each}
 		</ul>
 	{/if}

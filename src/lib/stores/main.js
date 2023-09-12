@@ -28,6 +28,16 @@ export const selectWonder = (item) => {
 	selectedSkill.set(null);
 };
 
+export const selectAlgorithm = (item) => {
+	selectedAlgorithm.set(item);
+	selectedTrait.set(null);
+};
+
+export const selectTrait = (item) => {
+	selectedTrait.set(item);
+	selectedAlgorithm.set(null);
+};
+
 export const goHome = () => {
 	selectedWonder.set(null);
 	selectedSkill.set(null);

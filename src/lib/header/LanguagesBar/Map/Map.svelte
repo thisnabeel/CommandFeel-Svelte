@@ -1,15 +1,10 @@
 <script>
-	import { skillsMap, wondersMap } from '$lib/stores/main';
+	import { wondersMap } from '$lib/stores/main';
 	import { get } from 'svelte/store';
 	import Row from './Row/Row.svelte';
 	import { onMount } from 'svelte';
 	import SkillCategories from './SkillCategories/SkillCategories.svelte';
-
-	// let storedSkillsMap;
-	// skillsMap.subscribe((value) => {
-	// 	console.log('skillsMap', value);
-	// 	storedSkillsMap = value;
-	// });
+	import { traitStore } from '$lib/stores/traits';
 
 	let storedWondersMap;
 	wondersMap.subscribe((value) => {
@@ -17,7 +12,7 @@
 		storedWondersMap = value;
 	});
 
-	let show = 'skills';
+	let show = 'traits';
 
 	const handleToggleView = (target) => {
 		show = target;
@@ -26,18 +21,21 @@
 	$: console.log(show);
 </script>
 
-{#if show === 'skills'}
-	<button on:click={() => handleToggleView('wonders')}>Switch To Wonders?</button>
+{#if show === 'traits'}
+	<!-- <button on:click={() => handleToggleView('wonders')}>Switch To Wonders?</button> -->
+	<br />
+	<h1>Programming Language Traits</h1>
+	<hr />
 
-	{#each $skillsMap as skill}
+	{#each $traitStore as trait}
 		<ul>
-			<Row item={skill} type="skill" />
+			<Row item={trait} type="trait" />
 		</ul>
 	{/each}
 {/if}
 
 {#if show === 'wonders'}
-	<button on:click={() => handleToggleView('skills')} class="btn">Switch To Skills?</button>
+	<button on:click={() => handleToggleView('traits')} class="btn">Switch To Skills?</button>
 	{#each storedWondersMap as wonder}
 		<!-- {console.log("selectedWonder", wonder)} -->
 		<ul>

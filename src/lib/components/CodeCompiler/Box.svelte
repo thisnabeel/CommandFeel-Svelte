@@ -157,6 +157,26 @@
 	}
 
 	let showVideo = false;
+
+	let importOptions = [];
+	let showImportMenu = false;
+
+	async function toggleImportOptions() {
+		if (showImportMenu) {
+			importOptions = [];
+			showImportMenu = false;
+		} else {
+			importOptions = await API.get('/programming_languages/' + language.id + '/starters.json');
+			console.log({ importOptions });
+			showImportMenu = true;
+		}
+		console.log({ showImportMenu });
+	}
+
+	function importLines(option) {
+		blocks = [];
+		blocks = option.code_lines;
+	}
 </script>
 
 {#if (!algorithm && trait) || (!algorithm && fetched_trait)}
@@ -240,6 +260,24 @@
 	{#if $user && $user.admin && !$loomifiedView}
 		<div class="btn btn-primary" on:click={addBlock}><i class="fa fa-plus" /></div>
 		<div class="btn btn-outline-warning" on:click={saveBlocks}><i class="fa fa-save" /></div>
+		<div class="pull-right import btn btn-outline-primary" on:click={() => (blocks = [])}>
+			<div class="fa fa-times" />
+		</div>
+		<div class="pull-right import btn btn-outline-primary" on:click={toggleImportOptions}>
+			Import
+		</div>
+
+		{#if showImportMenu}
+			<div class="import-menu">
+				<ul class="clean-list">
+					{#each importOptions || [] as option}
+						<li>
+							<div class="title" on:click={() => importLines(option)}>{option.algorithm.title}</div>
+						</li>
+					{/each}
+				</ul>
+			</div>
+		{/if}
 		<input type="text" placeholder="Video Url..." class="form-control" bind:value={video_url} />
 	{/if}
 {/if}
@@ -266,6 +304,23 @@
 {/if}
 
 <style>
+	.import {
+		display: inline-block;
+		/* position: relative; */
+		/* right: 0; */
+		float: right;
+	}
+
+	.import-menu {
+		z-index: 999999;
+		position: absolute;
+		right: 0;
+		background: #fff;
+		padding: 20px;
+		border-radius: 14px;
+		border: 4px solid #ccc;
+		right: 0;
+	}
 	.holder {
 		padding: 12px;
 		background: #fff;

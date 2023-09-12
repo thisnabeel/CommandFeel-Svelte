@@ -4,11 +4,13 @@
 	import { onMount } from 'svelte';
 	import CodeCompiler from '$lib/components/CodeCompiler/Box.svelte';
 	import debounce from '$lib/functions/debounce';
+	import { user } from '$lib/stores/user';
 	export let trait;
 
 	let languages = [];
 	onMount(async () => {
 		languages = await Api.get('/programming_languages.json');
+		console.log({ trait });
 	});
 
 	async function updateCode(value, language) {
@@ -24,6 +26,13 @@
 		);
 		console.log(response);
 	}
+
+	$: filteredLanguages =
+		$user && $user.admin
+			? languages
+			: languages.filter((l) =>
+					trait.programming_language_traits.map((p) => p.programming_language_id).includes(l.id)
+			  );
 </script>
 
 {#if languages}
@@ -32,7 +41,7 @@
 	</div>
 
 	<ul class="clean-list languages">
-		{#each languages as language}
+		{#each filteredLanguages as language}
 			<Language {language}>
 				<CodeCompiler {language} {updateCode} {trait} />
 			</Language>
