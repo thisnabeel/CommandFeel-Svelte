@@ -300,7 +300,10 @@
 
 	{#if error}
 		<div class="error">
-			Expecting: {algorithm.expected_with_type}
+			Expecting: <span class="btn btn-warning expected-type"
+				>{algorithm.expected.split(' ')[0]}</span
+			>
+			{algorithm.expected_with_type}
 		</div>
 	{/if}
 {/if}
