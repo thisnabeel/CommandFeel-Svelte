@@ -71,10 +71,10 @@
 
 	<span class="head" on:click={() => (open = !open)}
 		>{language.title}
-		<!-- {#if passing && !loomifiedView} -->
-		<i class="fa fa-star passed" />
-		<!-- {/if} --></span
-	>
+		{#if passing && !loomifiedView}
+			<i class="fa fa-star passed" />
+		{/if}
+	</span>
 	{#if open}
 		<div class="challenge">
 			<span class="challenge-pre"><i class="fa fa-flask" /></span>
