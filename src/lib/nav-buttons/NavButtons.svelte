@@ -10,13 +10,12 @@
 	};
 </script>
 
-<MediaQuery query="(min-width: 400px)" let:matches>
-	{#if matches}
-		{#if !$loomifiedView}
-			<User />
-		{/if}
+<!-- {#if matches} -->
+{#if !$loomifiedView}
+	<User />
+{/if}
 
-		<!-- <aside class="book">
+<!-- <aside class="book">
 			<Button icon="fa-book" />
 		</aside>
 
@@ -24,12 +23,11 @@
 			<Button icon="fa-newspaper" />
 		</aside> -->
 
-		<!-- <aside class="garage" on:click={openGaragePopUp}>
+<!-- <aside class="garage" on:click={openGaragePopUp}>
         <Button img="/icons/garage.png" href={null} bg="#e53935"></Button>
     </aside> -->
-	{/if}
-</MediaQuery>
 
+<!-- {/if} -->
 <style>
 	aside {
 		cursor: pointer;

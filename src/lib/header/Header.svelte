@@ -1,5 +1,6 @@
 <script>
 	import Bar from './Bar.svelte';
+	import MediaQuery from '$lib/MediaQuery/MediaQuery.svelte';
 </script>
 
 <header>
@@ -37,5 +38,22 @@
 	.logo img {
 		width: 100%;
 		margin-top: 10px;
+	}
+
+	@media (max-width: 480px) {
+		.logo {
+			max-width: 180px;
+			margin: 0 auto;
+			display: block;
+			padding: 2em;
+			position: relative;
+			top: -38px;
+		}
+
+		.switcher {
+			position: absolute;
+			left: 17%;
+			top: -30px;
+		}
 	}
 </style>

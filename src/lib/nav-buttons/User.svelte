@@ -3,6 +3,7 @@
 	import Button from './Button.svelte';
 	import Api from '$lib/api/api';
 	import CredsPopUp from './creds/Creds.svelte';
+	import MediaQuery from '$lib/MediaQuery/MediaQuery.svelte';
 
 	let btn;
 
@@ -77,9 +78,21 @@
 		left: -66px;
 		/* left: -136px; */
 		position: absolute;
+		z-index: 9999999;
 	}
 
 	.sign-out :global() {
 		color: #97b1ff;
+	}
+
+	@media (max-width: 480px) {
+		.user {
+			right: 65px;
+			top: 25px;
+		}
+
+		.creds-pop {
+			right: -3.5em;
+		}
 	}
 </style>

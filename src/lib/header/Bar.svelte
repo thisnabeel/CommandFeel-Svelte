@@ -46,4 +46,13 @@
 		right: 15px;
 		top: -45px;
 	}
+
+	@media (max-width: 480px) {
+		.switcher {
+			position: absolute;
+			right: 0;
+			left: 18%;
+			top: -65px;
+		}
+	}
 </style>
