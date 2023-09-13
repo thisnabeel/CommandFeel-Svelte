@@ -40,8 +40,10 @@
 	let selectedHelperTrait = null;
 	// console.log('passing', progress);
 	$: passing = progress.filter((p) => p.programming_language_id === language.id).length > 0;
+
 	function handlePassed(payload) {
 		progress = [...progress, payload];
+		console.log({ progress });
 	}
 
 	async function handleTraitUpdate(val, lang, trait) {
@@ -71,8 +73,10 @@
 
 	<span class="head" on:click={() => (open = !open)}
 		>{language.title}
-		{#if passing && !loomifiedView}
-			<i class="fa fa-star passed" />
+		{#if passing}
+			{#if !$loomifiedView}
+				<i class="fa fa-star passed" />
+			{/if}
 		{/if}
 	</span>
 	{#if open}

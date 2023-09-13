@@ -14,7 +14,7 @@
 	});
 
 	async function updateCode(value, language) {
-		console.log(value);
+		// console.log(value);
 		const response = await debounce(
 			'/programming_language_traits.json',
 			{
@@ -24,7 +24,7 @@
 			},
 			'post'
 		);
-		console.log(response);
+		// console.log(response);
 	}
 
 	$: filteredLanguages =
