@@ -202,7 +202,6 @@
 	}
 
 	.helper {
-		z-index: 99999;
 		padding: 14px;
 	}
 	.header h1 {
@@ -236,6 +235,7 @@
 	}
 
 	.helper {
+		z-index: 99999999;
 		width: 70%;
 		display: block;
 		position: absolute;
