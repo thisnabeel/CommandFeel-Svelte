@@ -3,6 +3,7 @@
 	import MediaQuery from '$lib/MediaQuery/MediaQuery.svelte';
 	import { garage } from '$lib/stores/pop-ups';
 	import User from './User.svelte';
+	import Guide from './Guide.svelte';
 	import { loomifiedView } from '$lib/stores/view';
 
 	const openGaragePopUp = () => {
@@ -13,6 +14,7 @@
 <!-- {#if matches} -->
 {#if !$loomifiedView}
 	<User />
+	<Guide />
 {/if}
 
 <!-- <aside class="book">

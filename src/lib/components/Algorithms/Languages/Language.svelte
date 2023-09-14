@@ -6,7 +6,7 @@
 	import CodeBox from '$lib/components/CodeCompiler/Box.svelte';
 	import { user } from '$lib/stores/user';
 	import saver from '$lib/functions/debounce';
-	import { loomifiedView } from '$lib/stores/view';
+	import { loomifiedView, showGuide } from '$lib/stores/view';
 	export let progress;
 	export let algorithm;
 	export let loomify;
@@ -85,7 +85,14 @@
 			{algorithm.title}
 		</div>
 	{/if}
-	<span class="help" on:click={toggleHelper}><i class="fa fa-book" /> Docs</span>
+
+	<span class="help" on:click={toggleHelper}><i class="fa fa-book" /> Docs </span>
+	{#if $showGuide}
+		<div class="docs guide">
+			This shows you how to use the language
+			<i class="fa fa-arrow-right" style="position: absolute; right: 5px; top: 25px;" />
+		</div>
+	{/if}
 
 	{#if $user && $user.admin}
 		{#if !open}
@@ -265,5 +272,16 @@
 	.language {
 		margin: 10px 0;
 		border: 4px solid rgb(22, 22, 22);
+	}
+
+	.guide.docs {
+		position: absolute;
+		top: 10px;
+		right: 100px;
+		background: #ffdcf9;
+		padding: 10px;
+		max-width: 160px;
+		border-radius: 10px;
+		font-size: 14px;
 	}
 </style>

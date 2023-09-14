@@ -47,6 +47,19 @@
 
 		error = null;
 
+		if (!response.output || response.output === '') {
+			error =
+				'Nothing Outputted! Make sure your code is printing something AND/OR the program is properly initialized. Need Help? Click the Docs.';
+			setTimeout(function () {
+				Swal.fire(
+					'Uh Oh!',
+					'Nothing Outputted! Make sure your code is printing something AND/OR the program is properly initialized. Need Help? Click the Docs.',
+					'error'
+				);
+			}, 0);
+			return;
+		}
+
 		if (response.passing.passing) {
 			pass(response.passing);
 			setTimeout(function () {
@@ -359,7 +372,7 @@
 		padding-bottom: 303px;
 		position: relative;
 		top: 0px;
-		z-index: 999999;
+		/* z-index: 999999; */
 		background: #000;
 	}
 
