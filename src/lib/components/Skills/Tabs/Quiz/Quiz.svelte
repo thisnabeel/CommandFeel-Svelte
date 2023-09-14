@@ -34,7 +34,7 @@
 	//
 </script>
 
-<li class:has_video={quiz && quiz.preview}>
+<li class="quiz" class:has_video={quiz && quiz.preview}>
 	{#if user && user.admin === true}
 		<span contenteditable on:keyup={(e) => debounce(event.target.innerHTML)}
 			>{@html quiz.question}</span
@@ -152,11 +152,15 @@
 		}
 
 		.quizzes {
-			width: 100%;
+			width: 95%;
 		}
 
 		.quizzes .has_video {
 			padding-top: 55px;
+		}
+
+		.choice {
+			margin: 0;
 		}
 	}
 </style>
