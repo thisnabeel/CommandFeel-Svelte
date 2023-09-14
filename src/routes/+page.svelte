@@ -112,4 +112,7 @@
 		top: 0;
 		display: block;
 	}
+
+	@media (max-width: 480px) {
+	}
 </style>

@@ -151,16 +151,19 @@
 			max-width: 170px;
 		}
 
-		.quizzes {
-			width: 95%;
-		}
-
 		.quizzes .has_video {
 			padding-top: 55px;
 		}
 
 		.choice {
 			margin: 0;
+		}
+
+		.link {
+			position: absolute;
+			left: 6px;
+			top: 10px;
+			font-size: 18px;
 		}
 	}
 </style>
