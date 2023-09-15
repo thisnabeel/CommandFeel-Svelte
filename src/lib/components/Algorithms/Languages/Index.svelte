@@ -3,7 +3,7 @@
 	import Language from './Language.svelte';
 	import { onMount } from 'svelte';
 	import { user } from '$lib/stores/user';
-	import { loomifiedView } from '$lib/stores/view';
+	import { loomifiedView, showGuide } from '$lib/stores/view';
 
 	export let algorithm;
 	export let progress;
@@ -31,6 +31,13 @@
 	}
 </script>
 
+<!-- {#if $showGuide && !$loomifiedView}
+	<div class="flex">
+		<div class="btn btn-lg btn-danger">Never Programmed Before?</div>
+		<div class="btn btn-lg btn-info">Can Program, But New to CommandFeel?</div>
+	</div>
+{/if} -->
+
 {#if languages}
 	<ul class="clean-list languages" class:loomified={loomified > -1}>
 		{#if loomified > -1}
@@ -42,8 +49,8 @@
 				{loomified}
 			/>
 		{:else}
-			{#each filteredLanguages as language}
-				<Language {language} {algorithm} {progress} {loomify} {loomified} />
+			{#each filteredLanguages as language, index}
+				<Language {language} {algorithm} {progress} {loomify} {loomified} {index} />
 			{/each}
 		{/if}
 	</ul>
@@ -52,5 +59,13 @@
 <style>
 	.loomified {
 		margin: 290px 0;
+	}
+
+	.flex {
+		display: flex;
+	}
+	.flex div {
+		flex: 1 1 50%;
+		padding: 20px 0;
 	}
 </style>

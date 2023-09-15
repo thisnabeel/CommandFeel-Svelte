@@ -4,6 +4,7 @@
 	import Api from '$lib/api/api';
 	import CredsPopUp from './creds/Creds.svelte';
 	import MediaQuery from '$lib/MediaQuery/MediaQuery.svelte';
+	import { showGuide } from '$lib/stores/view';
 
 	let btn;
 
@@ -39,6 +40,12 @@
 		<span on:click={() => (showLogIn = !showLogIn)}>
 			<Button icon="fa-user" />
 		</span>
+
+		{#if $showGuide && !showLogIn}
+			<div class="guide user">
+				<i class="fa fa-arrow-up" /> Sign In/Up here
+			</div>
+		{/if}
 		{#if showLogIn}
 			<div class="creds-pop">
 				<CredsPopUp hidePopUp={() => (showLogIn = !showLogIn)} />
@@ -83,6 +90,15 @@
 
 	.sign-out :global() {
 		color: #97b1ff;
+	}
+
+	.guide.user {
+		width: 63px;
+		position: absolute;
+		top: 60px;
+		right: -58px;
+		z-index: 999999;
+		text-align: center;
 	}
 
 	@media (max-width: 480px) {

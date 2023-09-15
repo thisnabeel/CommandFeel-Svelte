@@ -11,6 +11,7 @@
 	export let algorithm;
 	export let loomify;
 	export let loomified;
+	export let index;
 
 	let open = false;
 
@@ -78,6 +79,12 @@
 				<i class="fa fa-star passed" />
 			{/if}
 		{/if}
+
+		{#if $showGuide && index === 0 && !open}
+			<div class="guide lang-tab">
+				<i class="fa fa-arrow-up" /> Click here to complete the language challenge
+			</div>
+		{/if}
 	</span>
 	{#if open}
 		<div class="challenge">
@@ -87,7 +94,7 @@
 	{/if}
 
 	<span class="help" on:click={toggleHelper}><i class="fa fa-book" /> Docs </span>
-	{#if $showGuide}
+	{#if $showGuide && index === 0}
 		<div class="docs guide">
 			This shows you how to use the language
 			<i class="fa fa-arrow-right" style="position: absolute; right: 5px; top: 25px;" />
@@ -278,10 +285,17 @@
 		position: absolute;
 		top: 10px;
 		right: 100px;
-		background: #ffdcf9;
 		padding: 10px;
 		max-width: 160px;
-		border-radius: 10px;
-		font-size: 14px;
+	}
+
+	.guide.lang-tab {
+		max-width: max-content;
+	}
+
+	@media (max-width: 480px) {
+		.guide {
+			font-size: 11px;
+		}
 	}
 </style>
