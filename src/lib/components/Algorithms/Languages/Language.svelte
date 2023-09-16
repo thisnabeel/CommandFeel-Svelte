@@ -270,6 +270,12 @@
 		padding: 22px;
 		font-size: 32px;
 		display: block;
+
+		cursor: pointer;
+	}
+
+	.language .head:hover {
+		background: #1be8f1;
 	}
 
 	.language.open .head {

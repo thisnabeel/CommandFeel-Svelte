@@ -6,8 +6,8 @@
 	import { user } from '$lib/stores/user';
 </script>
 
-<li class="algo">
-	<span on:click={() => goto('/algorithms/' + algorithm.id)}>
+<li class="algo" on:click={() => goto('/algorithms/' + algorithm.id)}>
+	<span>
 		<span class="difficulty difficulty-1">Easy</span>
 		<span class="title">{algorithm.title}</span>
 	</span>
@@ -26,5 +26,10 @@
 		border-bottom: 1px solid #ccc;
 		padding-top: 8px;
 		padding-bottom: 8px;
+		cursor: pointer;
+	}
+
+	.algo:hover {
+		background: #1be8f1;
 	}
 </style>

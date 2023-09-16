@@ -17,6 +17,8 @@
 		padding: 22px;
 		font-size: 32px;
 		display: block;
+
+		cursor: pointer;
 	}
 
 	.language.open .head {
