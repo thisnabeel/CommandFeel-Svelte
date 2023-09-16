@@ -43,6 +43,7 @@
 
 {#if algo}
 	<div class="jumbotron">
+		<span class="challenge-head">Coding Challenge:</span><br />
 		<h1>{algo.title}</h1>
 	</div>
 
@@ -82,6 +83,18 @@
 	.jumbotron {
 		padding: 24px;
 		/* background-color: rgb(235, 235, 235); */
-		background-color: rgb(255 255 255);
+		background-color: #3effec82;
+	}
+
+	.jumbotron h1 {
+		text-shadow: 1px 3px 2px #ffca2d87;
+	}
+
+	.challenge-head {
+		display: table;
+		margin: 0px auto;
+		border: 2px dashed #ffca2d87;
+		border-radius: 20px;
+		padding: 10px;
 	}
 </style>

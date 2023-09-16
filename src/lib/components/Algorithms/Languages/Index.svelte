@@ -5,6 +5,9 @@
 	import { user } from '$lib/stores/user';
 	import { loomifiedView, showGuide } from '$lib/stores/view';
 
+	import { openModal } from 'svelte-modals';
+	import GuideModal from '$lib/modals/guide/Modal.svelte';
+
 	export let algorithm;
 	export let progress;
 	let languages = [];
@@ -31,12 +34,26 @@
 	}
 </script>
 
-<!-- {#if $showGuide && !$loomifiedView}
-	<div class="flex">
-		<div class="btn btn-lg btn-danger">Never Programmed Before?</div>
-		<div class="btn btn-lg btn-info">Can Program, But New to CommandFeel?</div>
-	</div>
-{/if} -->
+{#if $showGuide && !$loomifiedView}
+	<!-- <div class="flex">
+		<div
+			class="btn btn-lg btn-danger"
+			on:click={() => {
+				openModal(GuideModal, { slug: 'algorithm page: never programmed before' });
+			}}
+		>
+			Never Programmed Before?
+		</div>
+		<div
+			class="btn btn-lg btn-info"
+			on:click={() => {
+				openModal(GuideModal, { slug: 'algorithm page: can program, new to commandfeel' });
+			}}
+		>
+			Can Program, But New to CommandFeel?
+		</div>
+	</div> -->
+{/if}
 
 {#if languages}
 	<ul class="clean-list languages" class:loomified={loomified > -1}>

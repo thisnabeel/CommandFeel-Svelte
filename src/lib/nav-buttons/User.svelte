@@ -94,10 +94,10 @@
 
 	.guide.user {
 		width: 63px;
-		position: absolute;
-		top: 60px;
-		right: -58px;
-		z-index: 999999;
+		position: fixed;
+		top: 100px;
+		right: 90px;
+		z-index: 999;
 		text-align: center;
 	}
 
@@ -105,6 +105,15 @@
 		.user {
 			right: 65px;
 			top: 25px;
+		}
+
+		.guide.user {
+			width: 63px;
+			position: fixed;
+			top: 81px;
+			right: 10px;
+			z-index: 999;
+			text-align: center;
 		}
 
 		.creds-pop {
