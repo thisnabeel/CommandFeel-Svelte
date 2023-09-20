@@ -12,6 +12,7 @@
 	export let destroy;
 	export let editable = true;
 	export let linkable = false;
+	export let hideQuiz;
 
 	let input;
 	let html;
@@ -32,6 +33,10 @@
 	let showChoices = false;
 
 	//
+	function ankiSave(category) {
+		console.log({ category });
+		hideQuiz(quiz);
+	}
 </script>
 
 <li class="quiz" class:has_video={quiz && quiz.preview}>
@@ -50,7 +55,31 @@
 		{/if}
 	{:else}
 		<div>
-			<div on:click={() => (showChoices = !showChoices)}>{@html quiz.question}</div>
+			<div>
+				{@html quiz.question}
+				<hr />
+				<div class="row">
+					<div class="col-lg-4 col-md-4 col-sm-4">
+						<div class="btn btn-block btn-success" on:click={() => ankiSave('easy')}>Easy</div>
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-4">
+						<div class="btn btn-block btn-warning" on:click={() => ankiSave('medium')}>
+							Inarticulate
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-4">
+						<div class="btn btn-block btn-danger" on:click={() => ankiSave('hard')}>No Idea</div>
+					</div>
+				</div>
+				<hr />
+				<div class="btn btn-info" on:click={() => (showChoices = !showChoices)}>
+					{#if showChoices}
+						Hide Answer
+					{:else}
+						Show Answer
+					{/if}
+				</div>
+			</div>
 
 			{#if showChoices}
 				{#if quiz.choices.length === 0}
@@ -71,6 +100,9 @@
 </li>
 
 <style>
+	.btn-block {
+		display: block;
+	}
 	.choice {
 		margin: 20px;
 		display: block;

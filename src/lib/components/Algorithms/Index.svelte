@@ -66,11 +66,11 @@
 
 {#if $user && $user.admin}
 	<SortableList list={algos} key="id" on:sort={sortList} let:item={algo}>
-		<Algorithm algorithm={algo} />
+		<Algorithm algorithm={algo} index={algos.indexOf(algo)} />
 	</SortableList>
 {:else}
-	{#each algos.filter((algo) => algo.expected_with_type !== null) as algo}
-		<Algorithm algorithm={algo} />
+	{#each algos.filter((algo) => algo.expected_with_type !== null) as algo, index}
+		<Algorithm algorithm={algo} {index} />
 	{/each}
 {/if}
 

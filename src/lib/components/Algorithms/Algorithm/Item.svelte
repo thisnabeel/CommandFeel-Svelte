@@ -2,18 +2,30 @@
 	export let algorithm;
 	import { goto } from '$app/navigation';
 	export let move;
+	export let index;
 
 	import { user } from '$lib/stores/user';
+	import { showGuide } from '$lib/stores/view';
 </script>
 
 <li class="algo" on:click={() => goto('/algorithms/' + algorithm.id)}>
 	<span>
 		<span class="difficulty difficulty-1">Easy</span>
-		<span class="title">{algorithm.title}</span>
+		<span class="title"
+			>{algorithm.title}
+
+			{#if index === 0 && $showGuide}
+				<div class="guide algo-guide">Click Here to Practice Algorithm</div>
+			{/if}
+		</span>
 	</span>
 </li>
 
 <style>
+	.guide.algo-guide {
+		display: inline-block;
+		margin: 0;
+	}
 	.difficulty {
 		background-color: rgb(255, 255, 255);
 		padding: 4px 10px;

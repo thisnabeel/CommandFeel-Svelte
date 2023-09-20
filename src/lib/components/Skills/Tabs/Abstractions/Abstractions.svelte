@@ -1,8 +1,9 @@
 <script>
 	export let skill;
-	export let user;
+	import { user } from '$lib/stores/user';
 
 	import Abstraction from './Abstraction.svelte';
+
 	import Api from '$lib/api/api';
 	async function handleRemoveAbstraction(payload) {
 		console.log({ payload });
@@ -31,15 +32,17 @@
 </script>
 
 <ul class="abstractions">
-	<div class="adder">
-		<div class="add-abstraction" on:click={addAbstraction}>+</div>
-		<div class="btn btn-warning generate-abstraction" on:click={generateAbstraction}>
-			<i class="fa fa-bolt" />
+	{#if $user && $user.admin}
+		<div class="adder">
+			<div class="add-abstraction" on:click={addAbstraction}>+</div>
+			<div class="btn btn-warning generate-abstraction" on:click={generateAbstraction}>
+				<i class="fa fa-bolt" />
+			</div>
 		</div>
-	</div>
+	{/if}
 	{#each skill.abstractions as abstraction}
 		<li>
-			<Abstraction {skill} {abstraction} {user} removeAbstraction={handleRemoveAbstraction} />
+			<Abstraction {skill} {abstraction} user={$user} removeAbstraction={handleRemoveAbstraction} />
 		</li>
 	{/each}
 </ul>

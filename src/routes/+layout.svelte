@@ -17,8 +17,8 @@
 	onMount(async function () {
 		// const csrfToken = document.querySelector('meta[name=csrf-token]').content;
 		// console.log(csrfToken)
-		csrf = await Api.get('/generate_csrf');
-		csrf_token.set(csrf);
+		// csrf = await Api.get('/generate_csrf');
+		// csrf_token.set(csrf);
 		user.subscribe((value) => (user_signed_in = value));
 		// console.log(csrf_token)
 	});

@@ -14,6 +14,22 @@
 	import Quizzes from './Tabs/Quiz/Quizzes.svelte';
 
 	export let skill;
+	let tabs = ['Abstractions', 'Quiz', 'Challenges'];
+	let activeTab = 'Abstractions';
+
+	$: if (skill && (!$user || !$user.admin)) {
+		if (skill.abstractions.length < 1) {
+			tabs = tabs.filter((t) => t !== 'Abstractions');
+		}
+
+		if (skill.quizzes.length < 1) {
+			tabs = tabs.filter((t) => t !== 'Quiz');
+		}
+
+		if (skill.challenges.length < 1) {
+			tabs = tabs.filter((t) => t !== 'Challenges');
+		}
+	}
 
 	const fetchSkill = async (slug) => {
 		skill = await Api.get('/skills/' + slug + '.json');
@@ -25,9 +41,6 @@
 	}
 
 	// $: console.log($user);
-
-	let tabs = ['Abstractions', 'Quiz', 'Challenges'];
-	let activeTab = 'Abstractions';
 </script>
 
 <section class="wrapper">
@@ -53,6 +66,7 @@
 		<Quizzes {skill} user={$user} />
 	{/if}
 </section>
+<br />
 
 <style>
 	.tab {

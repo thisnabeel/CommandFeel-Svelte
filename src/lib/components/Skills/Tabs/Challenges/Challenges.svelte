@@ -1,6 +1,6 @@
 <script>
 	export let skill;
-	export let user;
+	import { user } from '$lib/stores/user';
 	import Api from '$lib/api/api.js';
 
 	import Challenge from './Challenge.svelte';
@@ -29,14 +29,16 @@
 </script>
 
 <div class="challenges">
-	<div class="adder">
-		<div class="add-challenge" on:click={addChallenge}>+</div>
-		<div class="btn btn-warning generate-challenge" on:click={generateChallenge}>
-			<i class="fa fa-bolt" />
+	{#if $user && $user.admin}
+		<div class="adder">
+			<div class="add-challenge" on:click={addChallenge}>+</div>
+			<div class="btn btn-warning generate-challenge" on:click={generateChallenge}>
+				<i class="fa fa-bolt" />
+			</div>
 		</div>
-	</div>
+	{/if}
 	{#each skill.challenges || [] as challenge}
-		<Challenge {challenge} {user} {skill} {destroy} />
+		<Challenge {challenge} {skill} {destroy} />
 	{/each}
 </div>
 

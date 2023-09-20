@@ -34,13 +34,13 @@
 </script>
 
 <li class="abstraction" class:has_video={abstraction && abstraction.preview}>
-	{#if user && user.admin === true}
+	{#if user && user.admin}
 		<span contenteditable on:keyup={(e) => debounce(event.target.innerHTML)}
-			>{abstraction.body}</span
+			>{@html abstraction.body}</span
 		>
 		<span class="fa fa-trash" on:click={() => destroy(abstraction)} />
 	{:else}
-		<span>{abstraction.body}</span>
+		<span>{@html abstraction.body}</span>
 	{/if}
 	<div
 		class:hidden={!abstraction.preview}

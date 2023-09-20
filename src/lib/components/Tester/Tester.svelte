@@ -3,6 +3,10 @@
 	import Quiz from '$lib/components/Skills/Tabs/Quiz/Quiz.svelte';
 
 	import { skills } from '$lib/stores/main';
+
+	import { flip } from 'svelte/animate';
+	import { quintOut } from 'svelte/easing';
+
 	let topic = '';
 	let allSkills = null;
 	let topics = [];
@@ -47,6 +51,11 @@
 		});
 
 		console.log(quizzes);
+	}
+
+	function hideQuiz(quiz) {
+		const id = quiz.id;
+		quizzes = quizzes.filter((q) => q.id !== id);
 	}
 
 	function removeTopic(item) {
@@ -109,7 +118,7 @@
 
 <div class="quizzes">
 	{#each quizzes as quiz}
-		<Quiz {quiz} skill={quiz.skill} editable={false} linkable={true} />
+		<Quiz {quiz} skill={quiz.skill} editable={false} linkable={true} {hideQuiz} />
 	{/each}
 </div>
 

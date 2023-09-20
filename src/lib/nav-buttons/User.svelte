@@ -70,6 +70,7 @@
 	.user {
 		top: 40px;
 		right: 145px;
+		z-index: 999;
 	}
 
 	.settings {
@@ -105,6 +106,7 @@
 		.user {
 			right: 65px;
 			top: 25px;
+			z-index: 999;
 		}
 
 		.guide.user {

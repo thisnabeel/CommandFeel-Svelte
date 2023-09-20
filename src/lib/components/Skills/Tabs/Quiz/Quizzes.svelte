@@ -1,6 +1,7 @@
 <script>
 	export let skill;
-	export let user;
+
+	import { user } from '$lib/stores/user';
 	import Api from '$lib/api/api.js';
 
 	import Quiz from './Quiz.svelte';
@@ -19,9 +20,15 @@
 		skill.quizzes = skill.quizzes.filter((q) => q.id !== id);
 	};
 
-	const generateQuiz = async () => {
+	const hideQuiz = async (quiz) => {
+		const id = quiz.id;
+		skill.quizzes = skill.quizzes.filter((q) => q.id !== id);
+	};
+
+	const generateQuiz = async (category = null) => {
 		const response = await Api.post('/skills/generate_quiz.json', {
-			id: skill.id
+			id: skill.id,
+			category: category
 		});
 
 		skill.quizzes = [...skill.quizzes, response];
@@ -29,29 +36,38 @@
 </script>
 
 <div class="quizzes">
-	<div class="adder">
-		<div class="add-quiz" on:click={addQuiz}>+</div>
-		<div class="btn btn-warning generate-quiz" on:click={generateQuiz}>
-			<i class="fa fa-bolt" />
-		</div>
-	</div>
-
 	{#each skill.quizzes || [] as quiz}
-		<Quiz {quiz} {user} {skill} {destroy} />
+		<Quiz {quiz} user={$user} {skill} {destroy} {hideQuiz} />
 	{/each}
+
+	{#if $user && $user.admin}
+		<div class="adder">
+			<div class="add-quiz btn btn-outline-warning" on:click={addQuiz}>+</div>
+			<div class="btn btn-warning generate-quiz" on:click={generateQuiz}>
+				<i class="fa fa-bolt" /> QA
+			</div>
+			<div class="btn btn-warning generate-quiz" on:click={() => generateQuiz('jeopardy')}>
+				<i class="fa fa-bolt" /> Jeopardy
+			</div>
+		</div>
+	{/if}
 </div>
 
 <style>
 	.adder {
-		font-size: 72px;
-		position: absolute;
-		left: 35%;
-		/* display: inline; */
-		height: 0px;
+		font-size: 22px;
 		color: #ffd67f;
-		width: 0px;
-		bottom: 60px;
-		display: -webkit-inline-box;
+		display: flex;
+	}
+
+	.adder > div {
+		flex: 1;
+		text-align: center;
+		margin: 1px;
+	}
+
+	.add-quiz {
+		font-size: 24px;
 	}
 
 	.quizzes {

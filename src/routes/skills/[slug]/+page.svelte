@@ -8,11 +8,13 @@
 	import Skill from '$lib/components/Skills/Show.svelte';
 	import { mapShown, selectSkill, selectWonder, selectedSkill } from '$lib/stores/main';
 	// import { navigating } from '$app/stores';
+	import { globalViewCategory } from '$lib/stores/view';
 
 	let skill;
 	let changedSlug;
 
 	onMount(async function () {
+		globalViewCategory.set('Skills');
 		skill = await Api.get('/skills/' + $page.params.slug + '.json');
 		console.log('SKILL FIND', skill);
 	});

@@ -2,9 +2,12 @@
 	import Button from './Button.svelte';
 	import MediaQuery from '$lib/MediaQuery/MediaQuery.svelte';
 	import { garage } from '$lib/stores/pop-ups';
+	import { user } from '$lib/stores/user';
+
 	import User from './User.svelte';
 	import Guide from './Guide.svelte';
 	import { loomifiedView } from '$lib/stores/view';
+	import { goto } from '$app/navigation';
 
 	const openGaragePopUp = () => {
 		garage.set(true);
@@ -15,6 +18,12 @@
 {#if !$loomifiedView}
 	<User />
 	<Guide />
+
+	{#if $user && $user.admin}
+		<aside class="news" on:click={() => goto('/control_panel')}>
+			<div class="btn btn-warning">Control Panel</div>
+		</aside>
+	{/if}
 {/if}
 
 <!-- <aside class="book">

@@ -2,8 +2,8 @@
 	import Api from '$lib/api/api';
 	import { openModal } from 'svelte-modals';
 	import SkillModal from '$lib/modals/videos/skill.svelte';
+	import { user } from '$lib/stores/user';
 
-	export let user;
 	export let refresh = () => {};
 	export let skill;
 	export let challenge;
@@ -31,7 +31,7 @@
 </script>
 
 <li class:has_video={challenge && challenge.preview}>
-	{#if user && user.admin === true}
+	{#if $user && $user.admin === true}
 		<span contenteditable on:keyup={(e) => debounce(event.target.innerHTML)}>{challenge.title}</span
 		>
 		{#if !editable}
