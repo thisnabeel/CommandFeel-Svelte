@@ -14,7 +14,7 @@
 		console.log('skillsMap', value);
 		allSkills = value;
 
-		topics = allSkills.filter((s) => s.title === 'AWS' || s.title === 'Ruby on Rails');
+		topics = allSkills.filter((s) => s.title === 'SOLID Principles' || s.title === 'DevOps');
 		test();
 	});
 
@@ -117,8 +117,10 @@
 {/if}
 
 <div class="quizzes">
-	{#each quizzes as quiz}
-		<Quiz {quiz} skill={quiz.skill} editable={false} linkable={true} {hideQuiz} />
+	{#each quizzes as quiz (quiz)}
+		<div animate:flip={{ delay: 250, duration: 250, easing: quintOut }}>
+			<Quiz {quiz} skill={quiz.skill} editable={false} linkable={true} {hideQuiz} />
+		</div>
 	{/each}
 </div>
 

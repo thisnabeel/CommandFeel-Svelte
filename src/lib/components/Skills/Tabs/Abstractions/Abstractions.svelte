@@ -29,6 +29,8 @@
 
 		skill.abstractions = [...skill.abstractions, response];
 	};
+
+	let requested = false;
 </script>
 
 <ul class="abstractions">
@@ -40,14 +42,49 @@
 			</div>
 		</div>
 	{/if}
-	{#each skill.abstractions as abstraction}
-		<li>
-			<Abstraction {skill} {abstraction} user={$user} removeAbstraction={handleRemoveAbstraction} />
-		</li>
-	{/each}
+	{#if skill.abstractions.length > 0}
+		{#each skill.abstractions as abstraction}
+			<li>
+				<Abstraction
+					{skill}
+					{abstraction}
+					user={$user}
+					removeAbstraction={handleRemoveAbstraction}
+				/>
+			</li>
+		{/each}
+	{:else}
+		<div class="cta">
+			<h1>No Abstractions Yet.</h1>
+			<br />
+			{#if !requested}
+				<div class="btn btn-warning" on:click={() => (requested = true)}>Request Abstraction</div>
+			{:else}
+				<div class="requested">
+					Thank You for requesting.<br /> Our team will start simplifying this concept soon.
+				</div>
+			{/if}
+		</div>
+	{/if}
 </ul>
 
 <style>
+	.cta {
+		background: rgb(207, 41, 41);
+		color: #fff;
+		display: block;
+		padding: 3em;
+		border-radius: 8px;
+	}
+
+	.cta .btn {
+		display: block;
+		font-size: 22px;
+	}
+
+	.cta h1 {
+		color: #fff;
+	}
 	.adder {
 		font-size: 72px;
 		position: absolute;

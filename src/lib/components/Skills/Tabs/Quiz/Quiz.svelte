@@ -4,8 +4,10 @@
 	import SkillModal from '$lib/modals/videos/skill.svelte';
 	import { goto } from '$app/navigation';
 	import EditAnswer from './EditAnswers/EditAnswer.svelte';
+	import { user } from '$lib/stores/user';
+	import Swal from 'sweetalert2';
+	import API from '$lib/api/api';
 
-	export let user;
 	export let refresh = () => {};
 	export let skill;
 	export let quiz;
@@ -32,43 +34,65 @@
 
 	let showChoices = false;
 
+	let ankiSaving = false;
+
 	//
-	function ankiSave(category) {
-		console.log({ category });
-		hideQuiz(quiz);
+	async function ankiSave(category) {
+		if (ankiSaving) return;
+		if (!$user) {
+			Swal.fire('Unauthorized', 'Please Sign in to save questions to your Study List', 'error');
+		} else {
+			// console.log({ category });
+			ankiSaving = true;
+
+			const res = await API.post('/user_quiz_statuses.json', {
+				user_id: $user.id,
+				quiz_id: quiz.id,
+				status: category
+			});
+			console.log({ res });
+			hideQuiz(quiz);
+			ankiSaving = false;
+		}
 	}
 </script>
 
 <li class="quiz" class:has_video={quiz && quiz.preview}>
-	{#if user && user.admin === true}
+	{#if $user && $user.admin === true && editable}
 		<span contenteditable on:keyup={(e) => debounce(event.target.innerHTML)}
 			>{@html quiz.question}</span
 		>
 
-		{#if editable}
-			<span class="fa fa-trash" on:click={() => destroy(quiz.id)} />
-		{/if}
+		<span class="fa fa-trash" on:click={() => destroy(quiz.id)} />
 
-		{#if editable}
-			<hr />
-			<EditAnswer {quiz} />
-		{/if}
+		<hr />
+		<EditAnswer {quiz} />
 	{:else}
 		<div>
 			<div>
 				{@html quiz.question}
-				<hr />
-				<div class="row">
+				<div class="row hidden">
+					<hr />
 					<div class="col-lg-4 col-md-4 col-sm-4">
-						<div class="btn btn-block btn-success" on:click={() => ankiSave('easy')}>Easy</div>
-					</div>
-					<div class="col-lg-4 col-md-4 col-sm-4">
-						<div class="btn btn-block btn-warning" on:click={() => ankiSave('medium')}>
-							Inarticulate
+						<div class="btn btn-block btn-success" on:click={() => ankiSave(1)}>
+							{#if !$user}
+								<i class="fa fa-lock" />
+							{/if} Easy
 						</div>
 					</div>
 					<div class="col-lg-4 col-md-4 col-sm-4">
-						<div class="btn btn-block btn-danger" on:click={() => ankiSave('hard')}>No Idea</div>
+						<div class="btn btn-block btn-warning" on:click={() => ankiSave(2)}>
+							{#if !$user}
+								<i class="fa fa-lock" />
+							{/if} Inarticulate
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-4">
+						<div class="btn btn-block btn-danger" on:click={() => ankiSave(3)}>
+							{#if !$user}
+								<i class="fa fa-lock" />
+							{/if} No Idea
+						</div>
 					</div>
 				</div>
 				<hr />

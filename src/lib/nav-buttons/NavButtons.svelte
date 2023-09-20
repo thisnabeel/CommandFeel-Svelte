@@ -6,24 +6,45 @@
 
 	import User from './User.svelte';
 	import Guide from './Guide.svelte';
-	import { loomifiedView } from '$lib/stores/view';
+	import { loomifiedView, showMobileMenu } from '$lib/stores/view';
 	import { goto } from '$app/navigation';
 
 	const openGaragePopUp = () => {
 		garage.set(true);
 	};
+
+	function visit(link) {
+		showMobileMenu.set(false);
+		goto(link);
+	}
 </script>
 
-<!-- {#if matches} -->
-{#if !$loomifiedView}
-	<User />
-	<Guide />
+{#if !$showMobileMenu}
+	<!-- {#if matches} -->
+	{#if !$loomifiedView}
+		<User />
+		<Guide />
 
-	{#if $user && $user.admin}
-		<aside class="news" on:click={() => goto('/control_panel')}>
-			<div class="btn btn-warning">Control Panel</div>
-		</aside>
+		{#if $user && $user.admin}
+			<aside class="news hide-mobile" on:click={() => goto('/control_panel')}>
+				<div class="btn btn-warning">Control Panel</div>
+			</aside>
+		{/if}
 	{/if}
+	<div class="fa fa-bars show-menu" on:click={() => showMobileMenu.set(true)} />
+{:else}
+	<div class="mobileMenu">
+		<div class="close-menu" on:click={() => showMobileMenu.set(false)}>
+			<i class="fa fa-times" />
+		</div>
+
+		<ul class="links clean-list">
+			{#if $user && $user.admin}
+				<li on:click={() => visit('/control_panel')}>Control Panel</li>
+			{/if}
+			<li on:click={() => visit('/study_list')}>My Study List</li>
+		</ul>
+	</div>
 {/if}
 
 <!-- <aside class="book">
@@ -68,5 +89,58 @@
 		width: 30px;
 		top: 13px;
 		left: 10px;
+	}
+
+	.show-menu {
+		display: none;
+	}
+
+	.mobileMenu {
+		display: block;
+		position: fixed;
+		width: 100vw;
+		height: 100vh;
+		background: #000;
+		z-index: 99999;
+	}
+
+	.close-menu {
+		position: absolute;
+		top: 10px;
+		left: 18px;
+		color: #fff;
+		font-size: 34px;
+	}
+
+	.mobileMenu .links {
+		margin-top: 50px;
+		/* padding: 1em; */
+		color: #fff;
+	}
+
+	.links li {
+		padding: 1em;
+		font-size: 24px;
+		border-bottom: 1px solid #4d4d4d;
+	}
+
+	@media (max-width: 480px) {
+		.show-menu {
+			position: fixed;
+			top: 24px;
+			left: 14px;
+			font-size: 34px;
+			z-index: 999;
+			background: #fff;
+			padding: 10px;
+			border-radius: 4px;
+			color: #97b1ff;
+			/* display: block; */
+			display: none;
+		}
+
+		.hide-mobile {
+			display: none;
+		}
 	}
 </style>

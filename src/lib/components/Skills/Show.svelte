@@ -18,10 +18,6 @@
 	let activeTab = 'Abstractions';
 
 	$: if (skill && (!$user || !$user.admin)) {
-		if (skill.abstractions.length < 1) {
-			tabs = tabs.filter((t) => t !== 'Abstractions');
-		}
-
 		if (skill.quizzes.length < 1) {
 			tabs = tabs.filter((t) => t !== 'Quiz');
 		}

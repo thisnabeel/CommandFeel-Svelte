@@ -5,3 +5,5 @@ export const globalViewCategory = writable('Languages');
 export const loomifiedView = writable(false);
 
 export const showGuide = writable(true);
+
+export const showMobileMenu = writable(false);
