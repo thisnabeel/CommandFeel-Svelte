@@ -71,8 +71,8 @@
 		<div>
 			<div>
 				{@html quiz.question}
-				<div class="row hidden">
-					<hr />
+				<br /><br />
+				<div class="row">
 					<div class="col-lg-4 col-md-4 col-sm-4">
 						<div class="btn btn-block btn-success" on:click={() => ankiSave(1)}>
 							{#if !$user}

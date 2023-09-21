@@ -26,9 +26,9 @@
 		<Guide />
 
 		{#if $user && $user.admin}
-			<aside class="news hide-mobile" on:click={() => goto('/control_panel')}>
+			<!-- <aside class="news hide-mobile" on:click={() => goto('/control_panel')}>
 				<div class="btn btn-warning">Control Panel</div>
-			</aside>
+			</aside> -->
 		{/if}
 	{/if}
 	<div class="fa fa-bars show-menu" on:click={() => showMobileMenu.set(true)} />
@@ -42,7 +42,7 @@
 			{#if $user && $user.admin}
 				<li on:click={() => visit('/control_panel')}>Control Panel</li>
 			{/if}
-			<li on:click={() => visit('/study_list')}>My Study List</li>
+			<li on:click={() => visit('/my_study_list')}>My Study List</li>
 		</ul>
 	</div>
 {/if}
@@ -92,13 +92,24 @@
 	}
 
 	.show-menu {
-		display: none;
+		position: fixed;
+		top: 24px;
+		left: 14px;
+		font-size: 34px;
+		z-index: 999;
+		background: #fff;
+		padding: 10px;
+		border-radius: 4px;
+		color: #97b1ff;
+		/* display: block; */
+		/* display: none; */
 	}
 
 	.mobileMenu {
 		display: block;
 		position: fixed;
-		width: 100vw;
+		left: 0;
+		width: 20vw;
 		height: 100vh;
 		background: #000;
 		z-index: 99999;
@@ -113,7 +124,7 @@
 	}
 
 	.mobileMenu .links {
-		margin-top: 50px;
+		margin-top: 70px;
 		/* padding: 1em; */
 		color: #fff;
 	}
@@ -122,6 +133,10 @@
 		padding: 1em;
 		font-size: 24px;
 		border-bottom: 1px solid #4d4d4d;
+	}
+
+	.links li:hover {
+		background: rgb(53, 53, 53);
 	}
 
 	@media (max-width: 480px) {
@@ -136,11 +151,20 @@
 			border-radius: 4px;
 			color: #97b1ff;
 			/* display: block; */
-			display: none;
+			/* display: none; */
 		}
 
 		.hide-mobile {
 			display: none;
+		}
+
+		.mobileMenu {
+			display: block;
+			position: fixed;
+			width: 100vw;
+			height: 100vh;
+			background: #000;
+			z-index: 99999;
 		}
 	}
 </style>
