@@ -57,7 +57,7 @@
 		<h1>You are not signed in!</h1>
 		<br />
 
-		<div class="requested text-center" />
+		<div class="requested text-center">Do sign in</div>
 	</div>
 {:else}{/if}
 <hr />
