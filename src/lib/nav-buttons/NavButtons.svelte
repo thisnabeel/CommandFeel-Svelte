@@ -42,7 +42,9 @@
 			{#if $user && $user.admin}
 				<li on:click={() => visit('/control_panel')}>Control Panel</li>
 			{/if}
+			<li on:click={() => visit('/')}>Pop Quiz</li>
 			<li on:click={() => visit('/my_study_list')}>My Study List</li>
+			<li on:click={() => visit('/algorithms')}>Algorithms</li>
 		</ul>
 	</div>
 {/if}
