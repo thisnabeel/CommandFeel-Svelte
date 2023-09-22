@@ -39,15 +39,10 @@
 <div class="row categories">
 	<hr />
 	<div class="col-lg-4 col-md-4 col-sm-4">
-		<div class="btn" class:active={category === 1} on:click={() => (category = 1)}>Easy</div>
+		<div class="btn" class:active={category === 1} on:click={() => (category = 1)}>Confident</div>
 	</div>
 	<div class="col-lg-4 col-md-4 col-sm-4">
-		<div class="btn" class:active={category === 2} on:click={() => (category = 2)}>
-			Inarticulate
-		</div>
-	</div>
-	<div class="col-lg-4 col-md-4 col-sm-4">
-		<div class="btn" class:active={category === 3} on:click={() => (category = 3)}>No Idea</div>
+		<div class="btn" class:active={category === 2} on:click={() => (category = 2)}>Stuttering</div>
 	</div>
 </div>
 
