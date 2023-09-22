@@ -77,21 +77,14 @@
 						<div class="btn btn-block btn-success" on:click={() => ankiSave(1)}>
 							{#if !$user}
 								<i class="fa fa-lock" />
-							{/if} Easy
+							{/if} Confident
 						</div>
 					</div>
 					<div class="col-lg-4 col-md-4 col-sm-4">
 						<div class="btn btn-block btn-warning" on:click={() => ankiSave(2)}>
 							{#if !$user}
 								<i class="fa fa-lock" />
-							{/if} Inarticulate
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-4 col-sm-4">
-						<div class="btn btn-block btn-danger" on:click={() => ankiSave(3)}>
-							{#if !$user}
-								<i class="fa fa-lock" />
-							{/if} No Idea
+							{/if} Stuttering
 						</div>
 					</div>
 				</div>
