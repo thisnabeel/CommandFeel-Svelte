@@ -38,10 +38,10 @@
 
 <div class="row categories">
 	<hr />
-	<div class="col-lg-4 col-md-4 col-sm-4">
+	<div class="col-lg-6 col-md-6 col-sm-6">
 		<div class="btn" class:active={category === 1} on:click={() => (category = 1)}>Confident</div>
 	</div>
-	<div class="col-lg-4 col-md-4 col-sm-4">
+	<div class="col-lg-6 col-md-6 col-sm-6">
 		<div class="btn" class:active={category === 2} on:click={() => (category = 2)}>Stuttering</div>
 	</div>
 </div>
@@ -52,7 +52,7 @@
 		<h1>You are not signed in!</h1>
 		<br />
 
-		<div class="requested text-center">Do sign in</div>
+		<div class="requested text-center">Sign in to use make your Study List</div>
 	</div>
 {:else}{/if}
 <hr />
