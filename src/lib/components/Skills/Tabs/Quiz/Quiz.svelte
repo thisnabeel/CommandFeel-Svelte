@@ -81,7 +81,7 @@
 						</div>
 					</div>
 					<div class="col-lg-4 col-md-4 col-sm-4">
-						<div class="btn btn-block btn-warning" on:click={() => ankiSave(2)}>
+						<div class="btn btn-block btn-danger" on:click={() => ankiSave(2)}>
 							{#if !$user}
 								<i class="fa fa-lock" />
 							{/if} Stuttering
