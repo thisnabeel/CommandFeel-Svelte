@@ -5,6 +5,8 @@
 	import Api from '$lib/api/api.js';
 
 	import Quiz from './Quiz.svelte';
+	import QuizSet from './QuizSet.svelte';
+	import API from '$lib/api/api.js';
 
 	const addQuiz = async () => {
 		const response = await Api.post('/quizzes.json', {
@@ -33,27 +35,46 @@
 
 		skill.quizzes = [...skill.quizzes, response];
 	};
+
+
+	async function addQuizSet() {
+		const res = await API.post("/quiz_sets.json", {
+			quiz_setable_id: skill.id,
+			quiz_setable_type: "Skill",
+			position: skill.quiz_sets.length + 1,
+			title: "New One"
+		})
+		console.log({res})
+		skill.quiz_sets = [...skill.quiz_sets, res]
+	}
+
+	async function removeSet(payload) {
+		console.log({payload})
+		const res = await API.delete("/quiz_sets/"+payload.id+".json")
+		skill.quiz_sets = skill.quiz_sets.filter(s => s.id !== payload.id)
+	}
 </script>
 
-<div class="quizzes">
-	{#each skill.quizzes || [] as quiz}
-		<Quiz {quiz} user={$user} {skill} {destroy} {hideQuiz} />
-	{/each}
+
+<div class="quiz_sets">
+	<ul class="clean-list">
+		{#each skill.quiz_sets as set}
+			<QuizSet {skill} {set} {removeSet}></QuizSet>
+		{/each}
+	</ul>
 
 	{#if $user && $user.admin}
 		<div class="adder">
-			<div class="add-quiz btn btn-outline-warning" on:click={addQuiz}>+</div>
-			<div class="btn btn-warning generate-quiz" on:click={generateQuiz}>
-				<i class="fa fa-bolt" /> QA
-			</div>
-			<div class="btn btn-warning generate-quiz" on:click={() => generateQuiz('jeopardy')}>
-				<i class="fa fa-bolt" /> Jeopardy
-			</div>
+			<div class="add-quiz btn btn-outline-warning" on:click={addQuizSet}>+</div>
 		</div>
 	{/if}
 </div>
 
 <style>
+
+	.quiz_sets {
+		margin-top: 10px
+	}
 	.adder {
 		font-size: 22px;
 		color: #ffd67f;

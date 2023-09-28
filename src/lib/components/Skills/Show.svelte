@@ -18,7 +18,7 @@
 	let activeTab = 'Abstractions';
 
 	$: if (skill && (!$user || !$user.admin)) {
-		if (skill.quizzes.length < 1) {
+		if (skill.quiz_sets.length < 1) {
 			tabs = tabs.filter((t) => t !== 'Quiz');
 		}
 

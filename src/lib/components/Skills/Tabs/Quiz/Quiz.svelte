@@ -7,6 +7,7 @@
 	import { user } from '$lib/stores/user';
 	import Swal from 'sweetalert2';
 	import API from '$lib/api/api';
+	import { onMount } from 'svelte';
 
 	export let refresh = () => {};
 	export let skill;
@@ -55,6 +56,40 @@
 			ankiSaving = false;
 		}
 	}
+
+	
+	let media = [];
+	let mediaRecorder = null;
+	let audioPlayer = null;
+	let recording = false;
+	onMount(async () => {
+		const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+		mediaRecorder = new MediaRecorder(stream);
+		mediaRecorder.ondataavailable = (e) => media.push(e.data)
+		mediaRecorder.onstop = function(){
+			const blob = new Blob(media, {'type' : 'audio/mpeg' });
+			media = []; 
+			console.log(blob)
+			const audioUrl = URL.createObjectURL(blob);
+
+			// Set the audio element's 'src' attribute to the object URL
+			audioPlayer.src = audioUrl;
+
+			audioPlayer.play();
+			//   console.log({saveable})
+				// checkSaveability()
+			//   audio.play();
+		}
+	})
+	function toggleRecording(){ 
+		if (recording) {
+			mediaRecorder.stop();
+		} else {
+			mediaRecorder.start();
+		}
+		recording = !recording;
+	}
+
 </script>
 
 <li class="quiz" class:has_video={quiz && quiz.preview}>
@@ -72,6 +107,15 @@
 			<div>
 				{@html quiz.question}
 				<br /><br />
+				<!-- <div class="row" style="margin-bottom: 6px">
+					<div class="col-lg-12 col-md-12 col-sm-12">
+						<div class="btn btn-block btn-outline-primary">
+							<i class="fa fa-microphone"></i>
+						</div>
+					</div>
+				</div> -->
+				<audio src="" bind:this={audioPlayer} style="display:none"></audio>
+				<i class="fa fa-microphone record" class:recording={recording} on:click={toggleRecording}></i>
 				<div class="row">
 					<div class="col-lg-6 col-md-6 col-sm-6">
 						<div class="btn btn-block btn-success" on:click={() => ankiSave(1)}>
@@ -117,6 +161,21 @@
 </li>
 
 <style>
+	.record {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		color: #ccc;
+	}
+
+	.record.recording {
+		color: red !important;
+		animation: hover 3s ease infinite;
+	}
+
+	.record:hover {
+		color: purple;
+	}
 	.btn-block {
 		display: block;
 	}

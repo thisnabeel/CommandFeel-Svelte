@@ -3,10 +3,15 @@
 	import Quiz from '$lib/components/Skills/Tabs/Quiz/Quiz.svelte';
 
 	import { skills } from '$lib/stores/main';
+	import { globalViewCategory } from '$lib/stores/view';
+	import { onMount } from 'svelte';
 
 	import { flip } from 'svelte/animate';
 	import { quintOut } from 'svelte/easing';
 
+	onMount(() => {
+		globalViewCategory.set("Skills");
+	})
 	let topic = '';
 	let allSkills = null;
 	let topics = [];
@@ -15,8 +20,10 @@
 		allSkills = value;
 
 		topics = allSkills.filter((s) => s.title === 'SOLID Principles' || s.title === 'DevOps');
-		test();
+		// test();
 	});
+
+	let initiated = false;
 
 	let results = [];
 	let showResults;
@@ -45,11 +52,14 @@
 	}
 
 	let quizzes = [];
+	let loading = false;
 	async function test() {
+		initiated = true;
+		loading = true;
 		quizzes = await API.post('/quizzes/batch_test.json', {
 			skills: topics
 		});
-
+		loading = false;
 		console.log(quizzes);
 	}
 
@@ -113,7 +123,19 @@
 	</div>
 
 	<br />
-	<div class="btn btn-lg btn-primary btn-block" on:click={test}>Test</div>
+	{#if loading}
+		<div class="btn btn-lg btn-blocked btn-block">
+			Loading...
+		</div>
+	{:else}
+		<div class="btn btn-lg btn-primary btn-block" on:click={test}>
+			{#if initiated}
+				Test Topics
+			{:else}
+				Click To Test Topics
+			{/if}
+		</div>
+	{/if}
 {/if}
 
 <div class="quizzes">
@@ -141,6 +163,11 @@
 		color: #fff;
 		padding: 10px;
 		border-radius: 10px;
+	}
+
+	.btn-blocked {
+		background-color: gray;
+		color: #fff;
 	}
 	.tester {
 		font-size: 44px;
