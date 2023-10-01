@@ -2,6 +2,7 @@
 	import Api from '$lib/api/api';
 	import Update from '$lib/functions/debounce';
 	// import { set } from 'svelte';
+	import Editor from 'cl-editor/src/Editor.svelte';
 
 	export let quiz;
 	async function addChoice() {
@@ -30,12 +31,23 @@
 
 {#each quiz.choices as choice}
 	<li class="choice">
-		<textarea
+		<!-- <textarea
 			class="form-control"
 			bind:value={choice.body}
 			on:keydown={() => {
 				Update(`/quiz_choices/${choice.id}.json`, {
 					body: choice.body
+				});
+			}}
+		/> -->
+		<Editor
+			html={choice.body}
+			on:change={(evt) => {
+				const value = evt.detail;
+				console.log('saving value', value);
+				// save(key, value);
+				Update(`/quiz_choices/${choice.id}.json`, {
+					body: value
 				});
 			}}
 		/>
@@ -58,6 +70,18 @@
 </div>
 
 <style>
+	:global(.cl-actionbar) {
+		/* display: none; */
+		font-size: 12px;
+	}
+
+	:global(.cl) {
+		/* box-shadow: none !important; */
+	}
+	:global(.cl-content) {
+		background-color: transparent !important;
+		height: max-content !important;
+	}
 	nav.flex {
 		display: flex;
 	}

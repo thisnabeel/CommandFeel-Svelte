@@ -57,39 +57,57 @@
 		}
 	}
 
-	
 	let media = [];
 	let mediaRecorder = null;
 	let audioPlayer = null;
 	let recording = false;
-	onMount(async () => {
+	onMount(async () => {});
+
+	async function startStream() {
 		const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 		mediaRecorder = new MediaRecorder(stream);
-		mediaRecorder.ondataavailable = (e) => media.push(e.data)
-		mediaRecorder.onstop = function(){
-			const blob = new Blob(media, {'type' : 'audio/mpeg' });
-			media = []; 
-			console.log(blob)
+		const media = [];
+
+		mediaRecorder.ondataavailable = (e) => media.push(e.data);
+
+		mediaRecorder.onstop = function () {
+			const blob = new Blob(media, { type: 'audio/mpeg' });
+			media.length = 0; // Clear the media array
+			console.log(blob);
 			const audioUrl = URL.createObjectURL(blob);
 
 			// Set the audio element's 'src' attribute to the object URL
 			audioPlayer.src = audioUrl;
 
 			audioPlayer.play();
-			//   console.log({saveable})
-				// checkSaveability()
-			//   audio.play();
-		}
-	})
-	function toggleRecording(){ 
-		if (recording) {
+		};
+
+		mediaRecorder.start();
+	}
+
+	function stopStream() {
+		if (mediaRecorder && mediaRecorder.state !== 'inactive') {
 			mediaRecorder.stop();
-		} else {
-			mediaRecorder.start();
+			mediaRecorder = null; // Set mediaRecorder to null
 		}
+	}
+
+	function toggleRecording() {
+		if (recording) {
+			stopStream();
+		} else {
+			startStream();
+		}
+
 		recording = !recording;
 	}
 
+	// Additional cleanup if needed
+	window.addEventListener('beforeunload', () => {
+		if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+			mediaRecorder.stop();
+		}
+	});
 </script>
 
 <li class="quiz" class:has_video={quiz && quiz.preview}>
@@ -114,8 +132,8 @@
 						</div>
 					</div>
 				</div> -->
-				<audio src="" bind:this={audioPlayer} style="display:none"></audio>
-				<i class="fa fa-microphone record" class:recording={recording} on:click={toggleRecording}></i>
+				<audio src="" bind:this={audioPlayer} style="display:none" />
+				<i class="fa fa-microphone record" class:recording on:click={toggleRecording} />
 				<div class="row">
 					<div class="col-lg-6 col-md-6 col-sm-6">
 						<div class="btn btn-block btn-success" on:click={() => ankiSave(1)}>
