@@ -61,10 +61,11 @@
 	let mediaRecorder = null;
 	let audioPlayer = null;
 	let recording = false;
+	let stream = null;
 	onMount(async () => {});
 
 	async function startStream() {
-		const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+		stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 		mediaRecorder = new MediaRecorder(stream);
 		const media = [];
 
@@ -86,9 +87,15 @@
 	}
 
 	function stopStream() {
+		if (stream) {
+			stream.getTracks().forEach(function (track) {
+				track.stop();
+			});
+		}
 		if (mediaRecorder && mediaRecorder.state !== 'inactive') {
 			mediaRecorder.stop();
-			mediaRecorder = null; // Set mediaRecorder to null
+			mediaRecorder = null;
+			stream = null; // Set mediaRecorder to null
 		}
 	}
 
