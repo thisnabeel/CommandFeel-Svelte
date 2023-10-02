@@ -59,7 +59,7 @@
 		initiated = true;
 		loading = true;
 		quizzes = await API.post('/quizzes/batch_test.json', {
-			skills: topics
+			skills: topics.filter((s) => !s.disabled)
 		});
 		loading = false;
 		console.log(quizzes);
