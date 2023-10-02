@@ -48,52 +48,61 @@
 </script>
 
 <li class="set">
-	<div class="head" on:click={() => (expanded = !expanded)}>
+	<div
+		class="head"
+		on:click={(e) => {
+			if (!e.target.closest('.toggle-ai-maker')) {
+				expanded = !expanded;
+			}
+		}}
+	>
 		<span class="content" contenteditable="" on:keyup={(e) => saveTitle(e.target.innerHTML)}
 			>{set.title}</span
 		>
-	</div>
-	<div class="toggle-ai-maker btn btn-warning" on:click={() => (aiMaker = !aiMaker)}>
-		<i class="fa fa-bolt" />
+		<div class="toggle-ai-maker btn btn-warning" on:click={() => (aiMaker = !aiMaker)}>
+			<i class="fa fa-bolt" />
+		</div>
 	</div>
 	{#if expanded}
 		<div class="remove" on:click={() => removeSet(set)}><i class="fa fa-trash" /></div>
 		{#if aiMaker}
 			<div class="ai-maker">
 				<input type="text" placeholder="Enter Prompt..." class="form-control" bind:value={prompt} />
-			</div>
-
-			<div class="adder">
-				<div class="add-quiz btn btn-outline-warning" on:click={() => addQuiz()}>+</div>
-				<div class="btn btn-outline-warning generate-quiz" on:click={() => generateQuiz('general')}>
-					<i class="fa fa-bolt" /> General
-				</div>
-				<div
-					class="btn btn-outline-warning generate-quiz"
-					on:click={() => generateQuiz('jeopardy')}
-				>
-					<i class="fa fa-bolt" /> Jeopardy
-				</div>
-				<div
-					class="btn btn-outline-warning generate-quiz"
-					on:click={() => generateQuiz('general_mc')}
-				>
-					<i class="fa fa-bolt" /> <i class="fa fa-list" /> General
-				</div>
-				<div
-					class="btn btn-outline-warning generate-quiz"
-					on:click={() => generateQuiz('techniques_mc')}
-				>
-					<i class="fa fa-bolt" /> <i class="fa fa-list" /> Techniques
-				</div>
-				<div
-					class="btn btn-outline-warning generate-quiz"
-					on:click={() => generateQuiz('abstractions_mc')}
-				>
-					<i class="fa fa-bolt" /> <i class="fa fa-list" /> Abstractions
-				</div>
-				<div class="btn btn-outline-warning generate-quiz" on:click={() => generateQuiz('steps')}>
-					<i class="fa fa-bolt" /> <i class="fa fa-list" /> Steps
+				<div class="adder">
+					<div class="add-quiz btn btn-outline-warning" on:click={() => addQuiz()}>+</div>
+					<div
+						class="btn btn-outline-warning generate-quiz"
+						on:click={() => generateQuiz('general')}
+					>
+						<i class="fa fa-bolt" /> General
+					</div>
+					<div
+						class="btn btn-outline-warning generate-quiz"
+						on:click={() => generateQuiz('jeopardy')}
+					>
+						<i class="fa fa-bolt" /> Jeopardy
+					</div>
+					<div
+						class="btn btn-outline-warning generate-quiz"
+						on:click={() => generateQuiz('general_mc')}
+					>
+						<i class="fa fa-bolt" /> <i class="fa fa-list" /> General
+					</div>
+					<div
+						class="btn btn-outline-warning generate-quiz"
+						on:click={() => generateQuiz('techniques_mc')}
+					>
+						<i class="fa fa-bolt" /> <i class="fa fa-list" /> Techniques
+					</div>
+					<div
+						class="btn btn-outline-warning generate-quiz"
+						on:click={() => generateQuiz('abstractions_mc')}
+					>
+						<i class="fa fa-bolt" /> <i class="fa fa-list" /> Abstractions
+					</div>
+					<div class="btn btn-outline-warning generate-quiz" on:click={() => generateQuiz('steps')}>
+						<i class="fa fa-bolt" /> <i class="fa fa-list" /> Steps
+					</div>
 				</div>
 			</div>
 		{/if}

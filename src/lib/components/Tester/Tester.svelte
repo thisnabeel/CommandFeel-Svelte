@@ -9,9 +9,10 @@
 	import { flip } from 'svelte/animate';
 	import { quintOut } from 'svelte/easing';
 
+	export let jobSkills = null;
 	onMount(() => {
-		globalViewCategory.set("Skills");
-	})
+		globalViewCategory.set('Skills');
+	});
 	let topic = '';
 	let allSkills = null;
 	let topics = [];
@@ -75,21 +76,23 @@
 </script>
 
 <div class="input-wrapper">
-	<input
-		type="text"
-		class="form-control tester"
-		placeholder="Search from {allSkills.length} Skills to Test..."
-		bind:value={topic}
-		on:keyup={search}
-		on:mouseenter={() => (showResults = true)}
-		on:mouseleave={() => {
-			setTimeout(function () {
-				if (!hoveringResults) {
-					hideResults();
-				}
-			}, 50);
-		}}
-	/>
+	{#if !jobSkills}
+		<input
+			type="text"
+			class="form-control tester"
+			placeholder="Search from {allSkills.length} Skills to Test..."
+			bind:value={topic}
+			on:keyup={search}
+			on:mouseenter={() => (showResults = true)}
+			on:mouseleave={() => {
+				setTimeout(function () {
+					if (!hoveringResults) {
+						hideResults();
+					}
+				}, 50);
+			}}
+		/>
+	{/if}
 	{#if results.length > 0 && showResults}
 		<div
 			class="results clean-list"
@@ -124,9 +127,7 @@
 
 	<br />
 	{#if loading}
-		<div class="btn btn-lg btn-blocked btn-block">
-			Loading...
-		</div>
+		<div class="btn btn-lg btn-blocked btn-block">Loading...</div>
 	{:else}
 		<div class="btn btn-lg btn-primary btn-block" on:click={test}>
 			{#if initiated}
