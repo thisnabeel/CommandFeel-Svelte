@@ -10,6 +10,7 @@
 	import { quintOut } from 'svelte/easing';
 
 	export let jobSkills = null;
+
 	onMount(() => {
 		globalViewCategory.set('Skills');
 	});
@@ -70,9 +71,21 @@
 	}
 
 	function removeTopic(item) {
-		topics = topics.filter((topic) => item.id !== topic.id);
+		if (jobSkills) {
+			topics.find((t) => t.id === item.id).disabled = !topics.find((t) => t.id === item.id)
+				.disabled;
+			topics = topics;
+		} else {
+			topics = topics.filter((topic) => item.id !== topic.id);
+		}
 	}
 	let hoveringResults = false;
+
+	$: {
+		if (jobSkills) {
+			topics = jobSkills;
+		}
+	}
 </script>
 
 <div class="input-wrapper">
@@ -121,7 +134,9 @@
 {#if topics.length > 0}
 	<div class="topics clean-list">
 		{#each topics as item}
-			<li class="topic" on:click={() => removeTopic(item)}>{item.title}</li>
+			<li class="topic" class:disabled={item.disabled} on:click={() => removeTopic(item)}>
+				{item.title}
+			</li>
 		{/each}
 	</div>
 
@@ -164,6 +179,10 @@
 		color: #fff;
 		padding: 10px;
 		border-radius: 10px;
+	}
+
+	.topic.disabled {
+		background-color: #ccc;
 	}
 
 	.btn-blocked {
@@ -211,6 +230,17 @@
 	@media (max-width: 480px) {
 		.quizzes {
 			width: 95%;
+		}
+
+		.topic {
+			display: inline-block;
+			margin: 2px;
+			font-size: 14px;
+			line-height: 1;
+			background-color: purple;
+			color: #fff;
+			padding: 10px;
+			border-radius: 10px;
 		}
 	}
 </style>

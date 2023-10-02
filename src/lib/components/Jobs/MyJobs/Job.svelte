@@ -1,17 +1,28 @@
 <script>
+	import API from '$lib/api/api';
 	import Tester from '$lib/components/Tester/Tester.svelte';
 
 	export let job;
 	export let destroyJob;
 
 	let isOpen = false;
-	let activeTab = 0;
+	let activeTab = 1;
 	let jobSkills = [];
+
+	$: {
+		if (isOpen && activeTab === 1) {
+			findJobSkills();
+		}
+	}
+
+	async function findJobSkills() {
+		jobSkills = await API.get(`/saved_jobs/${job.id}/find_skills.json`);
+	}
 </script>
 
 <li class="job" class:open={isOpen}>
 	<div class="head" on:click={() => (isOpen = !isOpen)}>
-		{job.title} <br /><small>@ {job.company}</small>
+		{job.title} <br /><small class="company">@ {job.company}</small>
 	</div>
 	<i class="fa fa-trash remove-job" on:click={() => destroyJob(job.id)} />
 
@@ -21,7 +32,15 @@
 				<div on:click={() => (activeTab = 0)} class:activeTab={activeTab === 0}>
 					Job Description
 				</div>
-				<div on:click={() => (activeTab = 1)} class:activeTab={activeTab === 1}>Test</div>
+				<div
+					on:click={() => {
+						findJobSkills();
+						activeTab = 1;
+					}}
+					class:activeTab={activeTab === 1}
+				>
+					Test
+				</div>
 			</div>
 
 			{#if activeTab === 0}
@@ -29,7 +48,9 @@
 			{/if}
 
 			{#if activeTab === 1}
-				<Tester {jobSkills} />
+				<div class="tester">
+					<Tester {jobSkills} />
+				</div>
 				<!-- <div class="jd">{@html job.jd}</div> -->
 			{/if}
 		</div>
@@ -37,6 +58,17 @@
 </li>
 
 <style>
+	.company {
+		background: rgba(235, 235, 255, 0.474);
+		padding: 7px;
+		border-radius: 10px;
+		/* color: #fff; */
+		margin-top: 10px;
+		display: inline-block;
+	}
+	.tester {
+		padding: 1em;
+	}
 	.lil-nav {
 		display: flex;
 		margin: 1em;
@@ -54,11 +86,17 @@
 	}
 	.jd {
 		padding: 2em;
+		background-color: #fff;
 	}
 	.remove-job {
 		position: absolute;
 		left: -30px;
 		top: 10px;
+		color: #ccc;
+	}
+
+	.remove-job:hover {
+		color: red;
 	}
 
 	.job .head {
@@ -88,5 +126,15 @@
 
 	.job.open {
 		max-width: 100%;
+	}
+
+	@media (max-width: 480px) {
+		.lil-nav {
+			margin: 0;
+		}
+
+		.lil-nav div {
+			font-size: 18px;
+		}
 	}
 </style>
