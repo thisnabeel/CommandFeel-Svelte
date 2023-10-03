@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import Api from '$lib/api/api';
 	import { openModal } from 'svelte-modals';
 	import SkillModal from '$lib/modals/videos/skill.svelte';
@@ -158,9 +160,16 @@
 					</div>
 				</div>
 				<hr />
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div class="btn btn-info" on:click={() => (showChoices = !showChoices)}>
-					{#if showChoices}
-						Hide Answer
+					{#if showChoices && quiz.choices}
+						{#if quiz.choices.length > 1}
+							Hide Choices
+						{:else}
+							Hide Answer
+						{/if}
+					{:else if quiz.choices.length > 1}
+						Show Choices
 					{:else}
 						Show Answer
 					{/if}
@@ -176,6 +185,15 @@
 				{#if quiz.choices.length === 1}
 					<hr />
 					<span class="choice">{@html quiz.choices[0].body}</span>
+				{/if}
+
+				{#if quiz.choices.length > 1}
+					<hr />
+					<ul class="choices clean-list">
+						{#each quiz.choices as choice}
+							<li>{@html choice.body}</li>
+						{/each}
+					</ul>
 				{/if}
 			{/if}
 		</div>

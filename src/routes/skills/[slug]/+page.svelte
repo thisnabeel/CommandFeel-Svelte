@@ -21,7 +21,7 @@
 
 	afterNavigate(async function () {
 		fetchSkill($page.params.slug);
-		globalViewCategory.set("Languages")
+		globalViewCategory.set('Skills');
 	});
 
 	const fetchSkill = async (slug) => {

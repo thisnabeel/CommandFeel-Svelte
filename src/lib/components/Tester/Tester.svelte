@@ -138,6 +138,34 @@
 				{item.title}
 			</li>
 		{/each}
+
+		{#if topics.filter((t) => !t.disabled).length > 0}
+			<li
+				class="topic clearer"
+				on:click={() => {
+					topics = topics.map((t) => {
+						t.disabled = true;
+						return t;
+					});
+				}}
+			>
+				Clear All
+			</li>
+		{/if}
+
+		<!-- {#if topics.filter((t) => !t.disabled).length === 0}
+			<li
+				class="topic clearer"
+				on:click={() => {
+					topics = topics.map((t) => {
+						t.disabled = true;
+						return t;
+					});
+				}}
+			>
+				Clear All
+			</li>
+		{/if} -->
 	</div>
 
 	<br />
@@ -172,13 +200,24 @@
 		position: relative;
 	}
 	.topic {
-		display: inline;
-		margin: 10px;
+		display: inline-block;
+		margin: 8px;
 		font-size: 24px;
 		background-color: purple;
 		color: #fff;
 		padding: 10px;
 		border-radius: 10px;
+		line-height: 1;
+	}
+
+	.clearer {
+		background-color: transparent;
+		color: #000;
+	}
+
+	.clearer:hover {
+		background-color: rgb(158, 102, 13);
+		color: #fff;
 	}
 
 	.topic.disabled {
