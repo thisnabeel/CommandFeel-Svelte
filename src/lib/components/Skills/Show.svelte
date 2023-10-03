@@ -104,6 +104,14 @@
 	}
 
 	@media (max-width: 480px) {
+		.wrapper {
+			padding: 4px;
+		}
+
+		.title {
+			padding: 40px 20px;
+			font-size: 24px;
+		}
 		.abstractions {
 			width: 100%;
 		}

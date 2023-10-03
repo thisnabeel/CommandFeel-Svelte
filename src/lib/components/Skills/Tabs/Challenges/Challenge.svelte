@@ -135,5 +135,9 @@
 		.challenges .has_video {
 			padding-top: 55px;
 		}
+
+		.fa-expand {
+			right: 10px;
+		}
 	}
 </style>

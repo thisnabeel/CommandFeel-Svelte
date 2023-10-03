@@ -66,4 +66,10 @@
 		margin: 0 auto;
 		padding: 20px 0;
 	}
+
+	@media (max-width: 480px) {
+		.challenges {
+			width: 100%;
+		}
+	}
 </style>
