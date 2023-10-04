@@ -1,8 +1,10 @@
 <script>
 	import Api from '$lib/api/api';
-	import { openModal } from 'svelte-modals';
-	import SkillModal from '$lib/modals/videos/skill.svelte';
+
 	import { user } from '$lib/stores/user';
+
+	import { openModal } from 'svelte-modals';
+	import SubmitterModal from '$lib/modals/challenges/submitter.svelte';
 
 	export let refresh = () => {};
 	export let skill;
@@ -43,6 +45,17 @@
 	<span class="fa fa-expand" on:click={() => (expand = !expand)} />
 	{#if expand}
 		<div>
+			<hr />
+			<div
+				class="btn btn-block btn-primary"
+				on:click={() => {
+					openModal(SubmitterModal, {
+						challenge: challenge
+					});
+				}}
+			>
+				<i class="fa fa-document" /> Submit Proof
+			</div>
 			<hr />
 			<div class="body">
 				{challenge.body}

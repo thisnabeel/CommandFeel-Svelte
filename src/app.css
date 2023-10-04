@@ -9,6 +9,10 @@
 		transform: translateY(-5px); /* Adjust the vertical distance as needed */
 	}
 }
+
+.btn-block {
+	display: block !important;
+}
 .guide {
 	background: #ffec57;
 	padding: 10px;

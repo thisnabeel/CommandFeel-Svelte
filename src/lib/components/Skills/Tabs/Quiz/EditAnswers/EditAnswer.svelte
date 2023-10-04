@@ -27,6 +27,15 @@
 		const response = await Api.delete('/quiz_choices/' + choice.id + '.json');
 		quiz.choices = quiz.choices.filter((c) => c.id !== choice.id);
 	}
+
+	async function generateChoices(style = null) {
+		const response = await Api.post('/quizzes/generate_choices.json', {
+			quiz_id: quiz.id,
+			style: style
+		});
+		console.log({ response });
+		quiz.choices = response;
+	}
 </script>
 
 {#each quiz.choices as choice}
@@ -52,6 +61,7 @@
 			}}
 		/>
 
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div
 			class="fa fa-circle toggle-correct"
 			class:correct={choice.correct}
@@ -65,11 +75,35 @@
 		<div class="fa fa-times remove-choice" on:click={() => removeChoice(choice)} />
 	</li>
 {/each}
-<div class="btn btn-outline-info btn-block" on:click={addChoice}>
-	<i class="fa fa-plus" />
+<div class="adder">
+	<div class="btn btn-outline-info btn-block" on:click={addChoice}>
+		<i class="fa fa-plus" />
+	</div>
+
+	<div class="btn btn-outline-warning btn-block" on:click={() => generateChoices()}>
+		<i class="fa fa-bolt" />
+	</div>
+
+	<div class="btn btn-outline-warning btn-block" on:click={() => generateChoices('multiple')}>
+		<i class="fa fa-bolt" /> <i class="fa fa-list" />
+	</div>
 </div>
 
 <style>
+	.adder {
+		display: flex;
+		height: auto;
+	}
+
+	.adder > div:nth-child(1) {
+		flex: 1 1 70%;
+	}
+	.adder > div:nth-child(2) {
+		flex: 1 1 10%;
+	}
+	.adder > div:nth-child(3) {
+		flex: 1 1 20%;
+	}
 	:global(.cl-actionbar) {
 		/* display: none; */
 		font-size: 12px;

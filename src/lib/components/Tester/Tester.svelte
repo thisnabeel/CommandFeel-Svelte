@@ -71,7 +71,7 @@
 	}
 
 	function removeTopic(item) {
-		if (jobSkills) {
+		if (jobSkills.length > 0) {
 			topics.find((t) => t.id === item.id).disabled = !topics.find((t) => t.id === item.id)
 				.disabled;
 			topics = topics;
@@ -79,11 +79,24 @@
 			topics = topics.filter((topic) => item.id !== topic.id);
 		}
 	}
+
+	function clearer() {
+		if (jobSkills && jobSkills.length > 0) {
+			topics = topics.map((t) => {
+				t.disabled = true;
+				return t;
+			});
+		} else {
+			topics = [];
+		}
+	}
 	let hoveringResults = false;
 
+	let imported = false;
 	$: {
-		if (jobSkills) {
+		if (jobSkills && !imported) {
 			topics = jobSkills;
+			imported = true;
 		}
 	}
 </script>
@@ -119,6 +132,7 @@
 			}}
 		>
 			{#each results as result}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<li
 					class="result"
 					class:present={topics.filter((t) => t.id === result.id).length > 0}
@@ -134,19 +148,24 @@
 {#if topics.length > 0}
 	<div class="topics clean-list">
 		{#each topics as item}
-			<li class="topic" class:disabled={item.disabled} on:click={() => removeTopic(item)}>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<li
+				class="topic"
+				class:disabled={item.disabled}
+				on:click={() => {
+					removeTopic(item);
+				}}
+			>
 				{item.title}
 			</li>
 		{/each}
 
 		{#if topics.filter((t) => !t.disabled).length > 0}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<li
 				class="topic clearer"
 				on:click={() => {
-					topics = topics.map((t) => {
-						t.disabled = true;
-						return t;
-					});
+					clearer();
 				}}
 			>
 				Clear All
