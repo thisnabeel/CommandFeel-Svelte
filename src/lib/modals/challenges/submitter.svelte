@@ -6,22 +6,29 @@
 	import { onMount } from 'svelte';
 	import { onBeforeClose } from 'svelte-modals';
 	import Swal from 'sweetalert2';
+	import API from '$lib/api/api';
+	import { user } from '$lib/stores/user';
+	import ProofLink from '$lib/components/Proof/ProofLink/ProofLink.svelte';
 
 	// provided by <Modals />
 	export let isOpen;
 
 	export let challenge;
 
-	let proofs = [
-		{
-			title: 'Redux Counter',
-			url: 'https://github.com/thisnabeel/expressfeel-svelte',
-			description: 'Simple incrementing redux counter'
-		}
-	];
+	let proofs = [];
+
+	// $: find(challenge);
+
+	async function find() {
+		proofs = await API.post('/proofs/find.json', {
+			user_id: $user.id,
+			challenge_id: challenge.id
+		});
+	}
 
 	onMount(async function () {
 		document.body.style['overflow-y'] = 'hidden';
+		find();
 	});
 
 	onBeforeClose(() => {
@@ -39,8 +46,8 @@
 	let titleInput = '';
 	let descriptionInput = '';
 
-	function addProof() {
-		const check = [linkInput, titleInput];
+	async function addProof() {
+		const check = [linkInput, titleInput, descriptionInput];
 		for (let input of check) {
 			if (input.length < 2) {
 				closable = false;
@@ -51,17 +58,23 @@
 			}
 		}
 
-		proofs = [
-			...proofs,
-			{
-				title: titleInput,
-				url: linkInput,
-				description: descriptionInput
+		const res = await API.post('/proofs.json', {
+			user_id: $user.id,
+			title: titleInput,
+			challenge_id: challenge.id,
+			description: descriptionInput,
+			proof_link: {
+				url: 'https://github.com/thisnabeel/expressfeel-svelte'
 			}
-		];
+		});
+
+		console.log({ res });
+
+		proofs = [...proofs, res];
 
 		linkInput = '';
 		titleInput = '';
+		descriptionInput = '';
 
 		console.log({ proofs });
 	}
@@ -121,6 +134,16 @@
 									<div class="head">
 										{proof.title}
 									</div>
+									<div class="more">
+										<div class="description">
+											{@html proof.description}
+										</div>
+										<ul class="proof_links clean-list">
+											{#each proof.proof_links as proof_link}
+												<ProofLink {proof_link} />
+											{/each}
+										</ul>
+									</div>
 								</li>
 							{/each}
 						</ul>
@@ -132,14 +155,22 @@
 {/if}
 
 <style>
+	.proof_links {
+		margin-top: 10px;
+	}
 	.proof {
-		padding: 2em;
-		background: #f2f2ff;
 		margin-top: 8px;
+		background: #f2f2ff;
+		padding: 2em;
+	}
+
+	.more {
+		padding: 1em 0;
 	}
 
 	.proof .head {
 		font-size: 24px;
+		background: #f2f2ff;
 	}
 
 	label {

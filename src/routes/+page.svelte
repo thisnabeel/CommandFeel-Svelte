@@ -23,7 +23,7 @@
 	};
 
 	onMount(async function () {
-		fetchQuestions();
+		// fetchQuestions();
 	});
 </script>
 

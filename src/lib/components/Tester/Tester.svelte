@@ -71,7 +71,7 @@
 	}
 
 	function removeTopic(item) {
-		if (jobSkills.length > 0) {
+		if (jobSkills && jobSkills.length > 0) {
 			topics.find((t) => t.id === item.id).disabled = !topics.find((t) => t.id === item.id)
 				.disabled;
 			topics = topics;

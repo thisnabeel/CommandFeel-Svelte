@@ -10,7 +10,7 @@
 
 <li class="algo" on:click={() => goto('/algorithms/' + algorithm.id)}>
 	<span>
-		<span class="difficulty difficulty-1">Easy</span>
+		<!-- <span class="difficulty difficulty-1">Easy</span> -->
 		<span class="title"
 			>{algorithm.title}
 

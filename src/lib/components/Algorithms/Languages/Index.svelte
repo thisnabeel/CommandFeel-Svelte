@@ -34,15 +34,15 @@
 	}
 </script>
 
-{#if $showGuide && !$loomifiedView}
-	<!-- <div class="flex">
+<!-- {#if $showGuide && !$loomifiedView}
+	<div class="flex">
 		<div
 			class="btn btn-lg btn-danger"
 			on:click={() => {
 				openModal(GuideModal, { slug: 'algorithm page: never programmed before' });
 			}}
 		>
-			Never Programmed Before?
+			I have never programmed before!
 		</div>
 		<div
 			class="btn btn-lg btn-info"
@@ -50,10 +50,10 @@
 				openModal(GuideModal, { slug: 'algorithm page: can program, new to commandfeel' });
 			}}
 		>
-			Can Program, But New to CommandFeel?
+			I can program, show me the algorithms.
 		</div>
-	</div> -->
-{/if}
+	</div>
+{/if} -->
 
 {#if languages}
 	<ul class="clean-list languages" class:loomified={loomified > -1}>
