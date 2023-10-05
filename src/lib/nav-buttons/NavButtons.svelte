@@ -17,6 +17,8 @@
 		showMobileMenu.set(false);
 		goto(link);
 	}
+
+	$: username = $user ? $user.username : 'demo';
 </script>
 
 {#if !$showMobileMenu}
@@ -40,8 +42,9 @@
 
 		<ul class="links clean-list">
 			{#if $user && $user.admin}
-				<li on:click={() => visit('/control_panel')}>Control Panel</li>
+				<li style="background: purple" on:click={() => visit('/control_panel')}>Control Panel</li>
 			{/if}
+			<li on:click={() => visit(`/cd/${username}`)}>My Portfolio</li>
 			<li on:click={() => visit('/')}>Pop Quiz</li>
 			<li on:click={() => visit('/my_study_list')}>My Study List</li>
 			<li on:click={() => visit('/my_jobs')}>My Jobs</li>
