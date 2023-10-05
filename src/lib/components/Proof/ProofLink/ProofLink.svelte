@@ -12,16 +12,27 @@
 
 <li class="proof_link">
 	<a href={proof_link.url} target="_blank">
-		<img src={icon()} alt="" class="logo" /> {proof_link.title || proof_link.url}</a
-	>
+		<div class="flex">
+			<img src={icon()} alt="" class="logo" />
+			<div class="link">{proof_link.title || proof_link.url}</div>
+		</div>
+	</a>
 </li>
 
 <style>
+	.flex {
+		display: flex;
+	}
+	.link {
+		overflow-wrap: break-word;
+		padding-left: 10px;
+	}
 	a {
 		display: block;
 	}
 	.logo {
 		width: 60px;
+		object-fit: cover;
 	}
 
 	.proof_link a {

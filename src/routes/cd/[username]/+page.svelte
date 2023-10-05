@@ -1,7 +1,8 @@
 <script>
+	import Portfolio from '$lib/components/Portfolio/Show.svelte';
 </script>
 
-<h1>Portfolio</h1>
+<Portfolio />
 
 <style>
 </style>
