@@ -9,6 +9,9 @@ const config = {
 				noExternal: ['@popperjs/core']
 			}
 		}
+	},
+	define: {
+		'process.env': process.env
 	}
 };
 

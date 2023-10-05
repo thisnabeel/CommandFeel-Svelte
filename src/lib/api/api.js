@@ -3,11 +3,14 @@ import axios from 'axios';
 import { csrf_token } from '$lib/stores/api.js';
 import storage from '$lib/stores/storage';
 
+const baseURL =
+	process.env.NODE_ENV === 'production' ? process.env.API_URL : import.meta.env.VITE_API_URL;
+
+console.log({ baseURL });
+
 // Create a instance of axios to use the same base url.
 const axiosAPI = axios.create({
-	// baseUrl: process.env.API_URL,
-	baseURL: 'https://commandfeel-api.onrender.com/' // it's not recommended to have this info here.
-	// baseURL: 'http://localhost:3000/'
+	baseURL: baseURL
 });
 
 // let csrfToken;
