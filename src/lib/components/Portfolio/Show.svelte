@@ -2,40 +2,81 @@
 	import API from '$lib/api/api';
 	import { user } from '$lib/stores/user';
 	import { onMount } from 'svelte';
-	import Proof from '$lib/components/Proof/Proof.svelte';
+	import FullGallery from './FullGallery.svelte';
+	import BySkills from './BySkills.svelte';
+	import { page } from '$app/stores';
 
 	let proofs = [];
+
+	const tabs = ['Full Gallery', 'By Skills'];
+	let selectedTab = tabs[0];
+
 	onMount(async () => {
 		const res = await API.post('/proofs/find', {
-			user_id: $user.id
+			username: $page.params.username
 		});
 		console.log({ res });
 		proofs = res;
 	});
 
 	$: skills = proofs.map((item) => item.challenge?.challengeable?.title);
+	// $: displayName = $user ? $user.username : '';
+	// let editable = false;
 </script>
 
-{#if $user}
-	<h1>@{$user.username}</h1>
+<svelte:head>
+	<title>@{$page.params.username}</title>
+	<meta name="description" content="commandfeel" />
+</svelte:head>
 
-	<hr />
-	<div class="skills clean-list">
-		{#each skills as skill}
-			<li>{skill}</li>
+<div class="portfolio">
+	<h1 class="username">@{$page.params.username}</h1>
+
+	<!-- <hr />
+		<div class="skills clean-list">
+			{#each skills as skill}
+				<li>{skill}</li>
+			{/each}
+		</div>
+		<hr /> -->
+
+	<div class="portfolio-top-nav">
+		{#each tabs as tab}
+			<span class:activeTab={tab === selectedTab} on:click={() => (selectedTab = tab)}>{tab}</span>
 		{/each}
 	</div>
-	<hr />
 
-	<div class="proofs clean-list">
-		{#each proofs as proof}
-			<Proof {proof} />
-		{/each}
-	</div>
+	{#if selectedTab === 'Full Gallery'}
+		<FullGallery {proofs} />
+	{/if}
+
+	{#if selectedTab === 'By Skills'}
+		<BySkills {proofs} />
+	{/if}
 	<br />
-{/if}
+</div>
 
 <style>
+	.portfolio-top-nav {
+		margin: 50px;
+		text-align: center;
+	}
+	.activeTab {
+		background-color: #f2f272;
+	}
+
+	.portfolio-top-nav .activeTab {
+		border-bottom: 1px dashed #eefe70;
+	}
+	.portfolio-top-nav span {
+		padding: 10px;
+	}
+	.username {
+		color: #1866e9;
+		text-align: center;
+		padding-top: 70px;
+		margin-bottom: 70px;
+	}
 	.skills {
 		max-width: 350px;
 		margin: 4px auto;
@@ -50,5 +91,20 @@
 
 		color: #fff;
 		background-color: rgb(45 103 111);
+	}
+
+	.portfolio {
+		color: #191818;
+		background: #fff;
+		padding: 30px;
+		border-radius: 10px;
+		margin-bottom: 1em;
+	}
+
+	@media (max-width: 480px) {
+		.portfolio {
+			padding: 10px;
+			margin: 10px;
+		}
 	}
 </style>
