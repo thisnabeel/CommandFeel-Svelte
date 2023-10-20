@@ -5,6 +5,9 @@
 	import Project from '$lib/components/Proof/Project/Project.svelte';
 
 	let selectedSkill = null;
+	let searchInput = '';
+	let filteredSkills = [];
+
 	// $: skills = proofs.map((item) => item.challenge?.challengeable?.title);
 	$: skills = Array.from(
 		new Set(
@@ -21,13 +24,20 @@
 	$: selectedProjects = projects.filter((project) =>
 		project.skills.some((skill) => skill.title === selectedSkill)
 	);
+
+	$: filteredSkills = skills.filter((s) => s.toLowerCase().includes(searchInput.toLowerCase()));
 </script>
 
 <h3 class="text-center has-ability">knows:</h3>
-<input type="text" class="form-control search-abilities" placeholder="Search..." />
+<input
+	type="text"
+	class="form-control search-abilities"
+	bind:value={searchInput}
+	placeholder="Search..."
+/>
 
 <ul class="by-skills-list clean-list">
-	{#each skills as skill}
+	{#each filteredSkills || [] as skill}
 		<li style="display: block;">
 			<span
 				class:selectedSkill={selectedSkill === skill}
