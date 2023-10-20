@@ -5,8 +5,11 @@
 	import FullGallery from './FullGallery.svelte';
 	import BySkills from './BySkills.svelte';
 	import { page } from '$app/stores';
+	import { openModal } from 'svelte-modals';
+	import SubmitterModal from '$lib/modals/projects/submitter.svelte';
 
 	let proofs = [];
+	let projects = [];
 
 	const tabs = ['Full Gallery', 'By Skills'];
 	let selectedTab = tabs[0];
@@ -16,10 +19,23 @@
 			username: $page.params.username
 		});
 		console.log({ res });
-		proofs = res;
+		proofs = res.proofs.filter((p) => p.challenge);
+		projects = res.projects;
 	});
 
-	$: skills = proofs.map((item) => item.challenge?.challengeable?.title);
+	function removeProof(id) {
+		console.log('hiii', id);
+		console.log({ proofs });
+		proofs = proofs.filter((p) => p.id !== id);
+	}
+
+	function removeProject(id) {
+		projects = projects.filter((p) => p.id !== id);
+	}
+
+	// $: skills = proofs
+	// 	.map((item) => item.challenge?.challengeable?.title)
+	// 	.concat(projects.map((project) => project.skills.map((skill) => skill.title)));
 	// $: displayName = $user ? $user.username : '';
 	// let editable = false;
 </script>
@@ -46,12 +62,23 @@
 		{/each}
 	</div>
 
+	{#if $user && $page.params.username === $user.username}
+		<div
+			class="btn btn-outline-warning"
+			on:click={() => {
+				openModal(SubmitterModal, {});
+			}}
+		>
+			Add Project
+		</div>
+	{/if}
+
 	{#if selectedTab === 'Full Gallery'}
-		<FullGallery {proofs} />
+		<FullGallery {proofs} {projects} {removeProof} />
 	{/if}
 
 	{#if selectedTab === 'By Skills'}
-		<BySkills {proofs} />
+		<BySkills {proofs} {projects} {removeProof} />
 	{/if}
 	<br />
 </div>

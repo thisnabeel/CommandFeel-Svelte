@@ -21,10 +21,6 @@
 
 <li class="proof_link">
 	{#if editable}
-		<i class="fa fa-trash delete" />
-	{/if}
-
-	{#if editable}
 		<i class="fa fa-cog edit" on:click={() => (editing = !editing)} />
 	{/if}
 
@@ -56,7 +52,9 @@
 					<input type="text" class="form-control" bind:value={proof_link.description} />
 				</div>
 
+				<hr />
 				<div class="btn btn-outline-primary" on:click={saveChanges}>Save Changes</div>
+				<div class="btn btn-outline-danger" on:click={saveChanges}>Delete</div>
 			</div>
 		</div>
 	{/if}

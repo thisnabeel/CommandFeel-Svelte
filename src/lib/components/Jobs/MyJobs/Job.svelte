@@ -39,7 +39,7 @@
 					}}
 					class:activeTab={activeTab === 1}
 				>
-					Test
+					Pop Quiz
 				</div>
 			</div>
 
