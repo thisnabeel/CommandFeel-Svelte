@@ -26,8 +26,7 @@ const apiRequest = (method, url, request, headers = {}) => {
 
 	if (user) {
 		headers = {
-			// 'Content-Type': 'application/json',
-			// 'Access-Control-Allow-Origin': '*'
+			...headers,
 			'X-User-Email': user.email,
 			'X-User-Token': user.generated_token
 		};
@@ -59,7 +58,7 @@ const get = (url, request) => apiRequest('get', url, request);
 const deleteRequest = (url, request) => apiRequest('delete', url, request);
 
 // function to execute the http post request
-const post = (url, request) => apiRequest('post', url, request);
+const post = (url, request, headers) => apiRequest('post', url, request, headers);
 
 // function to execute the http put request
 const put = (url, request) => apiRequest('put', url, request);

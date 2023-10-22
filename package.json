@@ -48,6 +48,7 @@
     "ramda": "^0.28.0",
     "svelte-ace": "^1.0.21",
     "svelte-codemirror-editor": "^1.1.0",
+    "svelte-easy-crop": "^2.0.1",
     "svelte-fa": "^3.0.3",
     "svelte-modals": "^1.2.0",
     "svelte-outclick": "^3.1.0",
