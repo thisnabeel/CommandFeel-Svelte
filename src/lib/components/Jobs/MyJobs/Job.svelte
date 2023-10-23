@@ -1,6 +1,8 @@
 <script>
 	import API from '$lib/api/api';
 	import Tester from '$lib/components/Tester/Tester.svelte';
+	import debounce from '$lib/functions/debounce';
+	import Editor from 'cl-editor/src/Editor.svelte';
 
 	export let job;
 	export let destroyJob;
@@ -18,6 +20,10 @@
 	async function findJobSkills() {
 		jobSkills = await API.get(`/saved_jobs/${job.id}/find_skills.json`);
 	}
+
+	async function saveJob() {
+		debounce(`/saved_jobs/${job.id}.json`, job);
+	}
 </script>
 
 <li class="job" class:open={isOpen}>
@@ -29,6 +35,7 @@
 	{#if isOpen}
 		<div class="content">
 			<div class="lil-nav">
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div on:click={() => (activeTab = 0)} class:activeTab={activeTab === 0}>
 					Job Description
 				</div>
@@ -44,7 +51,15 @@
 			</div>
 
 			{#if activeTab === 0}
-				<div class="jd">{@html job.jd}</div>
+				<!-- <div class="jd">{@html job.jd}</div> -->
+				<Editor
+					html={job.jd}
+					on:change={(evt) => {
+						// const value = evt.detail;
+						job.jd = evt.detail;
+						saveJob();
+					}}
+				/>
 			{/if}
 
 			{#if activeTab === 1}

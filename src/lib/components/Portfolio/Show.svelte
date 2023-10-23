@@ -58,6 +58,7 @@
 		<div class="avatar" style="position:relative; width:max-content">
 			<img style="width: 150px" src={pageUser.avatar_cropped_url} alt="" class="avatar" />
 			{#if $user && $page.params.username === $user.username}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<i
 					class="fa fa-pen"
 					on:click={() => {

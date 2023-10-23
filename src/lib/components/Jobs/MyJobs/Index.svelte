@@ -3,6 +3,7 @@
 	import { user } from '$lib/stores/user';
 	import { onMount } from 'svelte';
 	import Job from './Job.svelte';
+	import Editor from 'cl-editor/src/Editor.svelte';
 
 	onMount(() => {
 		getMyJobs();
@@ -63,10 +64,12 @@
 <h1>
 	My Jobs:
 	{#if adder}
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div class="btn btn-warning" on:click={() => (adder = !adder)}>
 			<i class="fa fa-times" />
 		</div>
 	{:else}
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div class="btn btn-outline-warning" on:click={() => (adder = !adder)}>
 			<i class="fa fa-plus" />
 		</div>
@@ -95,7 +98,7 @@
 			class="form-control"
 		/>
 
-		<textarea
+		<!-- <textarea
 			name=""
 			id=""
 			cols="30"
@@ -103,7 +106,15 @@
 			placeholder="Job Description Text.."
 			bind:value={jdInput}
 			class="form-control"
+		/> -->
+
+		<Editor
+			on:change={(evt) => {
+				// const value = evt.detail;
+				jdInput = evt.detail;
+			}}
 		/>
+
 		<div class="btn btn-block btn-outline-primary" on:click={addJob}>Add Job</div>
 	</div>
 {/if}
