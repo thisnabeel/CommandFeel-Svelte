@@ -7,3 +7,5 @@ export const loomifiedView = writable(false);
 export const showGuide = writable(true);
 
 export const showMobileMenu = writable(false);
+
+export const currentPage = writable('default');

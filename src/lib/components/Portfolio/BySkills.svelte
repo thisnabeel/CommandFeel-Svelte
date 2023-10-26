@@ -71,9 +71,18 @@
 </ul>
 
 <style>
+	.dp_box {
+		border: 3px solid #000;
+		padding: 12px;
+		margin-top: -3px;
+		border-radius: 12px;
+	}
 	.selectedSkill {
 		background-color: #000;
 		color: #fff !important;
+		max-width: 100%;
+		/* text-align: center; */
+		font-size: 40px !important;
 	}
 	.has-ability {
 		color: #768fd9;

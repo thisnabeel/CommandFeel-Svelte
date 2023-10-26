@@ -11,8 +11,8 @@
 	let proofs = [];
 	let projects = [];
 
-	const tabs = ['Full Gallery', 'By Skills'];
-	let selectedTab = tabs[0];
+	const tabs = ['Projects', 'Skills'];
+	let selectedTab = tabs[1];
 	let pageUser;
 
 	onMount(async () => {
@@ -96,13 +96,51 @@
 			</div>
 		{/if}
 
-		{#if selectedTab === 'Full Gallery'}
+		{#if selectedTab === 'Projects'}
 			<FullGallery {proofs} {projects} {removeProof} />
 		{/if}
 
-		{#if selectedTab === 'By Skills'}
+		{#if selectedTab === 'Skills'}
 			<BySkills {proofs} {projects} {removeProof} />
 		{/if}
+		<br />
+	</div>
+{:else}
+	<div class="portfolio">
+		<div class="avatar" style="position:relative; width:max-content">
+			<img
+				style="width: 150px"
+				src="https://st3.depositphotos.com/9998432/13335/v/450/depositphotos_133351928-stock-illustration-default-placeholder-man-and-woman.jpg"
+				alt=""
+				class="avatar"
+			/>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<i
+				class="fa fa-pen"
+				on:click={() => {}}
+				style="position: absolute; top: 0px; right: -10px; background-color: #fff; padding:10px; border-radius: 100%; text-align: center;"
+			/>
+		</div>
+		<h1 class="username">@your_username</h1>
+
+		<!-- <hr />
+		<div class="skills clean-list">
+			{#each skills as skill}
+				<li>{skill}</li>
+			{/each}
+		</div>
+		<hr /> -->
+
+		<div class="portfolio-top-nav">
+			{#each tabs as tab}
+				<span class:activeTab={tab === selectedTab} on:click={() => (selectedTab = tab)}>{tab}</span
+				>
+			{/each}
+		</div>
+
+		{#if selectedTab === 'Full Gallery'}{/if}
+
+		{#if selectedTab === 'Skills'}{/if}
 		<br />
 	</div>
 {/if}

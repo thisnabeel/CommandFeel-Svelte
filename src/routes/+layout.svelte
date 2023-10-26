@@ -8,9 +8,11 @@
 	import Api from '$lib/api/api.js';
 	import { csrf_token } from '$lib/stores/api.js';
 	import { user } from '$lib/stores/user';
+	import { currentPage } from '$lib/stores/view';
 
 	import GaragePopUp from '$lib/pop-ups/Garage.svelte';
 
+	import { afterNavigate } from '$app/navigation';
 	let user_signed_in;
 
 	let csrf;
@@ -19,8 +21,13 @@
 		// console.log(csrfToken)
 		// csrf = await Api.get('/generate_csrf');
 		// csrf_token.set(csrf);
+
 		user.subscribe((value) => (user_signed_in = value));
 		// console.log(csrf_token)
+	});
+
+	afterNavigate(() => {
+		currentPage.set('');
 	});
 </script>
 

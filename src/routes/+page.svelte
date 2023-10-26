@@ -7,9 +7,10 @@
 
 	import Tester from '$lib/components/Tester/Tester.svelte';
 	import Quiz from '$lib/components/Skills/Tabs/Quiz/Quiz.svelte';
-	import { globalViewCategory } from '$lib/stores/view';
+	import { currentPage, globalViewCategory } from '$lib/stores/view';
 
 	import AlgorithmsHome from '$lib/components/Algorithms/Landing/Index.svelte';
+	import { afterNavigate } from '$app/navigation';
 
 	const fetchPopularWonders = async () => {
 		const response = await Api.get('/museum.json');
@@ -24,6 +25,12 @@
 
 	onMount(async function () {
 		// fetchQuestions();
+	});
+
+	afterNavigate(() => {
+		if ($globalViewCategory === 'Skills') {
+			currentPage.set('popQuiz');
+		}
 	});
 </script>
 

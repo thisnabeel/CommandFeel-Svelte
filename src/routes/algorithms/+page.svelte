@@ -3,8 +3,8 @@
 	import Algorithms from '$lib/components/Algorithms/Index.svelte';
 	import { globalViewCategory } from '$lib/stores/view';
 	afterNavigate(() => {
-		globalViewCategory.set("Languages")
-	})
+		globalViewCategory.set('Languages');
+	});
 </script>
 
 <Algorithms />

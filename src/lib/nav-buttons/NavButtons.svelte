@@ -6,7 +6,7 @@
 
 	import User from './User.svelte';
 	import Guide from './Guide.svelte';
-	import { loomifiedView, showMobileMenu } from '$lib/stores/view';
+	import { loomifiedView, showMobileMenu, currentPage, globalViewCategory } from '$lib/stores/view';
 	import { goto } from '$app/navigation';
 
 	const openGaragePopUp = () => {
@@ -42,13 +42,35 @@
 
 		<ul class="links clean-list">
 			{#if $user && $user.admin}
-				<li style="background: purple" on:click={() => visit('/control_panel')}>Control Panel</li>
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<li class="control_panel" on:click={() => visit('/control_panel')}>Control Panel</li>
 			{/if}
-			<li on:click={() => visit(`/cd/${username}`)}>My Portfolio</li>
-			<li on:click={() => visit('/')}>Pop Quiz</li>
-			<li on:click={() => visit('/my_study_list')}>My Study List</li>
-			<li on:click={() => visit('/my_jobs')}>My Jobs</li>
-			<li on:click={() => visit('/algorithms')}>Algorithms</li>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<li on:click={() => visit(`/cd/${username}`)} class:activeTab={$currentPage === 'portfolio'}>
+				My Portfolio
+			</li>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<li
+				on:click={() => {
+					visit('/');
+					globalViewCategory.set('Skills');
+				}}
+				class:activeTab={$currentPage === 'popQuiz'}
+			>
+				Pop Quiz
+			</li>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<li on:click={() => visit('/my_study_list')} class:activeTab={$currentPage === 'myStudyList'}>
+				My Study List
+			</li>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<li on:click={() => visit('/my_jobs')} class:activeTab={$currentPage === 'myJobs'}>
+				My Jobs
+			</li>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<li on:click={() => visit('/algorithms')} class:activeTab={$currentPage === 'algorithms'}>
+				Algorithms
+			</li>
 		</ul>
 	</div>
 {/if}
@@ -67,6 +89,13 @@
 
 <!-- {/if} -->
 <style>
+	.activeTab {
+		background-color: purple;
+	}
+
+	.control_panel {
+		color: rgb(235, 255, 108);
+	}
 	aside {
 		cursor: pointer;
 		position: absolute;
