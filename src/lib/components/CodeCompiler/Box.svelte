@@ -7,7 +7,7 @@
 	import Block from './Block.svelte';
 	import API from '$lib/api/api';
 	import { loomifiedView } from '$lib/stores/view';
-
+	import TestCases from './TestCases/TestCases.svelte';
 	export let language;
 	export let updateCode;
 	export let trait;
@@ -24,9 +24,15 @@
 
 	let error = null;
 
+	let test_cases = [];
+
 	$: body = fetched_trait ? fetched_trait.body : null;
 
+	let testNow = 0;
+
 	async function test() {
+		testNow += 1;
+		return;
 		if (!$user) {
 			Swal.fire(
 				'Unauthorized',
@@ -68,15 +74,6 @@
 		} else {
 			error = response.output;
 		}
-
-		// let output = response.output.replace(/[\r\n]+/g, '');
-		// if (output === algorithm.expected_with_type) {
-		// 	setTimeout(function () {
-		// 		Swal.fire('Perfect!', 'You Passed This Challenge in ' + language.title, 'success');
-		// 	}, 750);
-		// } else {
-		// 	error = response.output;
-		// }
 	}
 
 	let video_url = null;
@@ -155,7 +152,8 @@
 			{
 				code: '',
 				id: uuid(),
-				disabled: false
+				disabled: false,
+				prefix_test: false
 			}
 		];
 	}
@@ -305,6 +303,10 @@
 		Run
 	</div>
 
+	<div class="test_cases">
+		<TestCases {blocks} starter={mainStarter} {language} {testNow} />
+	</div>
+
 	{#if result}
 		<div class="result">
 			{@html result.output}
@@ -322,6 +324,9 @@
 {/if}
 
 <style>
+	.test_cases {
+		padding: 10px;
+	}
 	.import {
 		display: inline-block;
 		/* position: relative; */

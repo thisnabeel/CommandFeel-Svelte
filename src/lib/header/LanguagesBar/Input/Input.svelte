@@ -1,7 +1,7 @@
 <script>
 	import { skills, selectSkill, wonders, selectWonder } from '$lib/stores/main';
 	import { goto } from '$app/navigation';
-	import { algorithmStore } from '$lib/stores/algorithms';
+	import { algorithmStore } from '$lib/stores/algorithms/mapper';
 	import { traitStore } from '$lib/stores/traits';
 
 	let input;

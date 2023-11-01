@@ -8,7 +8,7 @@
 
 	import Map from './Map/Map.svelte';
 
-	import { algorithmStore } from '$lib/stores/algorithms';
+	import { algorithmStore } from '$lib/stores/algorithms/mapper';
 	import { traitStore } from '$lib/stores/traits';
 
 	import { skills, skillsMap, wonders, wondersMap, mapShown } from '$lib/stores/main';

@@ -18,6 +18,8 @@
 
 	let code = '';
 
+	let linked = false;
+
 	function handleEditorDidMount(editor, monaco) {
 		// here is the editor instance
 		// you can store it in `useRef` for further usage
@@ -123,7 +125,8 @@
 		console.log({ value });
 		update({
 			code: code,
-			disabled: readOnly
+			disabled: readOnly,
+			prefix_test: block.prefix_test
 		});
 
 		lineCount = editorRef.getModel().getLineCount();
@@ -147,14 +150,15 @@
 		block.disabled = readOnly;
 		update({
 			code: code,
-			disabled: readOnly
+			disabled: readOnly,
+			prefix_test: block.prefix_test
 		});
 	}
 
 	// function removeCode() {}
 </script>
 
-<div class="main" class:readOnly>
+<div class="main" class:linked={block.prefix_test === true} class:readOnly>
 	<react:Editor
 		height={lineCount * 18 + 'px'}
 		defaultLanguage={language.editor_slug}
@@ -175,6 +179,20 @@
 		<div class="btn btn-danger remove" on:click={() => removeCode(block)}>
 			<i class="fa fa-times" />
 		</div>
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<div
+			class="btn btn-outline-warning link-test"
+			on:click={() => {
+				block.prefix_test = !block.prefix_test;
+				update({
+					code: block.code,
+					disabled: readOnly,
+					prefix_test: block.prefix_test
+				});
+			}}
+		>
+			<i class="fa fa-bolt" />
+		</div>
 	{/if}
 </div>
 
@@ -186,12 +204,15 @@
 		position: relative;
 	}
 
-	.main:hover .locker {
+	.linked {
+		border-top: 8px dashed rgb(242 242 255);
+	}
+	.main:hover .locker,
+	.main:hover .remove,
+	.main:hover .link-test {
 		display: block;
 	}
-	.main:hover .remove {
-		display: block;
-	}
+
 	.locker {
 		display: none;
 		position: absolute;
@@ -203,10 +224,21 @@
 	.remove {
 		display: none;
 		position: absolute;
-		left: -31px;
+		left: -45px;
 		top: 0px;
 		font-size: 9px;
 		padding: 3px;
+		width: 28px;
+	}
+
+	.link-test {
+		display: none;
+		position: absolute;
+		left: -73px;
+		top: 0px;
+		font-size: 9px;
+		padding: 3px;
+		width: 28px;
 	}
 	:global(div:has(> .editor-line-readonly)) {
 		/* display: none; */

@@ -4,7 +4,7 @@
 	import Algorithm from './Algorithm/Item.svelte';
 	import SortableList from 'svelte-sortable-list';
 
-	import { algorithmStore } from '$lib/stores/algorithms';
+	import { algorithmStore } from '$lib/stores/algorithms/mapper';
 
 	import Api from '$lib/api/api';
 	import { onMount } from 'svelte';
