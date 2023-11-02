@@ -25,7 +25,9 @@
 		project.skills.some((skill) => skill.title === selectedSkill)
 	);
 
-	$: filteredSkills = skills.filter((s) => s.toLowerCase().includes(searchInput.toLowerCase()));
+	$: filteredSkills = skills
+		.filter((s) => s.toLowerCase().includes(searchInput.toLowerCase()))
+		.sort((a, b) => a.localeCompare(b));
 </script>
 
 <h3 class="text-center has-ability">knows:</h3>
@@ -43,7 +45,6 @@
 			<span
 				class:selectedSkill={selectedSkill === skill}
 				class="rendered_skill_description"
-				style="position:relative;"
 				on:click={() => {
 					if (selectedSkill) {
 						if (selectedSkill === skill) {
@@ -56,8 +57,11 @@
 					}
 					selectedSkill = skill;
 				}}
-				>{skill}
-				<i class="fa fa-expand expand" />
+			>
+				<span class="skill-title">
+					{skill}
+					<i class="fa fa-expand expand" />
+				</span>
 			</span>
 			{#if selectedSkill === skill}
 				<section class="dp_box">
@@ -78,7 +82,7 @@
 	.expand {
 		position: absolute;
 		right: 10px;
-		top: 15px;
+		top: 4px;
 		color: #ccccccbf;
 	}
 	.dp_box {
@@ -131,6 +135,12 @@
 
 	.by-skills-list .rendered_skill_description:hover {
 		border: 1px solid #000;
+	}
+
+	.skill-title {
+		position: relative;
+		display: block;
+		width: 100%;
 	}
 
 	.rendered_skill_description {
