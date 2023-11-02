@@ -39,9 +39,11 @@
 <ul class="by-skills-list clean-list">
 	{#each filteredSkills || [] as skill}
 		<li style="display: block;">
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<span
 				class:selectedSkill={selectedSkill === skill}
 				class="rendered_skill_description"
+				style="position:relative;"
 				on:click={() => {
 					if (selectedSkill) {
 						if (selectedSkill === skill) {
@@ -53,8 +55,10 @@
 						}
 					}
 					selectedSkill = skill;
-				}}>{skill}</span
-			>
+				}}
+				>{skill}
+				<i class="fa fa-expand expand" />
+			</span>
 			{#if selectedSkill === skill}
 				<section class="dp_box">
 					{#each selectedProofs as proof}
@@ -71,8 +75,14 @@
 </ul>
 
 <style>
+	.expand {
+		position: absolute;
+		right: 10px;
+		top: 15px;
+		color: #ccccccbf;
+	}
 	.dp_box {
-		border: 3px solid #000;
+		border-top: 3px solid #000;
 		padding: 12px;
 		margin-top: -3px;
 		border-radius: 12px;
@@ -84,6 +94,7 @@
 		/* text-align: center; */
 		font-size: 40px !important;
 	}
+
 	.has-ability {
 		color: #768fd9;
 	}
@@ -99,6 +110,23 @@
 		border: 1px solid #e2e2e2;
 		max-width: 30vw;
 		margin: 0 auto;
+	}
+
+	.by-skills-list .rendered_skill_description.selectedSkill {
+		display: block;
+		padding: 11px;
+		border: 1px solid #e2e2e2;
+		max-width: 100vw;
+		text-align: center;
+		border-radius: 10px;
+		margin: 0 auto;
+		position: sticky;
+		top: 0;
+		z-index: 999;
+	}
+
+	.selectedSkill .expand {
+		display: none;
 	}
 
 	.by-skills-list .rendered_skill_description:hover {

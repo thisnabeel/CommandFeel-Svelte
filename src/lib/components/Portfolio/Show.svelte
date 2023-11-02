@@ -8,6 +8,7 @@
 	import { openModal } from 'svelte-modals';
 	import SubmitterModal from '$lib/modals/projects/submitter.svelte';
 	import EditModal from './Avatar/EditModal.svelte';
+	import { showGuide, showGuideButton } from '$lib/stores/view';
 	let proofs = [];
 	let projects = [];
 
@@ -16,6 +17,8 @@
 	let pageUser;
 
 	onMount(async () => {
+		showGuide.set(false);
+		showGuideButton.set(false);
 		findUser();
 		const res = await API.post('/proofs/find', {
 			username: $page.params.username
@@ -121,7 +124,7 @@
 				style="position: absolute; top: 0px; right: -10px; background-color: #fff; padding:10px; border-radius: 100%; text-align: center;"
 			/>
 		</div>
-		<h1 class="username">@your_username</h1>
+		<h1 class="username">@{$page.params.username || 'your_username'}</h1>
 
 		<!-- <hr />
 		<div class="skills clean-list">

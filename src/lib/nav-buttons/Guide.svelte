@@ -1,17 +1,19 @@
 <script>
-	import { showGuide } from '$lib/stores/view';
+	import { showGuide, showGuideButton } from '$lib/stores/view';
 	function toggle() {
 		showGuide.set(!$showGuide);
 	}
 </script>
 
-<div class="btn btn-primary guide-btn" on:click={toggle}>
-	{#if !$showGuide}
-		New Here?<br /> Show Guide
-	{:else}
-		Hide Guide
-	{/if}
-</div>
+{#if $showGuideButton}
+	<div class="btn btn-primary guide-btn" on:click={toggle}>
+		{#if !$showGuide}
+			New Here?<br /> Show Guide
+		{:else}
+			Hide Guide
+		{/if}
+	</div>
+{/if}
 
 <style>
 	.guide-btn {
