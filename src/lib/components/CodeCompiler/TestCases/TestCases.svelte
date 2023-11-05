@@ -14,6 +14,7 @@
 	import Expanded from './Expanded.svelte';
 	import { writable } from 'svelte/store';
 	import { user } from '$lib/stores/user';
+	import { correctSound, incorrectSound } from '$lib/stores/view';
 
 	// Create a writable store for testing array
 	const testing = writable([]);
@@ -91,6 +92,15 @@
 			execution[test_case.id] = res;
 			execution = execution;
 			console.log({ execution });
+			console.log({ res });
+			if (res.passing) {
+				console.log('check', res.passing.passing);
+				if (res.passing.passing === true) {
+					correctSound.set($correctSound + 1);
+				} else {
+					incorrectSound.set($incorrectSound + 1);
+				}
+			}
 
 			// Await closeExecution to ensure it's complete before moving on
 			// await closeExecution(test_case);

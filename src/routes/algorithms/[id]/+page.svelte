@@ -8,12 +8,16 @@
 	import { user } from '$lib/stores/user';
 	import { afterNavigate } from '$app/navigation';
 	import TestCases from '$lib/components/Algorithms/Algorithm/TestCases/TestCases.svelte';
+	import { correctSound, incorrectSound } from '$lib/stores/view';
+	import GradingSound from '$lib/components/Sounds/Grading.svelte';
 
 	let algo = null;
 	onMount(() => {
 		getAlgo();
 		getProgress();
 	});
+
+	$: console.log($correctSound);
 
 	async function getAlgo() {
 		const response = await Api.get('/algorithms/' + $page.params.id + '.json');
@@ -42,6 +46,7 @@
 	}
 </script>
 
+<GradingSound />
 {#if algo}
 	<div class="jumbotron">
 		<span class="challenge-head">Coding Challenge:</span><br />

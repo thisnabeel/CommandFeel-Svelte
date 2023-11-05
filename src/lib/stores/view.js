@@ -10,3 +10,6 @@ export const showGuideButton = writable(false);
 export const showMobileMenu = writable(false);
 
 export const currentPage = writable('default');
+
+export const correctSound = writable(0);
+export const incorrectSound = writable(0);

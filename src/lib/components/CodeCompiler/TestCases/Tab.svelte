@@ -56,6 +56,7 @@
 
 	.tab {
 		padding-bottom: 8px !important;
+		margin-right: 4px;
 	}
 
 	.tab:hover {

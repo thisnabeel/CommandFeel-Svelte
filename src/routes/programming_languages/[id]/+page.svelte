@@ -5,6 +5,8 @@
 	import { onMount } from 'svelte';
 	import Language from '$lib/components/Algorithms/Languages/Language.svelte';
 
+	import GradingSound from '$lib/components/Sounds/Grading.svelte';
+
 	let lang = null;
 	onMount(() => {
 		getAlgo();
@@ -17,6 +19,8 @@
 	}
 	let progress = [];
 </script>
+
+<GradingSound />
 
 {#if lang}
 	<div class="jumbotron">
