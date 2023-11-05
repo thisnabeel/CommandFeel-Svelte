@@ -24,8 +24,6 @@
 
 	let error = null;
 
-	let test_cases = [];
-
 	$: body = fetched_trait ? fetched_trait.body : null;
 
 	let testNow = 0;
@@ -33,47 +31,6 @@
 	async function test() {
 		testNow += 1;
 		return;
-		if (!$user) {
-			Swal.fire(
-				'Unauthorized',
-				'Please Sign Up or Sign In at the top right corner to Run Code',
-				'error'
-			);
-			return;
-		}
-		const response = await Api.post(`/execute_code`, {
-			code: fullCode,
-			algorithm_id: algorithm.id,
-			programming_language_id: language.id,
-			user_id: $user ? $user.id : null
-		});
-
-		console.log(response);
-		result = response;
-
-		error = null;
-
-		if (!response.output || response.output === '') {
-			error =
-				'Nothing Outputted! Make sure your code is printing something AND/OR the program is properly initialized. Need Help? Click the Docs.';
-			setTimeout(function () {
-				Swal.fire(
-					'Uh Oh!',
-					'Nothing Outputted! Make sure your code is printing something AND/OR the program is properly initialized. Need Help? Click the Docs.',
-					'error'
-				);
-			}, 0);
-			return;
-		}
-
-		if (response.passing.passing) {
-			pass(response.passing);
-			setTimeout(function () {
-				Swal.fire('Perfect!', 'You Passed This Challenge in ' + language.title, 'success');
-			}, 750);
-		} else {
-			error = response.output;
-		}
 	}
 
 	let video_url = null;
@@ -304,7 +261,7 @@
 	</div>
 
 	<div class="test_cases">
-		<TestCases {blocks} starter={mainStarter} {language} {testNow} />
+		<TestCases {blocks} {algorithm} starter={mainStarter} {language} {testNow} />
 	</div>
 
 	{#if result}

@@ -7,6 +7,7 @@
 	export let language;
 	export let starter;
 	export let testNow;
+	export let algorithm;
 
 	export let blocks;
 
@@ -30,7 +31,7 @@
 		starter.test_cases = [...starter.test_cases, res];
 	}
 
-	let activeTestCase = -1;
+	let activeTestCaseId = -1;
 
 	async function handleUpdate(payload) {
 		console.log({ payload });
@@ -48,7 +49,7 @@
 
 	async function beginTest() {
 		console.log('Starting', $testing);
-		testing.set([...starter.test_cases]);
+		testing.set([...algorithm.test_cases]);
 
 		// return;
 		while ($testing.length > 0) {
@@ -61,11 +62,11 @@
 		console.log('DONE', $testing);
 	}
 
-	function fullCode(test_case) {
+	function fullCode() {
 		return blocks
 			.map((b) => {
 				if (b.prefix_test) {
-					return [test_case.code, b.code].join('\n');
+					return ['~~', b.code].join('\n');
 				} else {
 					return b.code;
 				}
@@ -75,8 +76,12 @@
 
 	async function testCase(test_case) {
 		try {
-			const res = await API.post(`/test_cases/${test_case.id}/execute.json`, {
-				code: fullCode(test_case)
+			console.log({ test_case });
+			const res = await API.post(`/algorithms/${algorithm.id}/execute.json`, {
+				code: fullCode(),
+				language: language,
+				test_case: test_case,
+				algorithm_id: algorithm.id
 			});
 
 			// Handle the response here if needed
@@ -113,29 +118,30 @@
 	}
 </script>
 
-{#if starter && starter.test_cases}
-	{#each starter.test_cases as test_case, index}
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
+{#each algorithm.test_cases as test_case, index}
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
 
-		<Tab
-			{test_case}
-			{activeTestCase}
-			executing={$testing}
-			index={index + 1}
-			select={() => {
-				activeTestCase = test_case.id;
-			}}
-			executions={execution}
-		/>
-	{/each}
+	<Tab
+		{test_case}
+		{activeTestCaseId}
+		executing={$testing}
+		index={index + 1}
+		select={() => {
+			console.log({ test_case });
+			activeTestCaseId = test_case.id;
+		}}
+		executions={execution}
+	/>
+{/each}
+{#if starter && starter.test_cases}
 	{#if $user && $user.admin}
 		<div class="btn btn-outline-primary" on:click={addTestCase}><i class="fa fa-plus" /></div>
 	{/if}
 
-	{#if activeTestCase > -1}
-		{#key activeTestCase}
+	{#if activeTestCaseId > -1}
+		{#key activeTestCaseId}
 			<Expanded
-				test_case={starter.test_cases.find((t) => t.id === activeTestCase)}
+				test_case={algorithm.test_cases.find((t) => t.id === activeTestCaseId)}
 				{language}
 				update={handleUpdate}
 				executions={execution}

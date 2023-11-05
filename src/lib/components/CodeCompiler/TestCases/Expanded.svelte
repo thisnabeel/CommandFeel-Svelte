@@ -10,59 +10,43 @@
 	let editorRef = null;
 	let lineCount = 1;
 
-	$: console.log({ executions });
-	function handleEditorDidMount(editor, monaco) {
-		// here is the editor instance
-		// you can store it in `useRef` for further usage
-		editorRef = editor;
-		lineCount = editorRef.getModel().getLineCount();
-		editorRef.updateOptions({ scrollBeyondLastLine: false });
-
-		if (!$user) {
-			editorRef.updateOptions({ readOnly: true });
-		}
-	}
-
-	function handleEditorChange(value, event) {
-		test_case.code = value;
-		update(test_case);
-		lineCount = editorRef.getModel().getLineCount();
-	}
-
-	$: console.log(test_case.code);
+	// $: console.log({ executions });
+	$: console.log({ test_case });
 </script>
 
 <div class="test_case_expanded">
-	<label for="">Code:</label>
-	<react:Editor
-		height={lineCount * 18 + 'px'}
-		defaultLanguage={language.editor_slug}
-		wordWrap={'on'}
-		scrollBeyondLastLine={false}
-		automaticLayout={false}
-		defaultValue={test_case.code}
-		lineNumbers={'off'}
-		onMount={handleEditorDidMount}
-		onChange={handleEditorChange}
-		options={{
-			minimap: { enabled: false }
-		}}
-	/>
+	<h2>Input:</h2>
 
-	<hr />
+	{#each Object.entries(test_case.inputs) as input}
+		<div class="row">
+			<div class="col-lg-4 col-md-4">
+				<div class="inputKey">
+					{input[0]}
+				</div>
+			</div>
+			<div class="col-lg-8 col-md-8">
+				<div class="inputValue">
+					{input[1]}
+				</div>
+			</div>
+		</div>
+	{/each}
 
-	<label for="">Expectation:</label>
-	<input
-		disabled={!$user || !$user.admin}
-		type="text"
-		class="form-control"
-		bind:value={test_case.expectation}
-		on:keyup={() => update(test_case)}
-	/>
+	<br />
+	<h2>Expected Output:</h2>
+	<div class="inputValue">{test_case.expectation}</div>
 
 	{#if executions && executions[test_case.id]}
 		<br />
-		<li class="result">{@html executions[test_case.id].output}</li>
+		<li class="result">
+			<!-- {@html executions[test_case.id].output} -->
+			{#each executions[test_case.id].output.split('\n') as line, index}
+				{@html line}
+				{#if index !== executions[test_case.id].output.split('\n').length - 1}
+					<br />
+				{/if}
+			{/each}
+		</li>
 	{/if}
 </div>
 
@@ -78,5 +62,26 @@
 		color: #fff;
 		border-radius: 10px;
 		font-size: 28px;
+	}
+
+	.inputKey,
+	.inputValue {
+		font-size: 24px;
+
+		display: block;
+		width: 100%;
+		padding: 0.4em 0.8em;
+
+		border-radius: 10px;
+	}
+
+	.inputKey {
+		background-color: #000;
+		color: #fff;
+	}
+
+	.inputValue {
+		background-color: #fff;
+		color: #000;
 	}
 </style>

@@ -12,6 +12,7 @@
 	export let loomify;
 	export let loomified;
 	export let index;
+	export let starter;
 
 	let open = false;
 
@@ -59,10 +60,11 @@
 		);
 	}
 
-	$: langStarter =
-		algorithm.language_algorithm_starters.filter(
-			(s) => s.programming_language_id === language.id
-		) || null;
+	$: langStarter = starter
+		? starter
+		: algorithm.language_algorithm_starters.filter(
+				(s) => s.programming_language_id === language.id
+		  ) || null;
 </script>
 
 <li class="language" class:open>
@@ -73,7 +75,7 @@
 	{/if}
 
 	<span class="head" on:click={() => (open = !open)}
-		>{language.title}
+		>{starter ? starter.algorithm.title : language.title}
 		{#if passing}
 			{#if !$loomifiedView}
 				<i class="fa fa-star passed" />

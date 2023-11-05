@@ -1,5 +1,5 @@
 <script>
-	export let activeTestCase;
+	export let activeTestCaseId;
 	export let select;
 	export let executing;
 	export let test_case;
@@ -20,10 +20,13 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
 	class="btn btn-lg tab"
-	class:activeTab={activeTestCase === test_case.id}
+	class:activeTab={activeTestCaseId === test_case.id}
 	class:wrong={!passing}
 	class:correct={passing}
-	on:click={select}
+	on:click={() => {
+		select();
+		console.log({ activeTestCaseId });
+	}}
 >
 	Case {index}
 	{#if executing.map((t) => t.id).includes(test_case.id)}

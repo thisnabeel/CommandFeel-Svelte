@@ -35,7 +35,7 @@
 
 {#if result}
 	<div class="result">
-		{@html result.output}
+		{result.output}
 	</div>
 {/if}
 

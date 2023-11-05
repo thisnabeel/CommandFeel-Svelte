@@ -2,6 +2,7 @@
 	import Api from '$lib/api/api';
 	import Language from './Language.svelte';
 	import { onMount } from 'svelte';
+	export let link = false;
 
 	let languages = [];
 	onMount(async () => {
@@ -12,7 +13,7 @@
 {#if languages}
 	<ul class="clean-list languages">
 		{#each languages as language}
-			<Language {language} />
+			<Language {language} {link} />
 		{/each}
 	</ul>
 {/if}

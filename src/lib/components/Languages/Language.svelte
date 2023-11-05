@@ -1,11 +1,23 @@
 <script>
+	import { goto } from '$app/navigation';
+
 	export let language;
+	export let link = false;
 
 	let open = false;
 </script>
 
 <li class="language" class:open>
-	<span class="head" on:click={() => (open = !open)}>{language.title}</span>
+	<span
+		class="head"
+		on:click={() => {
+			if (link) {
+				goto(`/programming_languages/${language.id}`);
+			} else {
+				open = !open;
+			}
+		}}>{language.title}</span
+	>
 
 	{#if open}
 		<slot />

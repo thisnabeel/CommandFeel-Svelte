@@ -7,6 +7,7 @@
 	import update from '$lib/functions/debounce';
 	import { user } from '$lib/stores/user';
 	import { afterNavigate } from '$app/navigation';
+	import TestCases from '$lib/components/Algorithms/Algorithm/TestCases/TestCases.svelte';
 
 	let algo = null;
 	onMount(() => {
@@ -48,32 +49,7 @@
 	</div>
 
 	{#if $user && $user.admin}
-		<input
-			type="text"
-			class="form-control"
-			placeholder="Expected..."
-			bind:value={algo.title}
-			on:change={async () => {
-				console.log('Updating');
-				algo = await update('/algorithms/' + algo.id + '.json', {
-					title: algo.title
-				});
-				console.log('gotten:', algo);
-			}}
-		/>
-		<input
-			type="text"
-			class="form-control"
-			placeholder="Expected..."
-			bind:value={algo.expected}
-			on:change={async () => {
-				console.log('Updating');
-				algo = await update('/algorithms/' + algo.id + '.json', {
-					expected: algo.expected
-				});
-				console.log('gotten:', algo);
-			}}
-		/>
+		<TestCases algorithm={algo} />
 	{/if}
 
 	<Languages algorithm={algo} {progress} />
