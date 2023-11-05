@@ -133,7 +133,7 @@
 		executions={execution}
 	/>
 {/each}
-{#if starter && starter.test_cases}
+{#if algorithm && algorithm.test_cases}
 	{#if $user && $user.admin}
 		<div class="btn btn-outline-primary" on:click={addTestCase}><i class="fa fa-plus" /></div>
 	{/if}
