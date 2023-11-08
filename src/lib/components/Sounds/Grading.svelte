@@ -6,15 +6,19 @@
 
 	correctSound.subscribe((count) => {
 		if (count > 0) {
-			correctAudio.currentTime = 0;
-			correctAudio.play();
+			if (correctAudio) {
+				correctAudio.currentTime = 0;
+				correctAudio.play();
+			}
 		}
 	});
 
 	incorrectSound.subscribe((count) => {
 		if (count > 0) {
-			incorrectAudio.currentTime = 0;
-			incorrectAudio.play();
+			if (incorrectAudio) {
+				incorrectAudio.currentTime = 0;
+				incorrectAudio.play();
+			}
 		}
 	});
 </script>

@@ -56,7 +56,7 @@
 	<div class="row">
 		<div class="big-col">
 			<span on:click={() => goto('/algorithms')}>
-				<div class="cta-search">Algorithms</div>
+				<div class="cta-search">Problems</div>
 			</span>
 			<Input type="Algorithms" />
 		</div>

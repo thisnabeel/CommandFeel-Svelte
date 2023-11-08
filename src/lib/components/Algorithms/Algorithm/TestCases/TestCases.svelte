@@ -74,51 +74,57 @@
 	}
 </script>
 
-<h1>Test Cases:</h1>
+<div class="wrapper">
+	<label for="">Params:</label>
+	<Params
+		params={algorithm.input_params}
+		save={(payload) => {
+			saveInputParams(payload);
+		}}
+	/>
 
-<label for="">Params:</label>
-<Params
-	params={algorithm.input_params}
-	save={(payload) => {
-		saveInputParams(payload);
-	}}
-/>
+	<label for="">Cases:</label>
+	{#if algorithm && algorithm.test_cases}
+		<div class="test_cases">
+			{#each algorithm.test_cases as test_case, index}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
 
-<label for="">Cases:</label>
-{#if algorithm && algorithm.test_cases}
-	<div class="test_cases">
-		{#each algorithm.test_cases as test_case, index}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<Tab
+					{test_case}
+					{activeTestCaseId}
+					index={index + 1}
+					select={() => {
+						activeTestCaseId = test_case.id;
+						console.log({ algorithm });
+					}}
+				/>
+			{/each}
 
-			<Tab
-				{test_case}
-				{activeTestCaseId}
-				index={index + 1}
-				select={() => {
-					activeTestCaseId = test_case.id;
-					console.log({ algorithm });
-				}}
-			/>
-		{/each}
+			<div class="btn btn-outline-primary" on:click={addTestCase}><i class="fa fa-plus" /></div>
+		</div>
 
-		<div class="btn btn-outline-primary" on:click={addTestCase}><i class="fa fa-plus" /></div>
-	</div>
-
-	{#if activeTestCaseId > -1}
-		{#key activeTestCaseId}
-			<Expanded
-				test_case={algorithm.test_cases.find((t) => t.id === activeTestCaseId)}
-				update={handleUpdate}
-				params={algorithm.input_params}
-				submit={saveExpanded}
-			/>
-		{/key}
+		{#if activeTestCaseId > -1}
+			{#key activeTestCaseId}
+				<Expanded
+					test_case={algorithm.test_cases.find((t) => t.id === activeTestCaseId)}
+					update={handleUpdate}
+					params={algorithm.input_params}
+					submit={saveExpanded}
+				/>
+			{/key}
+		{/if}
 	{/if}
-{/if}
+</div>
 
 <style>
 	.test_case_expanded {
 		padding: 18px;
 		display: block;
+	}
+
+	.wrapper {
+		padding: 1em;
+		border-radius: 8px;
+		background: #fff;
 	}
 </style>

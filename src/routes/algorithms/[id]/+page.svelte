@@ -8,6 +8,8 @@
 	import { user } from '$lib/stores/user';
 	import { afterNavigate } from '$app/navigation';
 	import TestCases from '$lib/components/Algorithms/Algorithm/TestCases/TestCases.svelte';
+	import Description from '$lib/components/Algorithms/Algorithm/Description/Description.svelte';
+
 	import { correctSound, incorrectSound } from '$lib/stores/view';
 	import GradingSound from '$lib/components/Sounds/Grading.svelte';
 
@@ -29,13 +31,6 @@
 		getAlgo();
 	});
 
-	// const fetchSkill = async (slug) => {
-	// 	skill = await Api.get('/skills/' + slug + '.json');
-	// 	mapShown.set(false);
-	// 	selectSkill(skill);
-	// 	console.log('gotten', skill);
-	// };
-
 	let progress = [];
 	async function getProgress() {
 		if (!$user) return;
@@ -43,6 +38,16 @@
 			'/users/' + $user.id + '/algorithms/' + $page.params.id + '/attempts.json'
 		);
 		console.log(progress);
+	}
+
+	let settingsView = -1;
+
+	function selectSettingsTab(index) {
+		if (settingsView === index) {
+			settingsView = -1;
+		} else {
+			settingsView = index;
+		}
 	}
 </script>
 
@@ -53,8 +58,19 @@
 		<h1>{algo.title}</h1>
 	</div>
 
+	<div class="settingTabs">
+		<div on:click={() => selectSettingsTab(1)} class:activeTab={settingsView === 1}>Test Cases</div>
+		<div on:click={() => selectSettingsTab(2)} class:activeTab={settingsView === 2}>
+			Description
+		</div>
+	</div>
+
 	{#if $user && $user.admin}
-		<TestCases algorithm={algo} />
+		{#if settingsView === 1}
+			<TestCases algorithm={algo} />
+		{:else if settingsView === 2}
+			<Description algorithm={algo} />
+		{/if}
 	{/if}
 
 	<Languages algorithm={algo} {progress} />
@@ -77,5 +93,16 @@
 		border: 2px dashed #ffca2d87;
 		border-radius: 20px;
 		padding: 10px;
+	}
+
+	.settingTabs div {
+		display: inline;
+		font-size: 18px;
+		padding: 10px;
+		background-color: rgba(251, 251, 251, 0.59);
+	}
+
+	.settingTabs div.activeTab {
+		background-color: #fff;
 	}
 </style>

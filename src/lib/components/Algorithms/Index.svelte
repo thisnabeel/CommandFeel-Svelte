@@ -63,7 +63,7 @@
 </script>
 
 <div class="flex top-nav">
-	<h1 class:activeTab={mainView === 'algos'} on:click={() => (mainView = 'algos')}>Algorithms</h1>
+	<h1 class:activeTab={mainView === 'algos'} on:click={() => (mainView = 'algos')}>Problems</h1>
 	<h1 class:activeTab={mainView === 'languages'} on:click={() => (mainView = 'languages')}>
 		Languages
 	</h1>
