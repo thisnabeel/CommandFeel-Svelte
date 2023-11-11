@@ -7,6 +7,7 @@
 	export let params;
 	export let inputs;
 	export let submit;
+	export let deleteTestCase;
 
 	function saveExpanded(payload) {
 		console.log(payload);
@@ -23,6 +24,10 @@
 		bind:value={test_case.expectation}
 		on:keyup={() => update(test_case)}
 	/>
+	<hr />
+	<div class="btn btn-outline-danger" on:click={() => deleteTestCase(test_case)}>
+		Delete Test Case
+	</div>
 </div>
 
 <style>

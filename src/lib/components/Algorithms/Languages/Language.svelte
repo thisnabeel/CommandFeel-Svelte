@@ -13,8 +13,10 @@
 	export let loomified;
 	export let index;
 	export let starter;
+	export let readOnly = false;
+	let showChallengeInstructions = false;
 
-	let open = false;
+	export let open = false;
 
 	let showHelper = false;
 
@@ -74,28 +76,47 @@
 		{/if}
 	{/if}
 
-	<span class="head" on:click={() => (open = !open)}
-		>{starter ? starter.algorithm.title : language.title}
-		{#if passing}
-			{#if !$loomifiedView}
-				<i class="fa fa-star passed" />
+	{#if !readOnly}
+		<span class="head" on:click={() => (open = !open)}
+			>{starter ? starter.algorithm.title : language.title}
+			{#if passing}
+				{#if !$loomifiedView}
+					<i class="fa fa-star passed" />
+				{/if}
 			{/if}
-		{/if}
 
-		{#if $showGuide && index === 0 && !open}
-			<div class="guide lang-tab">
-				<i class="fa fa-arrow-up" /> Click here to complete the language challenge
-			</div>
-		{/if}
-	</span>
+			{#if $showGuide && index === 0 && !open}
+				<div class="guide lang-tab">
+					<i class="fa fa-arrow-up" /> Click here to complete the language challenge
+				</div>
+			{/if}
+		</span>
+	{/if}
 	{#if open}
 		<div class="challenge">
-			<span class="challenge-pre"><i class="fa fa-flask" /></span>
-			{algorithm.title}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<div
+				class="btn"
+				class:btn-outline-info={!showChallengeInstructions}
+				class:btn-primary={showChallengeInstructions}
+				on:click={() => (showChallengeInstructions = !showChallengeInstructions)}
+			>
+				{#if showChallengeInstructions}
+					Hide Challenge Instructions
+				{:else}
+					Show Challenge Instructions
+				{/if}
+			</div>
 		</div>
 	{/if}
 
-	<span class="help" on:click={toggleHelper}><i class="fa fa-book" /> Docs </span>
+	{#if showChallengeInstructions}
+		<div class="challenge-body">{@html algorithm.challenge_body}</div>
+	{/if}
+
+	<span class="help" on:click={toggleHelper}
+		><i class="fa fa-book" /> {readOnly && language ? language.title : ''} Docs
+	</span>
 	{#if $showGuide && index === 0}
 		<div class="docs guide">
 			This shows you how to use the language
@@ -246,7 +267,8 @@
 		text-align: center;
 		border-radius: 10%;
 		right: 10px;
-		top: 27px;
+		/* top: 27px; */
+		top: 15px;
 		position: absolute;
 	}
 
@@ -299,6 +321,12 @@
 
 	.guide.lang-tab {
 		max-width: max-content;
+	}
+
+	.challenge-body {
+		padding: 14px;
+		background-color: #fff;
+		border-bottom: 8px solid #f1f1f1;
 	}
 
 	@media (max-width: 480px) {

@@ -69,7 +69,7 @@
 			</li>
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<li on:click={() => visit('/algorithms')} class:activeTab={$currentPage === 'algorithms'}>
-				Algorithms
+				Coding Challenges
 			</li>
 		</ul>
 	</div>

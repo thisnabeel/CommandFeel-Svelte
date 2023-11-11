@@ -15,7 +15,7 @@
 			>{algorithm.title}
 
 			{#if index === 0 && $showGuide}
-				<div class="guide algo-guide">Click Here to Practice Algorithm</div>
+				<div class="guide algo-guide">Click Here to Take Challenge</div>
 			{/if}
 		</span>
 	</span>

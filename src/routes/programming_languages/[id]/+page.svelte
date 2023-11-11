@@ -3,21 +3,31 @@
 
 	import Api from '$lib/api/api';
 	import { onMount } from 'svelte';
-	import Language from '$lib/components/Algorithms/Languages/Language.svelte';
+	import Mapper from '$lib/components/Algorithms/Mapper.svelte';
 
+	import Algorithms from '$lib/components/Algorithms/Mapper/Mapper.svelte';
 	import GradingSound from '$lib/components/Sounds/Grading.svelte';
 
+	import { algorithmStore } from '$lib/stores/algorithms/mapper';
 	let lang = null;
+	let algorithms;
 	onMount(() => {
 		getAlgo();
+		getAlgos();
 	});
 
 	async function getAlgo() {
 		const response = await Api.get('/programming_languages/' + $page.params.id + '.json');
 		lang = response;
-		console.log({ response });
+		console.log('get programming language', { response });
 	}
 	let progress = [];
+
+	async function getAlgos() {
+		const response = await Api.get('/algorithms.json');
+		algorithms = response;
+		algorithmStore.set(algorithms);
+	}
 </script>
 
 <GradingSound />
@@ -28,10 +38,12 @@
 	</div>
 
 	<ul class="clean-list">
-		{#each lang.algorithms.sort((a, b) => a.algorithm.position - b.algorithm.position) as algo, index}
+		<!-- {#each lang.algorithms.sort((a, b) => a.algorithm.position - b.algorithm.position) as algo, index}
 			<Language language={lang} algorithm={algo.algorithm} starter={algo} {index} {progress} />
-		{/each}
+		{/each} -->
 	</ul>
+
+	<Mapper {algorithms} starters={lang.algorithms} language={lang} readOnly={true} />
 {/if}
 
 <style>

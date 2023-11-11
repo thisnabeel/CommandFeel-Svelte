@@ -3,7 +3,7 @@
 
 	import Algorithm from './Algorithm/Item.svelte';
 	import SortableList from 'svelte-sortable-list';
-
+	import Mapper from './Mapper.svelte';
 	import { algorithmStore } from '$lib/stores/algorithms/mapper';
 
 	import Api from '$lib/api/api';
@@ -90,7 +90,7 @@
 					// openModal(GuideModal, { slug: 'algorithm page: can program, new to commandfeel' });
 				}}
 			>
-				I can program, show me the algorithms!
+				I can program, show me the Challenges!
 			</div>
 		</div>
 	{/if}
@@ -103,9 +103,7 @@
 		{/if}
 
 		{#if $user && $user.admin}
-			<SortableList list={algos} key="id" on:sort={sortList} let:item={algo}>
-				<Algorithm algorithm={algo} index={algos.indexOf(algo)} />
-			</SortableList>
+			<Mapper algorithms={algos} />
 		{:else}
 			{#each algos.filter((algo) => algo.expected_with_type !== null) as algo, index}
 				<Algorithm algorithm={algo} {index} />

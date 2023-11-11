@@ -72,6 +72,19 @@
 
 		saveAlgo();
 	}
+
+	function deleteTestCase(test_case) {
+		console.log(test_case);
+		console.log(algorithm.test_cases);
+		const currentIndex = algorithm.test_cases.indexOf(test_case);
+		const lastIndex = currentIndex - 1;
+
+		// if (lastIndex > -1) {
+		// }
+		activeTestCaseId = algorithm.test_cases[lastIndex];
+		algorithm.test_cases = algorithm.test_cases.filter((tc) => tc.id !== test_case.id);
+		saveAlgo();
+	}
 </script>
 
 <div class="wrapper">
@@ -110,6 +123,7 @@
 					update={handleUpdate}
 					params={algorithm.input_params}
 					submit={saveExpanded}
+					{deleteTestCase}
 				/>
 			{/key}
 		{/if}
