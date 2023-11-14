@@ -321,6 +321,7 @@
 				on:focus={() => (writing = true)}
 				on:blur={() => (writing = false)}
 			/>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<div class="input-group-append" on:click={addSkill}>
 				{#if $selectedSkill}
 					<div class="btn btn-warning">Nest</div>

@@ -41,6 +41,8 @@
 	$: hasStarter =
 		readOnly && !algorithm.header && starters.find((s) => s.algorithm_id === algorithm.id);
 	$: isHeader = readOnly && algorithm.header;
+	$: isAdmin = $user && $user.admin;
+	$: isAlgoPage = !$user && algorithm.test_cases.length > 0;
 </script>
 
 <li
@@ -48,14 +50,19 @@
 	class:header={algorithm.header}
 	class:selected={selectedAlgorithm ? selectedAlgorithm.id === algorithm.id : false}
 	class:openStarter
+	class:visitable={!$user && !user.admin && readOnly && !algorithm.header}
 >
-	{#if hasStarter || isHeader || ($user && $user.admin)}
+	{#if hasStarter || isHeader || isAdmin || isAlgoPage}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div
 			class="head"
 			style="margin-left: {32 * child_level}px"
 			on:click={() => {
 				if (readOnly) {
+					if (!$user && !user.admin) {
+						goto('/algorithms/' + algorithm.id);
+						return;
+					}
 					fetchStarter();
 				} else {
 					selectAlgorithm(algorithm);
@@ -147,6 +154,13 @@
 		background: rgb(255 248 222);
 		margin: 4px;
 		border-radius: 8px;
+	}
+
+	.visitable {
+		cursor: pointer;
+	}
+	.visitable:hover > .head {
+		background-color: rgb(222, 240, 255);
 	}
 	/* 
 	.children {

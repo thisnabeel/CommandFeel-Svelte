@@ -36,12 +36,12 @@
 		skill.quizzes = [...skill.quizzes, response];
 	};
 
-	async function addQuizSet() {
+	async function addQuizSet(title = 'Untitled') {
 		const res = await API.post('/quiz_sets.json', {
 			quiz_setable_id: skill.id,
 			quiz_setable_type: 'Skill',
 			position: skill.quiz_sets.length + 1,
-			title: 'New One'
+			title: title
 		});
 		console.log({ res });
 		skill.quiz_sets = [...skill.quiz_sets, res];
@@ -52,6 +52,8 @@
 		const res = await API.delete('/quiz_sets/' + payload.id + '.json');
 		skill.quiz_sets = skill.quiz_sets.filter((s) => s.id !== payload.id);
 	}
+
+	const suggestedTitles = ['General', 'Jeopardy', 'Scenarios', 'Differences'];
 </script>
 
 <div class="quiz_sets">
@@ -64,6 +66,17 @@
 	{#if $user && $user.admin}
 		<div class="adder">
 			<div class="add-quiz btn btn-outline-warning" on:click={addQuizSet}>+</div>
+		</div>
+		<div class="flex adder">
+			{#each suggestedTitles.filter((t) => !skill.quiz_sets
+						.map((s) => s.title)
+						.includes(t)) as title}
+				<div class="">
+					<div class="btn btn-outline-warning btn-block" on:click={() => addQuizSet(title)}>
+						{title}
+					</div>
+				</div>
+			{/each}
 		</div>
 	{/if}
 </div>

@@ -102,13 +102,14 @@
 			<hr />
 		{/if}
 
-		{#if $user && $user.admin}
+		<!-- {#if $user && $user.admin}
 			<Mapper algorithms={algos} />
 		{:else}
 			{#each algos.filter((algo) => algo.expected_with_type !== null) as algo, index}
 				<Algorithm algorithm={algo} {index} />
 			{/each}
-		{/if}
+		{/if} -->
+		<Mapper algorithms={algos} readOnly={!$user || !$user.admin} />
 	{/if}
 
 	<br />

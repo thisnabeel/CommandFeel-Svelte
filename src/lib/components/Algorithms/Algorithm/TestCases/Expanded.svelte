@@ -13,6 +13,8 @@
 		console.log(payload);
 		submit(payload);
 	}
+
+	let data_types = ['string', 'integer', 'array', 'dictionary', 'linked_list'];
 </script>
 
 <div class="test_case_expanded">
@@ -24,6 +26,14 @@
 		bind:value={test_case.expectation}
 		on:keyup={() => update(test_case)}
 	/>
+	<br />
+	<select name="" id="" bind:value={test_case.data_type}>
+		<option value="" />
+		<!-- svelte-ignore empty-block -->
+		{#each data_types as data_type}
+			<option value={data_type}>{data_type}</option>
+		{/each}
+	</select>
 	<hr />
 	<div class="btn btn-outline-danger" on:click={() => deleteTestCase(test_case)}>
 		Delete Test Case

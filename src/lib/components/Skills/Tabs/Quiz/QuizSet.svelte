@@ -103,6 +103,18 @@
 					<div class="btn btn-outline-warning generate-quiz" on:click={() => generateQuiz('steps')}>
 						<i class="fa fa-bolt" /> <i class="fa fa-list" /> Steps
 					</div>
+					<div
+						class="btn btn-outline-warning generate-quiz"
+						on:click={() => generateQuiz('scenario')}
+					>
+						<i class="fa fa-bolt" /> Scenario
+					</div>
+					<div
+						class="btn btn-outline-warning generate-quiz"
+						on:click={() => generateQuiz('scenario_mc')}
+					>
+						<i class="fa fa-bolt" /> <i class="fa fa-list" /> Scenario
+					</div>
 				</div>
 			</div>
 		{/if}
