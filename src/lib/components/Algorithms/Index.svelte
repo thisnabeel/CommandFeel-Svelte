@@ -74,14 +74,18 @@
 	{#if $showGuide && !$loomifiedView && userLevel < 0}
 		<h3 class="text-center">Select your Level:</h3>
 		<div class="flex">
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<div
 				class="btn btn-lg btn-danger"
 				on:click={() => {
-					// openModal(GuideModal, { slug: 'algorithm page: never programmed before' });
+					getAlgos();
+					userLevel = 1;
+					// openModal(GuideModal, { slug: 'algorithm page: can program, new to commandfeel' });
 				}}
 			>
 				I have never programmed before!
 			</div>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<div
 				class="btn btn-lg btn-info"
 				on:click={() => {
