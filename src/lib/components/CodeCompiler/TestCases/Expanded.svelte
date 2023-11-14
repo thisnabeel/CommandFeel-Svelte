@@ -38,6 +38,7 @@
 
 	{#if executions && executions[test_case.id]}
 		<br />
+		<h2>Got:</h2>
 		<li class="result">
 			<!-- {@html executions[test_case.id].output} -->
 			{#each executions[test_case.id].output.split('\n') as line, index}
