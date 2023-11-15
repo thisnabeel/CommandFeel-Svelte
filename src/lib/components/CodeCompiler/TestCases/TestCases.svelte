@@ -14,7 +14,7 @@
 	import Expanded from './Expanded.svelte';
 	import { writable } from 'svelte/store';
 	import { user } from '$lib/stores/user';
-	import { correctSound, incorrectSound } from '$lib/stores/view';
+	import { correctSound, incorrectSound, victorySound } from '$lib/stores/view';
 
 	// Create a writable store for testing array
 	const testing = writable([]);
@@ -52,15 +52,24 @@
 		console.log('Starting', $testing);
 		testing.set([...algorithm.test_cases]);
 
+		let results = [];
 		// return;
 		while ($testing.length > 0) {
-			await testCase($testing[0]); // Use the first element
+			const res = await testCase($testing[0]); // Use the first element
 			// Update the store to trigger reactivity
+			results = [...results, res];
 			$testing.shift(); // Remove the first element
 			testing.set([...$testing]);
 		}
 
+		console.log('RESULTS', results);
 		console.log('DONE', $testing);
+		const allTrue = results.every((element) => typeof element === 'boolean' && element === true);
+		if (allTrue) {
+			setTimeout(function () {
+				victorySound.set($victorySound + 1);
+			}, 1500);
+		}
 	}
 
 	function fullCode() {
@@ -101,6 +110,8 @@
 					incorrectSound.set($incorrectSound + 1);
 				}
 			}
+
+			return res.passing.passing;
 
 			// Await closeExecution to ensure it's complete before moving on
 			// await closeExecution(test_case);

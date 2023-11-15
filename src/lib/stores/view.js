@@ -13,3 +13,4 @@ export const currentPage = writable('default');
 
 export const correctSound = writable(0);
 export const incorrectSound = writable(0);
+export const victorySound = writable(0);
