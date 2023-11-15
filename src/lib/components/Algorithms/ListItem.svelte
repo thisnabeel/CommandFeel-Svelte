@@ -59,6 +59,10 @@
 			style="margin-left: {32 * child_level}px"
 			on:click={() => {
 				if (readOnly) {
+					if (language) {
+						fetchStarter();
+						return;
+					}
 					if (!$user && !user.admin) {
 						goto('/algorithms/' + algorithm.id);
 						return;
