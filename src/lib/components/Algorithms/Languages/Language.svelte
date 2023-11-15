@@ -14,6 +14,7 @@
 	export let index;
 	export let starter;
 	export let readOnly = false;
+	export let pass;
 	let showChallengeInstructions = false;
 
 	export let open = false;
@@ -46,8 +47,7 @@
 	$: passing = progress.filter((p) => p.programming_language_id === language.id).length > 0;
 
 	function handlePassed(payload) {
-		progress = [...progress, payload];
-		console.log({ progress });
+		pass(payload);
 	}
 
 	async function handleTraitUpdate(val, lang, trait) {
@@ -77,6 +77,7 @@
 	{/if}
 
 	{#if !readOnly}
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<span class="head" on:click={() => (open = !open)}
 			>{starter ? starter.algorithm.title : language.title}
 			{#if passing}

@@ -8,6 +8,7 @@
 	export let readOnly = false;
 	export let language = null;
 	export let starters;
+	export let progress;
 	let algorithms = [];
 	let selectedAlgorithm = null;
 	let visitingAlgorithm = null;
@@ -297,6 +298,7 @@
 					{algorithm}
 					{selectAlgorithm}
 					{visitAlgorithm}
+					{progress}
 				/>
 			{/each}
 		</ul>

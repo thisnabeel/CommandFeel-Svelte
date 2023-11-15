@@ -8,6 +8,7 @@
 	export let starter;
 	export let testNow;
 	export let algorithm;
+	export let pass;
 
 	export let blocks;
 
@@ -67,9 +68,21 @@
 		const allTrue = results.every((element) => typeof element === 'boolean' && element === true);
 		if (allTrue) {
 			setTimeout(function () {
+				saveAttempt();
 				victorySound.set($victorySound + 1);
 			}, 1500);
 		}
+	}
+
+	async function saveAttempt() {
+		const res = await API.post('/attempts', {
+			user_id: $user.id,
+			programming_language_id: language.id,
+			algorithm_id: algorithm.id,
+			passing: true
+		});
+		console.log({ res });
+		pass(res);
 	}
 
 	function fullCode() {

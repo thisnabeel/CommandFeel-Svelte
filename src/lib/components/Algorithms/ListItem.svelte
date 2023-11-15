@@ -38,6 +38,11 @@
 		);
 	}
 
+	function handlePass(payload) {
+		progress = [...progress, payload];
+		console.log({ progress });
+	}
+
 	$: hasStarter =
 		readOnly && !algorithm.header && starters.find((s) => s.algorithm_id === algorithm.id);
 	$: isHeader = readOnly && algorithm.header;
@@ -75,6 +80,12 @@
 		>
 			{algorithm.title}
 
+			{#if readOnly && language && progress}
+				{#if progress.filter((p) => p.programming_language_id === language.id && p.algorithm_id === algorithm.id).length > 0}
+					<i class="fa fa-star star" />
+				{/if}
+			{/if}
+
 			{#if !readOnly}
 				<div class="btn btn-warning" on:click={() => goto('/algorithms/' + algorithm.id)}>
 					<i class="fa fa-link" />
@@ -95,7 +106,7 @@
 		</div>
 	{/if}
 	{#if starter}
-		<Box {language} {algorithm} {starter} {progress} {readOnly} open={true} />
+		<Box {language} {algorithm} {starter} {progress} {readOnly} open={true} pass={handlePass} />
 	{/if}
 
 	<div class="children">
@@ -158,6 +169,7 @@
 		background: rgb(255 248 222);
 		margin: 4px;
 		border-radius: 8px;
+		position: relative;
 	}
 
 	.visitable {
@@ -170,4 +182,15 @@
 	.children {
 		margin-left: 32px;
 	} */
+
+	.star {
+		color: #ffe34c;
+		position: absolute;
+		left: -33px;
+		top: 11px;
+		-webkit-text-stroke: medium;
+		-webkit-text-stroke-width: 1px;
+		-webkit-text-stroke-color: #be9500;
+		text-shadow: 0px 2px 3px #60530c;
+	}
 </style>

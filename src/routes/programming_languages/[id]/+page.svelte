@@ -9,11 +9,14 @@
 	import GradingSound from '$lib/components/Sounds/Grading.svelte';
 
 	import { algorithmStore } from '$lib/stores/algorithms/mapper';
+	import { user } from '$lib/stores/user';
 	let lang = null;
 	let algorithms;
+
 	onMount(() => {
 		getAlgo();
 		getAlgos();
+		getProgress();
 	});
 
 	async function getAlgo() {
@@ -21,7 +24,15 @@
 		lang = response;
 		console.log('get programming language', { response });
 	}
+
 	let progress = [];
+	async function getProgress() {
+		if (!$user) return;
+		progress = await Api.get(
+			'/users/' + $user.id + '/languages/' + $page.params.id + '/attempts.json'
+		);
+		console.log({ progress });
+	}
 
 	async function getAlgos() {
 		const response = await Api.get('/algorithms.json');
@@ -43,12 +54,13 @@
 		{/each} -->
 	</ul>
 
-	<Mapper {algorithms} starters={lang.algorithms} language={lang} readOnly={true} />
+	<Mapper {algorithms} {progress} starters={lang.algorithms} language={lang} readOnly={true} />
 {/if}
 
 <style>
 	.jumbotron {
 		padding: 24px;
-		background-color: rgb(235, 235, 235);
+		/* background-color: rgb(235, 235, 235); */
+		background-color: #fff;
 	}
 </style>

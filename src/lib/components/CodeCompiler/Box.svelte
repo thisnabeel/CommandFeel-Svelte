@@ -29,6 +29,10 @@
 	let testNow = 0;
 
 	async function test() {
+		if (!$user) {
+			Swal.fire('Unauthorized', 'Please Sign In/Up on the Top Right To Run', 'warning');
+			return;
+		}
 		testNow += 1;
 		return;
 	}
@@ -261,7 +265,7 @@
 	</div>
 
 	<div class="test_cases">
-		<TestCases {blocks} {algorithm} starter={mainStarter} {language} {testNow} />
+		<TestCases {blocks} {algorithm} starter={mainStarter} {language} {testNow} {pass} />
 	</div>
 
 	{#if result}
