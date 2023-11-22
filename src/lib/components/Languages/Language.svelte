@@ -33,6 +33,10 @@
 		cursor: pointer;
 	}
 
+	.language .head:hover {
+		background: #b6ddff;
+	}
+
 	.language.open .head {
 		background: #000;
 		color: #fff;
