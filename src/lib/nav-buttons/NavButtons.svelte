@@ -71,6 +71,10 @@
 			<li on:click={() => visit('/algorithms')} class:activeTab={$currentPage === 'algorithms'}>
 				Coding Challenges
 			</li>
+
+			<li on:click={() => visit('/tradeoffs')} class:activeTab={$currentPage === 'tradeoffs'}>
+				Tradeoffs
+			</li>
 		</ul>
 	</div>
 {/if}

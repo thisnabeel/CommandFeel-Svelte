@@ -8,50 +8,16 @@
 
 	import { flip } from 'svelte/animate';
 	import { quintOut } from 'svelte/easing';
+	import SearchSkills from './SearchSkills.svelte';
 
 	export let jobSkills = null;
+	let topics = [];
 
 	onMount(() => {
 		globalViewCategory.set('Skills');
 	});
-	let topic = '';
-	let allSkills = null;
-	let topics = [];
-	skills.subscribe((value) => {
-		console.log('skillsMap', value);
-		allSkills = value;
-
-		topics = allSkills.filter((s) => s.title === 'SOLID Principles' || s.title === 'DevOps');
-		// test();
-	});
 
 	let initiated = false;
-
-	let results = [];
-	let showResults;
-
-	function search() {
-		if (topic.length < 2) {
-			results = [];
-			return;
-		}
-		results = allSkills.filter((s) => s.title.toLowerCase().includes(topic.toLocaleLowerCase()));
-		console.log(results);
-		showResults = true;
-	}
-
-	function addToTest(result) {
-		if (topics.filter((o) => o.id === result.id).length > 0) {
-			showResults = false;
-			return;
-		}
-		topics = [...topics, result];
-		showResults = false;
-	}
-
-	function hideResults() {
-		showResults = false;
-	}
 
 	let quizzes = [];
 	let loading = false;
@@ -70,28 +36,6 @@
 		quizzes = quizzes.filter((q) => q.id !== id);
 	}
 
-	function removeTopic(item) {
-		if (jobSkills && jobSkills.length > 0) {
-			topics.find((t) => t.id === item.id).disabled = !topics.find((t) => t.id === item.id)
-				.disabled;
-			topics = topics;
-		} else {
-			topics = topics.filter((topic) => item.id !== topic.id);
-		}
-	}
-
-	function clearer() {
-		if (jobSkills && jobSkills.length > 0) {
-			topics = topics.map((t) => {
-				t.disabled = true;
-				return t;
-			});
-		} else {
-			topics = [];
-		}
-	}
-	let hoveringResults = false;
-
 	let imported = false;
 	$: {
 		if (jobSkills && !imported) {
@@ -99,94 +43,21 @@
 			imported = true;
 		}
 	}
+
+	function saveTopics(payload) {
+		topics = payload;
+	}
 </script>
 
-<div class="input-wrapper">
-	{#if !jobSkills}
-		<input
-			type="text"
-			class="form-control tester"
-			placeholder="Search from {allSkills.length} Skills to Test..."
-			bind:value={topic}
-			on:keyup={search}
-			on:mouseenter={() => (showResults = true)}
-			on:mouseleave={() => {
-				setTimeout(function () {
-					if (!hoveringResults) {
-						hideResults();
-					}
-				}, 50);
-			}}
-		/>
-	{/if}
-	{#if results.length > 0 && showResults}
-		<div
-			class="results clean-list"
-			on:mouseenter={() => {
-				showResults = true;
-				hoveringResults = true;
-			}}
-			on:mouseleave={() => {
-				hideResults();
-				hoveringResults = false;
-			}}
-		>
-			{#each results as result}
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<li
-					class="result"
-					class:present={topics.filter((t) => t.id === result.id).length > 0}
-					on:click={() => addToTest(result)}
-				>
-					{result.title}
-				</li>
-			{/each}
-		</div>
-	{/if}
-</div>
+<SearchSkills
+	showInput={!jobSkills}
+	{jobSkills}
+	{topics}
+	{saveTopics}
+	prefillers={['SOLID Principles', 'DevOps']}
+/>
 
 {#if topics.length > 0}
-	<div class="topics clean-list">
-		{#each topics as item}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<li
-				class="topic"
-				class:disabled={item.disabled}
-				on:click={() => {
-					removeTopic(item);
-				}}
-			>
-				{item.title}
-			</li>
-		{/each}
-
-		{#if topics.filter((t) => !t.disabled).length > 0}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<li
-				class="topic clearer"
-				on:click={() => {
-					clearer();
-				}}
-			>
-				Clear All
-			</li>
-		{/if}
-
-		<!-- {#if topics.filter((t) => !t.disabled).length === 0}
-			<li
-				class="topic clearer"
-				on:click={() => {
-					topics = topics.map((t) => {
-						t.disabled = true;
-						return t;
-					});
-				}}
-			>
-				Clear All
-			</li>
-		{/if} -->
-	</div>
-
 	<br />
 	{#if loading}
 		<div class="btn btn-lg btn-blocked btn-block">Loading...</div>
