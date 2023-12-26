@@ -47,21 +47,18 @@
 	function saveTopics(payload) {
 		topics = payload;
 	}
+
+	export let prefillers = [];
 </script>
 
-<SearchSkills
-	showInput={!jobSkills}
-	{jobSkills}
-	{topics}
-	{saveTopics}
-	prefillers={['SOLID Principles', 'DevOps']}
-/>
+<SearchSkills showInput={!jobSkills} {jobSkills} {topics} {saveTopics} {prefillers} />
 
-{#if topics.length > 0}
+{#if topics.length > 0 || prefillers.length > 0}
 	<br />
 	{#if loading}
 		<div class="btn btn-lg btn-blocked btn-block">Loading...</div>
 	{:else}
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div class="btn btn-lg btn-primary btn-block" on:click={test}>
 			{#if initiated}
 				Test Topics

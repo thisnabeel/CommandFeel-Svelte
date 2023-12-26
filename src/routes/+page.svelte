@@ -55,7 +55,7 @@
 </div>
 <br /> -->
 {#if $globalViewCategory === 'Skills'}
-	<Tester />
+	<Tester prefillers={['SOLID Principles', 'DevOps']} />
 {/if}
 
 {#if $globalViewCategory === 'Languages'}

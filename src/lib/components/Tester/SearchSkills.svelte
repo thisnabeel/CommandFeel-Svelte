@@ -14,9 +14,15 @@
 		console.log('skillsMap', value);
 		allSkills = value;
 
+		if (jobSkills) {
+			prefillers = jobSkills.map((s) => s.title);
+		}
 		if (prefillers.length > 0) {
 			topics = allSkills.filter((s) => prefillers.includes(s.title));
+			console.log('prefillers', topics);
+			saveTopics(topics);
 		}
+
 		// test();
 	});
 
