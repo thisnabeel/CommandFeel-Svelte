@@ -1,33 +1,35 @@
 <script>
-	// @ts-nocheck
-
 	import { closeModal } from 'svelte-modals';
-	import { OutClick } from 'svelte-outclick';
+	import OutClick from 'svelte-outclick';
 	import { onMount } from 'svelte';
 	import { onBeforeClose } from 'svelte-modals';
-	import Swal from 'sweetalert2';
-	import API from '$lib/api/api';
-	import { user } from '$lib/stores/user';
-	import ProofLink from '$lib/components/Proof/ProofLink/ProofLink.svelte';
-	import Proof from '$lib/components/Proof/Proof.svelte';
-	import ImageUploader from './ImageUploader.svelte';
+	import TikTokQuiz from '$lib/components/TikTokQuiz/TikTokQuiz.svelte';
+
 	// provided by <Modals />
 	export let isOpen;
-	let closable = true;
+
+	export let slug = '';
+
+	onMount(async function () {
+		document.body.style['overflow-y'] = 'hidden';
+	});
+
+	onBeforeClose(() => {
+		document.body.style['overflow-y'] = 'initial';
+	});
+
 	const handleOutsideClick = () => {
-		if (closable) {
-			closeModal();
-		}
+		closeModal();
 	};
 </script>
 
 {#if isOpen}
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div role="dialog" class="modal" on:click|stopPropagation>
 		<div class="barrier" on:click|stopPropagation>
 			<OutClick on:outclick={handleOutsideClick}>
 				<div class="contents">
-					<ImageUploader />
+					<!-- <input type="text" class="form-control" bind:value={slug} /> -->
+					<TikTokQuiz />
 				</div>
 			</OutClick>
 		</div>
@@ -35,14 +37,6 @@
 {/if}
 
 <style>
-	.contents {
-		padding: 1em;
-		border-radius: 8px;
-	}
-	label {
-		font-weight: bold;
-		margin-top: 10px;
-	}
 	[role='dialog'] {
 		background: rgba(0, 0, 0, 0.5);
 	}
@@ -62,19 +56,16 @@
 	}
 
 	.contents {
-		min-width: 240px;
+		/* min-width: 350px; */
 		/* padding: 16px; */
-		max-width: 750px;
-		background: white;
+		width: 800px;
+		background: rgb(32, 255, 162);
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 		pointer-events: auto;
-	}
-
-	article {
-		padding: 1em;
-		width: 750px;
+		padding: 4em;
+		border-radius: 14px;
 	}
 
 	h2 {

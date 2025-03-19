@@ -12,6 +12,7 @@
 	export let updateCode;
 	export let trait;
 	export let runnable = false;
+	export let runClicked;
 
 	export let algorithm;
 
@@ -34,6 +35,9 @@
 			return;
 		}
 		testNow += 1;
+		if (!algorithm) {
+			runClicked(code);
+		}
 		return;
 	}
 
@@ -256,6 +260,23 @@
 	{/if}
 {/if}
 
+{#if !algorithm}
+	<div class="holder">
+		<react:Editor
+			height={lineCount * 18 + 18 + 'px'}
+			defaultLanguage={language.editor_slug}
+			onChange={handleEditorChange}
+			defaultValue={''}
+			onMount={handleEditorDidMount}
+			wordWrap={'on'}
+			scrollBeyondLastLine={false}
+			options={{
+				minimap: { enabled: false }
+			}}
+		/>
+	</div>
+{/if}
+
 {#if runnable}
 	<div class="btn btn-info btn-block btn-lg" style="display:block;" on:click={test}>
 		{#if !$user}
@@ -264,9 +285,11 @@
 		Run
 	</div>
 
-	<div class="test_cases">
-		<TestCases {blocks} {algorithm} starter={mainStarter} {language} {testNow} {pass} />
-	</div>
+	{#if algorithm}
+		<div class="test_cases">
+			<TestCases {blocks} {algorithm} starter={mainStarter} {language} {testNow} {pass} />
+		</div>
+	{/if}
 
 	{#if result}
 		<div class="result">

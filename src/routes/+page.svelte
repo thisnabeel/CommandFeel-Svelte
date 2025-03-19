@@ -11,6 +11,7 @@
 
 	import AlgorithmsHome from '$lib/components/Algorithms/Landing/Index.svelte';
 	import { afterNavigate } from '$app/navigation';
+	import TikTokQuiz from '$lib/components/TikTokQuiz/TikTokQuiz.svelte';
 
 	const fetchPopularWonders = async () => {
 		const response = await Api.get('/museum.json');
@@ -54,6 +55,7 @@
 	</div>
 </div>
 <br /> -->
+
 {#if $globalViewCategory === 'Skills'}
 	<Tester prefillers={['SOLID Principles', 'DevOps']} />
 {/if}

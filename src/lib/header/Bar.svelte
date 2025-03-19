@@ -3,6 +3,8 @@
 	import LanguagesBar from './LanguagesBar/LanguagesBar.svelte';
 	import Bar from './Bar.svelte';
 	import { globalViewCategory } from '$lib/stores/view';
+	import { openModal } from 'svelte-modals';
+	import TikTokModal from '$lib/modals/tiktok/Modal.svelte';
 
 	function switchBar() {
 		$globalViewCategory === 'Languages'
@@ -11,6 +13,12 @@
 	}
 </script>
 
+<i
+	class="fa fa-flask"
+	on:click={() => {
+		openModal(TikTokModal, {});
+	}}
+/>
 <div class="bar">
 	<span class="switcher" on:click={switchBar}>
 		<div
@@ -38,6 +46,16 @@
 </div>
 
 <style>
+	.contents {
+		width: 100vw;
+		background: rgb(32, 255, 162);
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		pointer-events: auto;
+		padding: 0;
+		border-radius: 14px;
+	}
 	.bar {
 		position: relative;
 	}
