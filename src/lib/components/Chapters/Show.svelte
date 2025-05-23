@@ -12,9 +12,10 @@
 	import Abstractions from './Tabs/Abstractions/Abstractions.svelte';
 	import Challenges from './Tabs/Challenges/Challenges.svelte';
 	import Quizzes from './Tabs/Quiz/Quizzes.svelte';
+	import Quests from './Tabs/Quests/Quests.svelte';
 
 	export let chapter;
-	let tabs = ['Abstractions', 'Quiz', 'Challenges'];
+	let tabs = ['Abstractions', 'Quiz', 'Challenges', 'Quests'];
 	let activeTab = 'Abstractions';
 
 	$: if (chapter && (!$user || !$user.admin)) {
@@ -24,6 +25,10 @@
 
 		if (chapter.challenges.length < 1) {
 			tabs = tabs.filter((t) => t !== 'Challenges');
+		}
+
+		if (chapter.quests.length < 1) {
+			tabs = tabs.filter((t) => t !== 'Quests');
 		}
 	}
 
@@ -60,6 +65,10 @@
 
 	{#if activeTab === 'Quiz'}
 		<Quizzes {chapter} user={$user} />
+	{/if}
+
+	{#if activeTab === 'Quests'}
+		<Quests {chapter} user={$user} />
 	{/if}
 </section>
 <br />

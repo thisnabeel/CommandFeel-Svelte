@@ -1,4 +1,4 @@
-import { browser, dev, prerendering } from '$app/environment';
+import { browser, dev } from '$app/environment';
 import { writable, get } from 'svelte/store';
 
 const storage = (key, initValue) => {

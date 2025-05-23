@@ -4,6 +4,7 @@
 	import Api from '$lib/api/api.js';
 	import { popularWonders } from '$lib/stores/main.js';
 	import { onMount } from 'svelte';
+	import PopularQuestsSampler from '$lib/components/Quests/PopularQuestsSampler.svelte';
 
 	import Tester from '$lib/components/Tester/Tester.svelte';
 	import Quiz from '$lib/components/Skills/Tabs/Quiz/Quiz.svelte';
@@ -64,7 +65,8 @@
 	<AlgorithmsHome />
 {/if}
 
-<!-- <Home /> -->
+<PopularQuestsSampler />
+
 <style>
 	.intro {
 		display: flex;

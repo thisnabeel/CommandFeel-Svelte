@@ -12,9 +12,10 @@
 	import Abstractions from './Tabs/Abstractions/Abstractions.svelte';
 	import Challenges from './Tabs/Challenges/Challenges.svelte';
 	import Quizzes from './Tabs/Quiz/Quizzes.svelte';
+	import Quests from './Tabs/Quests/Quests.svelte';
 
 	export let skill;
-	let tabs = ['Abstractions', 'Quiz', 'Challenges'];
+	let tabs = ['Abstractions', 'Quiz', 'Challenges', 'Quests'];
 	let activeTab = 'Abstractions';
 
 	$: if (skill && (!$user || !$user.admin)) {
@@ -60,6 +61,10 @@
 
 	{#if activeTab === 'Quiz'}
 		<Quizzes {skill} user={$user} />
+	{/if}
+
+	{#if activeTab === 'Quests'}
+		<Quests {skill} user={$user} />
 	{/if}
 </section>
 <br />

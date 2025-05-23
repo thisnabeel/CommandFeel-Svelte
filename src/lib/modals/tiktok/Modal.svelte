@@ -1,6 +1,7 @@
 <script>
 	import { closeModal } from 'svelte-modals';
 	import OutClick from 'svelte-outclick';
+
 	import { onMount } from 'svelte';
 	import { onBeforeClose } from 'svelte-modals';
 	import TikTokQuiz from '$lib/components/TikTokQuiz/TikTokQuiz.svelte';
