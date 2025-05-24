@@ -2,7 +2,7 @@
 	// @ts-nocheck
 
 	import { closeModal } from 'svelte-modals';
-	import { OutClick } from 'svelte-outclick';
+	import OutClick from 'svelte-outclick';
 	import { onMount } from 'svelte';
 	import { onBeforeClose } from 'svelte-modals';
 	import Swal from 'sweetalert2';
